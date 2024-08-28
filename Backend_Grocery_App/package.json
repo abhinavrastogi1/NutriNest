@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "backend for grocery app",
   "main": "index.js",
+  "type":"module",
   "scripts": {
-    "dev": "node "
+    "dev": "nodemon index.js"
   },
   "author": "abhinav",
   "license": "ISC",
