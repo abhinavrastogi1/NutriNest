@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "backend for grocery app",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
   },
   "author": "abhinav",
   "license": "ISC",
