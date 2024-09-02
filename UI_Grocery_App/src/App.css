@@ -28,10 +28,10 @@ body {
   padding: 2px !important;
   display: flex !important;
   justify-items: center !important;
-  gap:1px !important;
+  gap: 1px !important;
   margin: 0 45% !important ;
-  background-color: #7A767C;
-  opacity:.75 !important;
+  background-color: #7a767c;
+  opacity: 0.75 !important;
   bottom: 15px !important;
   width: 100px !important;
   height: 20px;
@@ -43,7 +43,7 @@ body {
 }
 
 .slick-dots li {
-    width:10px !important ;
+  width: 10px !important ;
 }
 
 .slick-dots li button:before {
@@ -53,21 +53,21 @@ body {
 }
 .slick-dots li.slick-active button:before {
   color: white !important;
-  opacity: 1!important;
+  opacity: 1 !important;
   font-size: 20px !important;
 }
 
 /* slick preview */
-.slick-arrow{
-    margin:0 40px ;
-    z-index:1;
+.slick-arrow {
+  margin: 0 40px;
+  z-index: 1;
 }
-.slick-arrow::before{
-font-size:30px !important;
-color:#7A767C !important;
-fill:white !important;
+.slick-arrow::before {
+  font-size: 30px !important;
+  color: #7a767c !important;
+  fill: white !important;
 }
-.slick-arrow:hover::before{
-    color:black !important;
-    opacity: 1 !important;
-    }
+.slick-arrow:hover::before {
+  color: black !important;
+  opacity: 1 !important;
+}
