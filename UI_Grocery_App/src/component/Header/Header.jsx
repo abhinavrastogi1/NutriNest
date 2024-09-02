@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import bigbasket from "../../assets/images/bigbasket.png";
 import search from "../../assets/images/search.png";
 import compass from "../../assets/images/compass.png";
@@ -15,7 +15,11 @@ function Header() {
       <div className="grid grid-rows-2 mx-48 h-28 ">
         <div className="flex flex-row gap-3 m-2">
           <div>
-            <img src={bigbasket} className="h-10 w-[110px]" alt="bigbasket logo" />
+            <img
+              src={bigbasket}
+              className="h-10 w-[110px]"
+              alt="bigbasket logo"
+            />
           </div>
           <div className="flex flex-row border-[1px] border-border-color rounded-md w-[60%]">
             <img src={search} className="h-5 m-2" alt="search" />
@@ -33,7 +37,7 @@ function Header() {
           </div>
           <div>
             <button className="button-bg-color rounded-md px-2 pt-1">
-              <img src={profile} className="w-11 h-9" alt="profile icon" />
+              <img src={profile} className="w-12 h-19" alt="profile icon" />
             </button>
           </div>
           <div>
@@ -45,8 +49,14 @@ function Header() {
         <div className="flex flex-row m-2 justify-between">
           <div className="p-1">
             <button className="bg-[#5E9400] py-2 rounded-[5px] w-[170px] flex flex-row ">
-              <span className="text-white pl-3 text-[13px]">Shop by Category</span>
-              <img className="w-5 h-5 ml-4" src={dropdown} alt="dropdown icon" />
+              <span className="text-white pl-3 text-[13px]">
+                Shop by Category
+              </span>
+              <img
+                className="w-5 h-5 ml-4"
+                src={dropdown}
+                alt="dropdown icon"
+              />
             </button>
           </div>
           <div className="flex flex-row w-[65%] justify-between ">
@@ -69,22 +79,30 @@ function Header() {
                 <a href="./">Fresh Vegetables</a>
               </li>
             </ul>
-            <div className='mr-4'>
+            <div className="mr-4">
               <button className="pt-[11px]">
                 <img className="w-5 h-5" src={arrow} alt="arrow icon" />
               </button>
             </div>
-            <div className='bg-slate-200 w-[1px] h-6 mt-2' ></div>
+            <div className="bg-slate-200 w-[1px] h-6 mt-2"></div>
           </div>
           <div className="flex flex-row justify-between w-40">
             <button>
               <a href="/">
-                <img className="w-16 h-6 mx-1" src={smartbasket} alt="smart basket img" />
+                <img
+                  className="w-16 h-6 mx-1"
+                  src={smartbasket}
+                  alt="smart basket img"
+                />
               </a>
             </button>
             <button>
               <a href="/">
-                <img src={offers} className="w-16 h-[26px] mx-2" alt="offer img" />
+                <img
+                  src={offers}
+                  className="w-16 h-[26px] mx-2"
+                  alt="offer img"
+                />
               </a>
             </button>
           </div>

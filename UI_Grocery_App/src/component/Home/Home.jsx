@@ -9,9 +9,9 @@ function Home(){
 
 <AutoSlider />
 < Card />
-<Bottom_autoSlider />
+<Bottom_autoSlider  />
 
-<div >
+<div className="py-5">
     <h4 className="font-semibold text-[14px] px-1">bigbasket – online grocery store</h4>
    <div className="font-normal mt-2 text-[14px] text-gray-600">
     <p className="px-1 my-2">Did you ever imagine that the freshest of fruits and vegetables, top-quality pulses and food grains, dairy products, and hundreds of branded items could be handpicked and delivered to your home, all at the click of a button? In today's fast-paced world, bigbasket.com, India's pioneering online grocery store, continues to bring a staggering array of over 40,000 products from more than 1,000 brands to the doorsteps of over 10 million satisfied customers.

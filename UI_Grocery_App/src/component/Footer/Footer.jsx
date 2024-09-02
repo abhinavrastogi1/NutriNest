@@ -4,7 +4,7 @@ import Facebook_logo from "../../assets/images/Facebook_logo.jpeg";
 function Footer() {
   return (
     <footer className="bg-[#101010]">
-      <div className="mx-48 grid grid-cols-3 ">
+      <div className="mx-48 grid grid-cols-3  ">
         <div className="pt-12">
           <div>
             <h4 className=" text-white  text-[14px] font-normal pl-3 ">
