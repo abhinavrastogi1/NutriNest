@@ -56,3 +56,18 @@ body {
   opacity: 1!important;
   font-size: 20px !important;
 }
+
+/* slick preview */
+.slick-arrow{
+    margin:0 40px ;
+    z-index:1;
+}
+.slick-arrow::before{
+font-size:30px !important;
+color:#7A767C !important;
+fill:white !important;
+}
+.slick-arrow:hover::before{
+    color:black !important;
+    opacity: 1 !important;
+    }
