@@ -15,7 +15,7 @@ const ProductSchema = new Schema(
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:"Category",
+      ref: "Category",
       required: true,
     },
     brand: {
@@ -37,14 +37,13 @@ const ProductSchema = new Schema(
       of: Number,
       required: true,
     },
-    seller:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Seller",
-        required:true
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Seller",
+      required: true,
     },
-    
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Product = mongoose.model("Product", ProductSchema);

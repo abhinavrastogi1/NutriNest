@@ -9,10 +9,10 @@ const adminSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      default: "Admin"
-    }
+      default: "Admin",
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Admin = mongoose.model("Admin", adminSchema);

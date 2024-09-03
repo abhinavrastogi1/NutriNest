@@ -9,8 +9,8 @@ function Footer() {
     <footer className="bg-[#101010] ">
       <Moreinfo />
       <Cities_weServe />
-    <PopularCatagory/>
-    <Copyright/>
+      <PopularCatagory />
+      <Copyright />
     </footer>
   );
 }

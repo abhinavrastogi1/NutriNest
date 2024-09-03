@@ -7,21 +7,21 @@ const sellerSchema = new Schema(
       ref: "User",
       required: true,
     },
-    storeName:{
-        type:String,
-        required:true,
+    storeName: {
+      type: String,
+      required: true,
     },
-    storeDescription:{
-        type:String,
-        required:true,
+    storeDescription: {
+      type: String,
+      required: true,
     },
-    status:{
-        type:String,
-        enum:["active","inactive"],
-        default:"inactive"
-    }
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "inactive",
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Seller = mongoose.model("Seller", sellerSchema);

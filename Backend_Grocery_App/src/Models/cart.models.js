@@ -7,20 +7,21 @@ const cartSchema = new Schema(
       ref: "User",
       required: true,
     },
-    item: [{
-      product: 
-        {
+    item: [
+      {
+        product: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
         },
-        quantity:{
-            type:Number,
-            required:true,
-            default:0
-        }
-    }]
+        quantity: {
+          type: Number,
+          required: true,
+          default: 0,
+        },
+      },
+    ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Cart = mongoose.model("Cart", cartSchema);

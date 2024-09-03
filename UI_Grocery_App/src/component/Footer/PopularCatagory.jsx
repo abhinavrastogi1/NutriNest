@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 function PopularCatagory() {
   return (
@@ -139,8 +139,9 @@ function PopularCatagory() {
             Show More +
           </button>
         </div>
-      </div></>
-  )
+      </div>
+    </>
+  );
 }
 
-export default PopularCatagory
+export default PopularCatagory;
