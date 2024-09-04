@@ -1,6 +1,6 @@
-import asyncHandler from "../Utils/asyncHandler"
-import ApiError from "../Utils/ApiError"
-import User from "../Models/user.models"
+import asyncHandler from "../Utils/asyncHandler.js"
+import ApiError from "../Utils/ApiError.js"
+import User from "../Models/user.models.js"
 import mongoose from "mongoose"
 const generateAccessAndRefreshTokens =async (userId)=>{
 try {

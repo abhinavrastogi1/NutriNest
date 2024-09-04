@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { errorhandler } from "./Middlewares/error.middleware";
+import { errorhandler } from "./Middlewares/error.middleware.js";
 const app = express();
 
 app.use(
