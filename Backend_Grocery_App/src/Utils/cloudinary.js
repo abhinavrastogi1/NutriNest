@@ -12,14 +12,22 @@ cloudinary.config({
 const uploadCloudinary = async (localFilespath) => {
   try {
     if (!localFilespath) return null;
-    const response =  await cloudinary.uploader.upload(localFilespath, {
+    const response = await cloudinary.uploader.upload(localFilespath, {
       resource_type: "auto", //file uploaded
     });
-    fs.unlinkSync(localFilespath);//removes localy saved files
+    fs.unlink(localFilespath, (error) => {
+      if (error) {
+        console.log("error occur while deleting localy stored files ", error);
+      }
+    }); //removes localy saved files
     return response;
   } catch (error) {
-    fs.unlinkSync(localFilespath);//remove localy savef files
+    fs.unlink(localFilespath, (error) => {
+      if (error) {
+        console.log("error occur while deleting localy stored files ", error);
+      }
+    }); //remove localy savef files
     return null;
   }
-  
 };
+export default uploadCloudinary;
