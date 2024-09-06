@@ -5,6 +5,7 @@ const ProductSchema = new Schema(
     name: {
       type: String,
       required: true,
+      index:true,
     },
     images: {
       type: [String],
@@ -21,6 +22,7 @@ const ProductSchema = new Schema(
     brand: {
       type: String,
       required: true,
+      index:true
     },
     originalPriceWithWeight: {
       type: Map,

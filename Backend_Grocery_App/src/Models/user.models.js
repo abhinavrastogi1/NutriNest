@@ -20,6 +20,7 @@ const userSchema = new  mongoose.Schema(
     },
     phoneNo: {
       type: String,
+      unique:true,
       required: true,
     },
     role: {
@@ -27,7 +28,7 @@ const userSchema = new  mongoose.Schema(
       enum: ["Admin", "User", "Seller"],
       default: "User",
     },
-    passwordHash: {
+    password: {
       type: String,
       required: [true, "password is required"],
     },
@@ -39,13 +40,13 @@ const userSchema = new  mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("passwordHash")) return next();
-  this.passwordHash = await bcrypt.hash(this.passwordHash, 10);
+  if (!this.isModified("password")) return next();
+  this.passwordHash = await bcrypt.hash(this.password, 10);
   next();
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
-  return await bcrypt.compare(password, this.passwordHash);
+  return await bcrypt.compare(password, this.password);
 };
 
 userSchema.methods.generateAccessToken = function () {
