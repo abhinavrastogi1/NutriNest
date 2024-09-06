@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const shippingSchema = mongoose.Schema(
+const shippingSchema =new  mongoose.Schema(
   {
     method: { type: String, required: true },
     cost: { type: Number, required: true },

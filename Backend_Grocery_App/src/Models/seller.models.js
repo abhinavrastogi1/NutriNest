@@ -1,4 +1,4 @@
-import { mongoose, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const sellerSchema = new Schema(
   {
@@ -21,7 +21,7 @@ const sellerSchema = new Schema(
       default: "inactive",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export const Seller = mongoose.model("Seller", sellerSchema);
