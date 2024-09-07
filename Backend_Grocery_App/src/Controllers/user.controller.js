@@ -18,7 +18,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
     );
   }
 };
-
+// registration of use
 const registerUser = asyncHandler(async (req, res) => {
   {
     /*1.get data from frontend
@@ -67,10 +67,11 @@ const registerUser = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, createdUser, "user registed successfully"));
   }
 });
+// login for user
 
 const loginUser = asyncHandler(async (req, res) => {
   const { password, phoneNo } = req.body;
- 
+
   const user = await User.findOne({ phoneNo });
 
   if (!user) {
@@ -87,8 +88,11 @@ const loginUser = asyncHandler(async (req, res) => {
     user._id
   );
 
-  if(!accessToken,!refreshToken){
-    throw new ApiError(501,"something went wrong while generating access token")
+  if ((!accessToken, !refreshToken)) {
+    throw new ApiError(
+      501,
+      "something went wrong while generating access token"
+    );
   }
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
