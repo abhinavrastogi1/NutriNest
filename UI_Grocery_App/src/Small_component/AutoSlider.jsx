@@ -18,7 +18,7 @@ function AutoSlider() {
   }, [slides.length]);
 
   return (
-    <div className="relative w-full overflow-hidden rounded-xl my-5">
+    <div className="relative w-full overflow-hidden rounded-xl my-5 shadow-xl">
       <div
         className="flex transition-transform duration-1000"
         style={{

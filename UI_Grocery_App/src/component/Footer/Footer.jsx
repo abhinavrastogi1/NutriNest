@@ -1,9 +1,9 @@
 import React from "react";
 
-import Cities_weServe from "./Cities_weServe";
-import Moreinfo from "./moreinfo.jsx";
-import PopularCatagory from "./PopularCatagory.jsx";
-import Copyright from "./copyright.jsx";
+import Cities_weServe from "../FooterComponents/Cities_weServe.jsx";
+import Moreinfo from "../FooterComponents/moreinfo.jsx";
+import PopularCatagory from "../FooterComponents/PopularCatagory.jsx";
+import Copyright from "../FooterComponents/copyright.jsx";
 function Footer() {
   return (
     <footer className="bg-[#101010] ">
