@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
-import CardMd from "../../Small_component/Cards/CardMd"
+import CardLg from "../../Small_component/Cards/CardLg";
 
 function BestSeller() {
   return (
@@ -17,7 +17,6 @@ function BestSeller() {
               Show More
             </span>
           </Link>
-
           <div>
             <button className="rounded-md shadow-lg p-2 bg-white mx-3 ">
               <IoIosArrowBack className="text-xl" />
@@ -29,10 +28,10 @@ function BestSeller() {
         </div>
       </div>
       <div className="flex justify-evenly ">
-        <CardMd />
-        <CardMd />
-        <CardMd />
-        <CardMd />
+        <CardLg />
+        <CardLg />
+        <CardLg />
+        <CardLg />
         
       </div>
     </div>
