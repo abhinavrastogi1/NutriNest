@@ -28,10 +28,10 @@ function Bottom_autoSlider() {
   };
 
   return (
-    <div className="slider-container rounded-xl my-5 shadow-md h-[400px] ">
+    <div className="slider-container rounded-xl  shadow-md h-[400px] mt-10 ">
       <Slider {...settings}>
         {slides.map((slide) => (
-          <div key={slide.id} className="flex-shrink-0 w-full">
+          <div key={slide.id} className="flex-shrink-1 w-full">
             <a href={slide.href}>
               <img
                 src={slide.url}

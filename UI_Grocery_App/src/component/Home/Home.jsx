@@ -7,7 +7,7 @@ import HeroSection from "../HeroSection/HeroSection";
 function Home() {
   return (
     <>
-      <section className="mx-48 my-10 ">
+      <section className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
         <AutoSlider />
         <HeroSection/>
         <Bottom_autoSlider />

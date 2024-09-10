@@ -12,7 +12,7 @@ import smartbasket from "../../assets/images/smartbasket.png";
 function Header() {
   return (
     <header className="bg-white shadow-lg">
-      <div className="grid grid-rows-2 mx-48 h-28 ">
+      <div className="grid grid-rows-2 mx-4 sm:mx-8 md:mx-16 lg:mx-48 h-28 ">
         <div className="flex flex-row gap-3 m-2">
           <div>
             <img

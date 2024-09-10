@@ -2,7 +2,7 @@ import React from "react";
 
 function About() {
   return (
-    <div className="py-5">
+    <div className="py-2 mt-10">
       <h4 className="font-semibold text-[14px] px-1">
         bigbasket – online grocery store
       </h4>
