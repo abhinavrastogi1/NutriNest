@@ -31,8 +31,8 @@ function TopOfferCards() {
           <h1 className="text-2xl  font-bold">Top Offers</h1>
         </div>
         <div className="flex  gap-7 ">
-          {cardsData.map((card) => (
-            <div key={card.url}>
+          {cardsData.map((card,index) => (
+            <div key={index}>
               <Link to={card.url}>
                 {" "}
                 <div className="h-[197px] w-[263px]  relative  rounded-lg shadow-md">

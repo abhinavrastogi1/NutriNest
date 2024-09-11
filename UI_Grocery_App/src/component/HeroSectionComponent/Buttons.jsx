@@ -4,7 +4,7 @@ import NeuPass from "../../assets/images/NeuPass.png"
 
 function Buttons() {
   return (
-    <div className="flex justify-between mt-8">
+    <div className="flex gap-[27px] mt-8">
       <Link to="">
         {" "}
         <button className="h-[53px] w-[167px] bg-[#E8E8E8] rounded-md PY-2 px-6 font-extrabold text-sm">
