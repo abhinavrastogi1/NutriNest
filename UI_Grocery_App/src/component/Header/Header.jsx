@@ -8,6 +8,7 @@ import offers from "../../assets/images/offers.png";
 import smartbasket from "../../assets/images/smartbasket.png";
 import LiItmes from "../HeaderComponent/LiItmes";
 import ShopByCategory from "../HeaderComponent/ShopByCategory";
+import CategoryButton from "../HeaderComponent/CategoryButton";
 
 function Header() {
   return (
@@ -47,6 +48,7 @@ function Header() {
           </div>
         </div>
         <div className="flex flex-row m-2 justify-between relative">
+          <CategoryButton />
          <ShopByCategory />
           < LiItmes />
           <div className="flex flex-row justify-between w-40">

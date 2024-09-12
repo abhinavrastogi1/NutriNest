@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { TiArrowSortedDown } from "react-icons/ti";
+import { toggleSwitch } from "../../store/Feature/Ui_component/ToggleVisibility";
+import { useSelector ,useDispatch} from 'react-redux';
 
 function ShopByCategory() {
-  const [isActive, setIsActive] = useState(false);
-
-  const activeClick = () => setIsActive(!isActive);
-
+  const isVisible=useSelector((state)=>(state.toggleVisibility.toggle))
   const [activeUl2, SetActiveUl2] = useState("Apparel");
   const [activeUl3, SetactiveUl3] = useState("Boy'S Wear");
-  const [active, SetActive] = useState(true);
   const ul1 = [
     "Apparel",
     "Fruits & Vegetable",
@@ -143,21 +141,8 @@ function ShopByCategory() {
 
   return (
     <>
-      <div className="p-1 ">
-        <button
-          className="bg-[#5E9400] py-2 rounded-[5px] w-[170px] flex flex-row  "
-          onClick={activeClick}
-        >
-          <span className="text-white pl-3 text-[13px]">Shop by Category</span>
-          <span
-            className={`mt-[2px] ml-3 transition-transform ${isActive ? "scale-y-[-1]" : "scale-y-100"}`}
-          >
-            <TiArrowSortedDown className=" w-4 h-4  text-white" />
-          </span>
-        </button>
-      </div>
       <div>
-        {isActive && (
+        {isVisible && (
           <div className="bg-slate-600 absolute top-10 left-2 z-10">
             <div className="flex">
               <ul className="bg-[#202020] w-[227px] text-xs text-white ">
