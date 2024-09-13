@@ -70,7 +70,6 @@ const registerUser = asyncHandler(async (req, res) => {
 // login for user
 
 const loginUser = asyncHandler(async (req, res) => {
-  console.log(req);
   const { password, phoneNo } = req.body;
 
   const user = await User.findOne({ phoneNo });
@@ -111,6 +110,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
+  console.log(req.user)
   const userId = req.user._id; // req.user from verfyjwt middleware
   console.log(await User.findById(userId));
   await User.findByIdAndUpdate(
