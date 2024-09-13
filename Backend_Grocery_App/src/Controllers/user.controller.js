@@ -70,6 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // login for user
 
 const loginUser = asyncHandler(async (req, res) => {
+  console.log(req);
   const { password, phoneNo } = req.body;
 
   const user = await User.findOne({ phoneNo });
@@ -108,4 +109,30 @@ const loginUser = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(201, loggedInUser, "log in successfull"));
 });
-export { registerUser, generateAccessAndRefreshTokens, loginUser };
+
+const logoutUser = asyncHandler(async (req, res) => {
+  const userId = req.user._id; // req.user from verfyjwt middleware
+  console.log(await User.findById(userId));
+  await User.findByIdAndUpdate(
+    userId,
+    {
+      $unset: {
+        refreshToken: 1,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  res
+    .status(201)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(201, {}, "user logged out successfully"));
+});
+export { registerUser, generateAccessAndRefreshTokens, loginUser, logoutUser };
