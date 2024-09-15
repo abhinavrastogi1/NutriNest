@@ -2,13 +2,20 @@ import mongoose ,{Schema}from "mongoose"
 
 const ProductSchema = new Schema(
   {
-    name: {
+    seller:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:Seller,
+    required:true,
+    },
+
+    ProductName: {
       type: String,
       required: true,
       index:true,
     },
     images: {
       type: [String],
+      required: true
     },
     description: {
       type: String,

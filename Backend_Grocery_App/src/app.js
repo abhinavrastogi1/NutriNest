@@ -21,8 +21,12 @@ app.use(
 app.use(express.static("public"));
 app.use(cookieParser());
 //routes import
-import userRouter from "../src/Routes/user.route.js";
+import userRouter from  "./Routes/user.route.js";
 app.use("/api/v1/users",userRouter)
+
+
+import productRouter from "./Routes/product.routes.js"
+app.use("/product",productRouter)
 //error hadler midleware
 app.use(errorhandler);
 export default app;

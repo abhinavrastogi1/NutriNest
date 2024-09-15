@@ -1,13 +1,14 @@
-import ApiError from "../Utils/ApiError";
-import asyncHandler from "../Utils/asyncHandler";
+import ApiError from "../Utils/ApiError.js";
+import asyncHandler from "../Utils/asyncHandler.js";
 
-export const verifyAdminSeller = asyncHandler(async (req, res,next) => {
+export const verifySeller = asyncHandler(async (req, res,next) => {
   try {
     const role = req.user?.role;
     if (!role) {
       throw new ApiError(400, " error role not defined");
     }
     if (role === "Admin" || role === "Seller") {
+      console.log("sellerVerified")
       next();
     } else {
       throw new ApiError(403, "This section is restricted to sellers & admin users only");
