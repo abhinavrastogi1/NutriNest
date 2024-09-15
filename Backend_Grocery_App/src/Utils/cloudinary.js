@@ -20,7 +20,6 @@ const uploadCloudinary = async (localFilespath) => {
         console.log("error occur while deleting localy stored files ", error);
       }
     }); //removes localy saved files
-    console.log("success")
     return response;
   } catch (error) {
     fs.unlink(localFilespath, (error) => {

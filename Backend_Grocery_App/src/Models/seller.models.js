@@ -10,6 +10,7 @@ const sellerSchema = new Schema(
     storeName: {
       type: String,
       required: true,
+      unique:true,
     },
     storeDescription: {
       type: String,

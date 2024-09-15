@@ -1,16 +1,11 @@
 import mongoose ,{Schema}from "mongoose"
 const categorySchema = new Schema(
   {
-    name: {
+    categoryName: {
       type: String,
       required: true,
       index: true,
-    },
-    type: {
-      type: String,
-      required: true,
-      index: true,
-    },
+    }
   },
   { timestamps: true },
 );

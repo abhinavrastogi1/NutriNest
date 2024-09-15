@@ -1,21 +1,16 @@
-import mongoose ,{Schema}from "mongoose"
+import mongoose, { Schema } from "mongoose";
 
 const ProductSchema = new Schema(
   {
-    seller:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:Seller,
-    required:true,
-    },
 
-    ProductName: {
+    productName: {
       type: String,
       required: true,
-      index:true,
+      index: true,
     },
     images: {
       type: [String],
-      required: true
+      required: true,
     },
     description: {
       type: String,
@@ -29,7 +24,7 @@ const ProductSchema = new Schema(
     brand: {
       type: String,
       required: true,
-      index:true
+      index: true,
     },
     originalPriceWithWeight: {
       type: Map,
@@ -40,6 +35,7 @@ const ProductSchema = new Schema(
       type: Map,
       of: Number,
       default: {},
+      required:true,
     },
     discountedPriceWithWeight: {
       type: Map,
@@ -52,7 +48,7 @@ const ProductSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export const Product = mongoose.model("Product", ProductSchema);

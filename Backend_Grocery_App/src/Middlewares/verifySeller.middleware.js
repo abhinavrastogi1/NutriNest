@@ -8,10 +8,10 @@ export const verifySeller = asyncHandler(async (req, res,next) => {
       throw new ApiError(400, " error role not defined");
     }
     if (role === "Admin" || role === "Seller") {
-      console.log("sellerVerified")
+      
       next();
     } else {
-      throw new ApiError(403, "This section is restricted to sellers & admin users only");
+      throw new ApiError(403, "This section is restricted to sellers & admins only");
     }
   } catch (error) {
     throw new ApiError(401, error?.message || "Unauthorized");
