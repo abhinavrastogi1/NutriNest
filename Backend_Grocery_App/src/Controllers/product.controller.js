@@ -1,6 +1,7 @@
+import { json } from "express";
 import { Category } from "../Models/category.models.js";
 import { Product } from "../Models/product.models.js";
-import { Seller } from "../Models/seller.models.js";
+
 import ApiError from "../Utils/ApiError.js";
 import ApiResponse from "../Utils/ApiResponse.js";
 import asyncHandler from "../Utils/asyncHandler.js";
@@ -30,8 +31,9 @@ get category of the product make create an new product
       return imageurl.url;
     })
   );
+  console.log(CloudinaryUrl)
   if (CloudinaryUrl.length === 0) {
-    throw new ApiError(401, "Images not uploaded  please try again");
+    throw new ApiError(400, "Images not uploaded  please try again");
   }
   //  product essentials
   //,description,categoryName,brand,storeName,originalPriceWithWeight,discount,discountedPriceWithWeight
@@ -41,13 +43,12 @@ get category of the product make create an new product
     description,
     categoryName,
     brand,
-    storeName,
     originalPriceWithWeight,
     discount,
     discountedPriceWithWeight,
   } = req.body;
   if (
-    [productName, description, categoryName, brand, storeName].some(
+    [productName, description, categoryName, brand].some(
       (field) => typeof field === "string" && field.trim() === ""
     ) ||
     [originalPriceWithWeight, discount, discountedPriceWithWeight].some(
@@ -63,20 +64,15 @@ get category of the product make create an new product
       categoryName: categoryName,
     });
   }
-  const seller = await Seller.findOne({ storeName: storeName });
-  if (seller == null) {
-    throw new ApiError(403, "unauthorize request");
-  }
   // new product
   const product = await Product.create({
     productName,
     description,
     category: category?._id,
     brand,
-    seller: seller?._id,
-    originalPriceWithWeight,
-    discount,
-    discountedPriceWithWeight,
+    originalPriceWithWeight:(JSON.parse(originalPriceWithWeight)),
+    discount:(JSON.parse(discount)),
+    discountedPriceWithWeight:(JSON.parse(originalPriceWithWeight)),
     images: CloudinaryUrl,
   });
   if (!product) {

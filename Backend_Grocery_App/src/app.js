@@ -27,7 +27,6 @@ app.use("/api/v1/users", userRouter);
 import productRouter from "./Routes/product.routes.js";
 app.use("/product", productRouter);
 //error hadler midleware
-import SellerRoutes from "./Routes/seller.routes.js";
-app.use("/seller", SellerRoutes);
+
 app.use(errorhandler);
 export default app;
