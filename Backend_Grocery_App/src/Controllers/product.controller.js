@@ -48,12 +48,15 @@ get category of the product make create an new product
     quantity,
   } = req.body;
   if (
-    [productName, description, categoryName, brand,].some(
+    [productName, description, categoryName, brand].some(
       (field) => typeof field === "string" && field.trim() === ""
     ) ||
-    [originalPriceWithWeight, discount, discountedPriceWithWeight,quantity].some(
-      (field) => field == null
-    ) // Handle non-string fields
+    [
+      originalPriceWithWeight,
+      discount,
+      discountedPriceWithWeight,
+      quantity,
+    ].some((field) => field == null) // Handle non-string fields
   ) {
     throw new ApiError(404, "All the fields are required");
   }
