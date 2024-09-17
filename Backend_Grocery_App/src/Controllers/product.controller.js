@@ -31,7 +31,6 @@ get category of the product make create an new product
       return imageurl.url;
     })
   );
-  console.log(CloudinaryUrl)
   if (CloudinaryUrl.length === 0) {
     throw new ApiError(400, "Images not uploaded  please try again");
   }
@@ -46,12 +45,13 @@ get category of the product make create an new product
     originalPriceWithWeight,
     discount,
     discountedPriceWithWeight,
+    quantity,
   } = req.body;
   if (
-    [productName, description, categoryName, brand].some(
+    [productName, description, categoryName, brand,].some(
       (field) => typeof field === "string" && field.trim() === ""
     ) ||
-    [originalPriceWithWeight, discount, discountedPriceWithWeight].some(
+    [originalPriceWithWeight, discount, discountedPriceWithWeight,quantity].some(
       (field) => field == null
     ) // Handle non-string fields
   ) {
@@ -70,10 +70,11 @@ get category of the product make create an new product
     description,
     category: category?._id,
     brand,
-    originalPriceWithWeight:(JSON.parse(originalPriceWithWeight)),
-    discount:(JSON.parse(discount)),
-    discountedPriceWithWeight:(JSON.parse(originalPriceWithWeight)),
+    originalPriceWithWeight: JSON.parse(originalPriceWithWeight),
+    discount: JSON.parse(discount),
+    discountedPriceWithWeight: JSON.parse(originalPriceWithWeight),
     images: CloudinaryUrl,
+    quantity,
   });
   if (!product) {
     throw new ApiError(501, "something went wrong while creating product");
