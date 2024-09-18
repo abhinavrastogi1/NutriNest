@@ -8,83 +8,95 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import uploadCloudinary from "../Utils/cloudinary.js";
 
 const listProduct = asyncHandler(async (req, res) => {
-  /* get images from local storage 
-upload them to cloudinary
-get sellers role
-get category of the product make create an new product
-*/
-  // extractig images from multer
-  const localImages = req?.files;
-  if (!localImages) {
+  // Extract images from multer
+  const localImages = req?.files || [];
+  if (localImages.length === 0) {
     throw new ApiError(402, "Images are required");
   }
-  const imagesPath = [];
-  localImages.map((imagefile) => {
-    const path = imagefile?.path;
-    imagesPath.push(path);
-  });
-  // uploading images on cloudinary
-  //const CloudinaryUrl = await uploadCloudinary(imagesPath[0])
-  const CloudinaryUrl = await Promise.all(
+
+  // Get image paths
+  const imagesPath = localImages.map((imagefile) => imagefile.path);
+
+  // Upload images to Cloudinary
+  const cloudinaryUrls = await Promise.all(
     imagesPath.map(async (imagePath) => {
-      const imageurl = await uploadCloudinary(imagePath);
-      return imageurl.url;
+      try {
+        const imageurl = await uploadCloudinary(imagePath);
+        return imageurl.url;
+      } catch (err) {
+        throw new ApiError(500, "Image upload failed");
+      }
     })
   );
-  if (CloudinaryUrl.length === 0) {
-    throw new ApiError(400, "Images not uploaded  please try again");
+
+  if (cloudinaryUrls.length === 0) {
+    throw new ApiError(400, "Images not uploaded. Please try again");
   }
-  //  product essentials
-  //,description,categoryName,brand,storeName,originalPriceWithWeight,discount,discountedPriceWithWeight
-  console.log(req.body);
+
+  // Extract product details from req.body
   const {
     productName,
     description,
     categoryName,
     brand,
+    id,
     originalPriceWithWeight,
     discount,
     discountedPriceWithWeight,
     quantity,
   } = req.body;
+
+  // Validate product fields
   if (
-    [productName, description, categoryName, brand].some(
+    [productName, description, categoryName, brand, quantity].some(
       (field) => typeof field === "string" && field.trim() === ""
     ) ||
-    [
-      originalPriceWithWeight,
-      discount,
-      discountedPriceWithWeight,
-      quantity,
-    ].some((field) => field == null) // Handle non-string fields
+    [originalPriceWithWeight, discount, discountedPriceWithWeight, id].some(
+      (field) => field == null || field === ""
+    ) ||
+    isNaN(id)
   ) {
-    throw new ApiError(404, "All the fields are required");
+    throw new ApiError(404, "All fields are required and must be valid");
   }
-  // check it the category exist or not
-  const category = await Category.findOne({ categoryName: categoryName });
+
+  // Parse price fields
+  let parsedOriginalPrice, parsedDiscount, parsedDiscountedPrice;
+  try {
+    parsedOriginalPrice = JSON.parse(originalPriceWithWeight);
+    parsedDiscount = JSON.parse(discount);
+    parsedDiscountedPrice = JSON.parse(discountedPriceWithWeight);
+  } catch (err) {
+    throw new ApiError(400, "Invalid format for price or discount fields");
+  }
+
+  // Check if category exists or create a new one
+  let category = await Category.findOne({ categoryName });
   if (!category) {
-    category = await Category.create({
-      categoryName: categoryName,
-    });
+    category = await Category.create({ categoryName });
   }
-  // new product
+
+  // Create new product
   const product = await Product.create({
     productName,
+    id,
     description,
     category: category?._id,
     brand,
-    originalPriceWithWeight: JSON.parse(originalPriceWithWeight),
-    discount: JSON.parse(discount),
-    discountedPriceWithWeight: JSON.parse(originalPriceWithWeight),
-    images: CloudinaryUrl,
+    originalPriceWithWeight: parsedOriginalPrice,
+    discount: parsedDiscount,
+    discountedPriceWithWeight: parsedDiscountedPrice,
+    images: cloudinaryUrls,
     quantity,
   });
+
   if (!product) {
-    throw new ApiError(501, "something went wrong while creating product");
+    throw new ApiError(501, "Product creation failed due to an unknown error");
   }
+
+  // Respond with success
   res
     .status(200)
-    .json(new ApiResponse(200, product, "product successfully added "));
+    .json(new ApiResponse(200, product, "Product successfully added"));
 });
 
 export { listProduct };
