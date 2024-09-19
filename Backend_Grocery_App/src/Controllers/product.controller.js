@@ -8,6 +8,51 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import uploadCloudinary from "../Utils/cloudinary.js";
 
 const listProduct = asyncHandler(async (req, res) => {
+  
+  // Extract product details from req.body
+  const {
+    productName,
+    description,
+    categoryName,
+    brand,
+    id,
+    originalPriceWithWeight,
+    discount,
+    discountedPriceWithWeight,
+    quantity,
+    packSizes
+  } = req.body;
+
+  // Validate product fields
+  if (
+    [productName, description, categoryName, brand, ].some(
+      (field) => typeof field === "string" && field.trim() === ""
+    ) ||
+    [originalPriceWithWeight, discount, discountedPriceWithWeight, id].some(
+      (field) => field == null || field === ""
+    ) ||
+    isNaN(id)
+  ) {
+    throw new ApiError(404, "All fields are required and must be valid");
+  }
+
+  // Parse price fields
+  let parsedOriginalPrice, parsedDiscount, parsedDiscountedPrice,parsedPackSizes;
+  try {
+    parsedOriginalPrice = JSON.parse(originalPriceWithWeight);
+    parsedDiscount = JSON.parse(discount);
+    parsedDiscountedPrice = JSON.parse(discountedPriceWithWeight);
+    parsedPackSizes = JSON.parse(packSizes);
+  } catch (err) {
+    throw new ApiError(400, "Invalid format ");
+  }
+
+  // Check if category exists or create a new one
+  let category = await Category.findOne({ categoryName });
+  if (!category) {
+    category = await Category.create({ categoryName });
+  }
+
   // Extract images from multer
   const localImages = req?.files || [];
   if (localImages.length === 0) {
@@ -33,48 +78,6 @@ const listProduct = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Images not uploaded. Please try again");
   }
 
-  // Extract product details from req.body
-  const {
-    productName,
-    description,
-    categoryName,
-    brand,
-    id,
-    originalPriceWithWeight,
-    discount,
-    discountedPriceWithWeight,
-    quantity,
-  } = req.body;
-
-  // Validate product fields
-  if (
-    [productName, description, categoryName, brand, quantity].some(
-      (field) => typeof field === "string" && field.trim() === ""
-    ) ||
-    [originalPriceWithWeight, discount, discountedPriceWithWeight, id].some(
-      (field) => field == null || field === ""
-    ) ||
-    isNaN(id)
-  ) {
-    throw new ApiError(404, "All fields are required and must be valid");
-  }
-
-  // Parse price fields
-  let parsedOriginalPrice, parsedDiscount, parsedDiscountedPrice;
-  try {
-    parsedOriginalPrice = JSON.parse(originalPriceWithWeight);
-    parsedDiscount = JSON.parse(discount);
-    parsedDiscountedPrice = JSON.parse(discountedPriceWithWeight);
-  } catch (err) {
-    throw new ApiError(400, "Invalid format for price or discount fields");
-  }
-
-  // Check if category exists or create a new one
-  let category = await Category.findOne({ categoryName });
-  if (!category) {
-    category = await Category.create({ categoryName });
-  }
-
   // Create new product
   const product = await Product.create({
     productName,
@@ -87,6 +90,7 @@ const listProduct = asyncHandler(async (req, res) => {
     discountedPriceWithWeight: parsedDiscountedPrice,
     images: cloudinaryUrls,
     quantity,
+    packSizes:parsedPackSizes,
   });
 
   if (!product) {

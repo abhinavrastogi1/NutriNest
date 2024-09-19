@@ -34,6 +34,7 @@ const ProductSchema = new Schema(
     originalPriceWithWeight: {
       type: Map,
       of: Number,
+      default: {},
       required: true,
     },
     discount: {
@@ -49,8 +50,12 @@ const ProductSchema = new Schema(
     },
     quantity: {
       type: String,
-      required: true,
       default: "0",
+    },
+    packSizes: {
+      type: Map,
+      of: Number,
+      default: {},
     },
   },
   { timestamps: true }
