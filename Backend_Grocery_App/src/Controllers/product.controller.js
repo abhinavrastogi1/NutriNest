@@ -103,4 +103,26 @@ const listProduct = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, product, "Product successfully added"));
 });
 
-export { listProduct };
+
+
+
+const updatecategory=asyncHandler(async(req,res)=>{
+  console.log(req.body)
+  const data=JSON.parse(req.body.category)
+  if (data) {
+    const { level1, level2, level3 } = data;
+    console.log(level1, level2, level3); // Should log the values correctly
+  } else {
+    console.log('Category data is not available.');
+    throw new ApiError(401,"problem while accessing levels")
+  }
+const categorytree=await Category.create({
+ category:data
+})
+console.log(categorytree)
+
+})
+
+
+
+export { listProduct ,updatecategory};
