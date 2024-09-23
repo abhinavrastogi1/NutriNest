@@ -8,7 +8,6 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import uploadCloudinary from "../Utils/cloudinary.js";
 
 const listProduct = asyncHandler(async (req, res) => {
-  
   // Extract product details from req.body
   const {
     productName,
@@ -20,12 +19,12 @@ const listProduct = asyncHandler(async (req, res) => {
     discount,
     discountedPriceWithWeight,
     quantity,
-    packSizes
+    packSizes,
   } = req.body;
 
   // Validate product fields
   if (
-    [productName, description, categoryName, brand, ].some(
+    [productName, description, categoryName, brand].some(
       (field) => typeof field === "string" && field.trim() === ""
     ) ||
     [originalPriceWithWeight, discount, discountedPriceWithWeight, id].some(
@@ -37,7 +36,10 @@ const listProduct = asyncHandler(async (req, res) => {
   }
 
   // Parse price fields
-  let parsedOriginalPrice, parsedDiscount, parsedDiscountedPrice,parsedPackSizes;
+  let parsedOriginalPrice,
+    parsedDiscount,
+    parsedDiscountedPrice,
+    parsedPackSizes;
   try {
     parsedOriginalPrice = JSON.parse(originalPriceWithWeight);
     parsedDiscount = JSON.parse(discount);
@@ -90,7 +92,7 @@ const listProduct = asyncHandler(async (req, res) => {
     discountedPriceWithWeight: parsedDiscountedPrice,
     images: cloudinaryUrls,
     quantity,
-    packSizes:parsedPackSizes,
+    packSizes: parsedPackSizes,
   });
 
   if (!product) {
@@ -103,26 +105,103 @@ const listProduct = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, product, "Product successfully added"));
 });
 
+// This controller was made just to change the category  schema
 
+// const updatecategory=asyncHandler(async(req,res)=>{
+//   console.log(req.body)
+//   const data=JSON.parse(req.body.category)
+//   if (data) {
+//     const { level1, level2, level3 } = data;
+//     console.log(level1, level2, level3); // Should log the values correctly
+//   } else {
+//     console.log('Category data is not available.');
+//     throw new ApiError(401,"problem while accessing levels")
+//   }
+// const categorydata=await Category.create({
+//  category:data
+// })
+// console.log(categorydata)
 
+// })
 
-const updatecategory=asyncHandler(async(req,res)=>{
-  console.log(req.body)
-  const data=JSON.parse(req.body.category)
-  if (data) {
-    const { level1, level2, level3 } = data;
-    console.log(level1, level2, level3); // Should log the values correctly
-  } else {
-    console.log('Category data is not available.');
-    throw new ApiError(401,"problem while accessing levels")
+// Controller function to send category data 
+// const categorytree = asyncHandler(async (req, res) => {
+//   const categoryData = await Category.aggregate([
+//     {
+//       $group: {
+//         _id: null,
+//         categories: { $addToSet: "$$ROOT" },
+//         count: { $sum: 1 },
+//       },
+//     },
+//     {
+//       $project: {
+//         _id: 0,
+//         categories: 1,
+//         count: 1,
+//       },
+//     },
+//   ]);
+
+//   if (!categoryData) {
+//     throw new ApiError(401, "Data cannot be fetched");
+//   }
+
+//   res
+//     .status(201)
+//     .json(new ApiResponse(201, categoryData, "list of product category"));
+// });
+const categorytree = asyncHandler(async (req, res) => {
+  const categoryData = await Category.aggregate([
+    {
+      $sort: {
+        "category.level1": 1,
+        "category.level2": 1,
+        "category.level3": 1
+      }
+    },
+    {
+      $group: {
+        _id: {
+          level1: "$category.level1",
+          level2: "$category.level2"
+        },
+        level3: {
+          $push: {
+            level3: "$category.level3"
+          }
+        }
+      }
+    },
+    {
+      $group: {
+        _id: "$_id.level1",
+        subCategory: {
+          $push: {
+            level2: "$_id.level2",
+            subSubCategory: "$level3"
+          }
+        },
+      },
+    },{
+      $addFields: {
+        mainCategory: "$_id"
+      }
+  },{
+      $project: {
+        mainCategory:1,
+        subCategory:1,
+        _id:0
+      }}
+  ]);
+
+  if (!categoryData) {
+    throw new ApiError(401, "Data cannot be fetched");
   }
-const categorytree=await Category.create({
- category:data
-})
-console.log(categorytree)
 
-})
+  res
+    .status(201)
+    .json(new ApiResponse(201, categoryData, "list of product category"));
+});
 
-
-
-export { listProduct ,updatecategory};
+export { listProduct, categorytree };
