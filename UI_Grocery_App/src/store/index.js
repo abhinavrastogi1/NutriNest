@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import ToggleVisibility from "./Feature/Ui_component/ToggleVisibility.js";
-
+import toggleVisibility from "./Feature/Ui_component/ToggleVisibility.js";
+import categoryApi from "./Api/categoryApi.js";
 const store = configureStore({
   reducer: {
-    toggleVisibility:ToggleVisibility
+    toggleVisibility: toggleVisibility,
+    categoryApi: categoryApi,
   },
 });
 export default store;

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { TiArrowSortedDown } from "react-icons/ti";
-import { toggleSwitch } from "../../store/Feature/Ui_component/ToggleVisibility";
-import { useSelector ,useDispatch} from 'react-redux';
+import React, { useState } from "react";
+
+import { useSelector } from 'react-redux';
 
 function ShopByCategory() {
+
+  const {categories}=useSelector((state)=>(state.categoryApi))
+  console.log(categories)
   const isVisible=useSelector((state)=>(state.toggleVisibility.toggle))
   const [activeUl2, SetActiveUl2] = useState("Apparel");
   const [activeUl3, SetactiveUl3] = useState("Boy'S Wear");
