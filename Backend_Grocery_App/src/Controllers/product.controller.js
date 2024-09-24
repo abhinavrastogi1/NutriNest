@@ -172,7 +172,11 @@ const categorytree = asyncHandler(async (req, res) => {
           }
         }
       }
-    },
+    },{
+      $sort:{
+        "level3":1
+  }
+  },
     {
       $group: {
         _id: "$_id.level1",
@@ -183,11 +187,19 @@ const categorytree = asyncHandler(async (req, res) => {
           }
         },
       },
-    },{
+    },
+    {
+  $sort:{
+    "level2":1
+  }}
+    ,{
       $addFields: {
         mainCategory: "$_id"
       }
   },{
+  $sort:{
+    "_id":1
+  }},{
       $project: {
         mainCategory:1,
         subCategory:1,
