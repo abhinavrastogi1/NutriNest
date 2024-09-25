@@ -106,7 +106,6 @@ const listProduct = asyncHandler(async (req, res) => {
 });
 
 // This controller was made just to change the category  schema
-
 // const updatecategory=asyncHandler(async(req,res)=>{
 //   console.log(req.body)
 //   const data=JSON.parse(req.body.category)
@@ -125,32 +124,7 @@ const listProduct = asyncHandler(async (req, res) => {
 // })
 
 // Controller function to send category data 
-// const categorytree = asyncHandler(async (req, res) => {
-//   const categoryData = await Category.aggregate([
-//     {
-//       $group: {
-//         _id: null,
-//         categories: { $addToSet: "$$ROOT" },
-//         count: { $sum: 1 },
-//       },
-//     },
-//     {
-//       $project: {
-//         _id: 0,
-//         categories: 1,
-//         count: 1,
-//       },
-//     },
-//   ]);
 
-//   if (!categoryData) {
-//     throw new ApiError(401, "Data cannot be fetched");
-//   }
-
-//   res
-//     .status(201)
-//     .json(new ApiResponse(201, categoryData, "list of product category"));
-// });
 const categorytree = asyncHandler(async (req, res) => {
   const categoryData = await Category.aggregate([
     {
@@ -215,5 +189,104 @@ const categorytree = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, categoryData, "list of product category"));
 });
+const recomemdedProduct=asyncHandler(async(req,res)=>{
+ const  recomendedProductData= await Product.aggregate(
+  [
+    {
+      $group: {
+        _id: "$category",
+        productdata: {
+          $push: "$$ROOT"
+        }
+      }
+    },
+    {
+      $unwind: "$productdata"
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "productdata.category",
+        foreignField: "_id",
+        as: "category"
+      }
+    },
+    {
+      $unwind: "$category"
+    },
+    {
+      $addFields: {
+        category: {
+          level1: "$category.category.level1",
+          level2: "$category.category.level2",
+          level3: "$category.category.level3"
+        }
+      }
+    },
+    {
+      $project: {
+        "category.level1": 1,
+        "category.level2": 1,
+        "category.level3": 1,
+        productdata: 1
+      }
+    },
+    {
+      $project: {
+        "productdata.createdAt": 0,
+        "productdata.updatedAt": 0,
+        "productdata.__v": 0
+      }
+    },
+    {
+      $group: {
+        _id: "$_id",
+        productdata: {
+          $push: {
+            _id: "$productdata._id",
+            productName: "$productName",
+            productId: "$productdata.id",
+            images: "$productdata.images",
+            description: "$productdata.description",
+            brand: "$productdata.brand",
+            originalPriceWithWeight:
+              "$productdata.originalPriceWithWeight",
+            discount: "$productdata.discount",
+            discountedPriceWithWeight:
+              "$productdata.discountedPriceWithWeight",
+            quantity: "$productdata.quantity",
+            categoryDetails: "$category",
+            categoryId: "$productdata.category"
+          }
+        },
+        count: {
+          $sum: 1
+        }
+      }
+    },
+    {
+      $sort: {
+        count: -1
+      }
+    },
+    {
+      $addFields: {
+        productdata: {
+          $slice: ["$productdata", 2]
+        }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        count: 0
+      }
+    }
+  ])
+ if(!recomendedProductData){
+  throw new ApiError(501,"something went wrong while fetching product data")
+ }
+ res.status(200).json(new ApiResponse(200,recomendedProductData,"data fetched successfully"))
+})
 
-export { listProduct, categorytree };
+export { listProduct, categorytree,recomemdedProduct };
