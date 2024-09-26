@@ -123,7 +123,7 @@ const listProduct = asyncHandler(async (req, res) => {
 
 // })
 
-// Controller function to send category data 
+// Controller function to send category data
 
 const categorytree = asyncHandler(async (req, res) => {
   const categoryData = await Category.aggregate([
@@ -131,54 +131,60 @@ const categorytree = asyncHandler(async (req, res) => {
       $sort: {
         "category.level1": 1,
         "category.level2": 1,
-        "category.level3": 1
-      }
+        "category.level3": 1,
+      },
     },
     {
       $group: {
         _id: {
           level1: "$category.level1",
-          level2: "$category.level2"
+          level2: "$category.level2",
         },
         level3: {
           $push: {
-            level3: "$category.level3"
-          }
-        }
-      }
-    },{
-      $sort:{
-        "level3":1
-  }
-  },
+            level3: "$category.level3",
+          },
+        },
+      },
+    },
+    {
+      $sort: {
+        level3: 1,
+      },
+    },
     {
       $group: {
         _id: "$_id.level1",
         subCategory: {
           $push: {
             level2: "$_id.level2",
-            subSubCategory: "$level3"
-          }
+            subSubCategory: "$level3",
+          },
         },
       },
     },
     {
-  $sort:{
-    "level2":1
-  }}
-    ,{
+      $sort: {
+        level2: 1,
+      },
+    },
+    {
       $addFields: {
-        mainCategory: "$_id"
-      }
-  },{
-  $sort:{
-    "_id":1
-  }},{
+        mainCategory: "$_id",
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+    {
       $project: {
-        mainCategory:1,
-        subCategory:1,
-        _id:0
-      }}
+        mainCategory: 1,
+        subCategory: 1,
+        _id: 0,
+      },
+    },
   ]);
 
   if (!categoryData) {
@@ -189,104 +195,120 @@ const categorytree = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, categoryData, "list of product category"));
 });
-const recomemdedProduct=asyncHandler(async(req,res)=>{
- const  recomendedProductData= await Product.aggregate(
-  [
-    {
-      $group: {
-        _id: "$category",
-        productdata: {
-          $push: "$$ROOT"
-        }
-      }
-    },
-    {
-      $unwind: "$productdata"
-    },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "productdata.category",
-        foreignField: "_id",
-        as: "category"
-      }
-    },
-    {
-      $unwind: "$category"
-    },
-    {
-      $addFields: {
-        category: {
-          level1: "$category.category.level1",
-          level2: "$category.category.level2",
-          level3: "$category.category.level3"
-        }
-      }
-    },
-    {
-      $project: {
-        "category.level1": 1,
-        "category.level2": 1,
-        "category.level3": 1,
-        productdata: 1
-      }
-    },
-    {
-      $project: {
-        "productdata.createdAt": 0,
-        "productdata.updatedAt": 0,
-        "productdata.__v": 0
-      }
-    },
-    {
-      $group: {
-        _id: "$_id",
-        productdata: {
-          $push: {
-            _id: "$productdata._id",
-            productName: "$productName",
-            productId: "$productdata.id",
-            images: "$productdata.images",
-            description: "$productdata.description",
-            brand: "$productdata.brand",
-            originalPriceWithWeight:
-              "$productdata.originalPriceWithWeight",
-            discount: "$productdata.discount",
-            discountedPriceWithWeight:
-              "$productdata.discountedPriceWithWeight",
-            quantity: "$productdata.quantity",
-            categoryDetails: "$category",
-            categoryId: "$productdata.category"
-          }
+const recomemdedProduct = asyncHandler(async (req, res) => {
+  const recomendedProductData = await Product.aggregate([ {
+    $sort: {
+    "id":1
+    }
+  },
+      {
+        $group: {
+          _id: "$category",
+          productdata: {
+            $push: "$$ROOT",
+          },
         },
-        count: {
-          $sum: 1
-        }
-      }
-    },
-    {
-      $sort: {
-        count: -1
-      }
-    },
-    {
-      $addFields: {
-        productdata: {
-          $slice: ["$productdata", 2]
-        }
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        count: 0
+      },
+      {
+        $unwind: "$productdata",
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "productdata.category",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {
+        $unwind: "$category",
+      },
+      {
+        $addFields: {
+          category: {
+            level1: "$category.category.level1",
+            level2: "$category.category.level2",
+            level3: "$category.category.level3",
+          },
+        },
+      },
+      {
+        $project: {
+          "category.level1": 1,
+          "category.level2": 1,
+          "category.level3": 1,
+          productdata: 1,
+        },
+      },
+      {
+        $project: {
+          "productdata.createdAt": 0,
+          "productdata.updatedAt": 0,
+          "productdata.__v": 0,
+        },
+      },
+      {
+        $addFields: {
+          images: {
+            $slice: ["$productdata.images", 1],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          productdata: {
+            $push: {
+              _id: "$productdata._id",
+              productName: "$productdata.productName",
+              productId: "$productdata.id",
+              images: "$images",
+              description: "$productdata.description",
+              brand: "$productdata.brand",
+              originalPriceWithWeight: "$productdata.originalPriceWithWeight",
+              discount: "$productdata.discount",
+              discountedPriceWithWeight: "$productdata.discountedPriceWithWeight",
+              quantity: "$productdata.quantity",
+              categoryDetails: "$category",
+              categoryId: "$productdata.category",
+              imageAlt: "$productdata.productName",
+            },
+          },
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+   {
+     $sort: {
+       "productdata.productId": 1
+     }
+   },{
+    $addFields:{
+      productData:{
+       $slice: ["$productdata", 2]
       }
     }
-  ])
- if(!recomendedProductData){
-  throw new ApiError(501,"something went wrong while fetching product data")
- }
- res.status(200).json(new ApiResponse(200,recomendedProductData,"data fetched successfully"))
-})
+  },
+      {
+        $project: {
+          productdata:0,
+          _id: 0,
+          count: 0,
+        },
+      },{
+        $limit: 10
+  }
+   
+    ]);
+  if (!recomendedProductData) {
+    throw new ApiError(501, "something went wrong while fetching product data");
+  }
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, recomendedProductData, "data fetched successfully")
+    );
+});
 
-export { listProduct, categorytree,recomemdedProduct };
+export { listProduct, categorytree, recomemdedProduct };

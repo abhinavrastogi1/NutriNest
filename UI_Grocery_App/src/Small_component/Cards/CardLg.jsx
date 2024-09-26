@@ -5,39 +5,32 @@ import { TiStarFullOutline } from "react-icons/ti";
 
 import carrot from "../../assets/images/carrot.png";
 
-function CardLg({
-  images,
-  imageAlt,
-  brand,
-  content,
-  weight,
-  price,
-  discountedPrice,
-  offer,
-  url,
-  rating,
-  stars,
-}) {
-  images = carrot;
-  url = "https://google.com";
-  brand = "fesho!";
-  content = "Carrot-Orange(Loose}ek peeppegpep gpegpepgegg ";
-  weight = "1kg";
-  discountedPrice = "98";
-  price = "115";
-  offer = 27;
-  rating = 207;
-  stars = 4.1;
+function CardLg({product}) {
+
+if (!product) {
+  return null 
+}
+
+  const imageAlt=product.imageAlt;
+  const images = product.images[0];
+  const url = "https://google.com";
+  const brand = product.brand;
+  const productName =product.productName
+  const weight = "1kg";
+  const discountedPrice = "98";
+  const price = "115";
+  const offer = 27;
+  const rating = 207;
+  const stars = 4.1;
   return (
-    <div
-      className="h-[551px] w-[266px] p-[10px] my-3 bg-white flex flex-col justify-evenly shadow-xl rounded-xl "
-    
-    >
+  <> { 
+    (<div className="h-[551px] w-[266px] p-[10px] my-3 bg-white flex flex-col justify-evenly shadow-xl rounded-xl ">
       <div className="h-[250px] w-[246px] p-6 border-gray-300 border-[1px] rounded-md relative">
-       <div className="absolute top-0 left-0 rounded-tl-md rounded-br-md bg-[#476F00] ">
-        <p className="text-white font-medium text-[12px] px-2 py-[3px]">
-         {offer}%  OFF
-        </p></div>
+        <div className="absolute top-0 left-0 rounded-tl-md rounded-br-md bg-[#476F00] ">
+          <p className="text-white font-medium text-[12px] px-2 py-[3px]">
+            {offer}% OFF
+          </p>
+        </div>
         <div className="img h-fulll w-full">
           <a href={url}>
             <img src={images} alt={imageAlt} />
@@ -49,7 +42,7 @@ function CardLg({
           <h6>{brand}</h6>
         </div>
         <div className="h-[45px] text-[14px] flex flex-wrap font-medium">
-          <p>{content}</p>
+          <p>{productName}</p>
         </div>
 
         <div className="h-5 flex flex-row mb-2">
@@ -122,7 +115,7 @@ function CardLg({
           Add
         </button>
       </div>
-    </div>
+    </div>)}</>
   );
 }
 

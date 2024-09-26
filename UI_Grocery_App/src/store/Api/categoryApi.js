@@ -6,7 +6,7 @@ export const fetchCategoryData = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get("/api/product/categorytree");
-      return response.data.data;
+      return (response.data.data);
     } catch (error) {
       console.error("error while fetching data from the server", error);
       throw error;
@@ -26,7 +26,7 @@ const categoryApi = createSlice({
     builder.addCase(fetchCategoryData.pending, (state) => {
       state.status = "pending";
     });
-    builder.addCase(fetchCategoryData.rejected, (state) => {
+    builder.addCase(fetchCategoryData.rejected, (state, action) => {
       state.status = "rejected";
       state.error = action.error.message;
     });

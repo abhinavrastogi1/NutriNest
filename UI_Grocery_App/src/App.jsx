@@ -5,21 +5,26 @@ import Footer from "./component/Footer/Footer";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoryData } from "./store/Api/categoryApi";
+import { fetchProductData } from "./store/Api/recomendedProduct";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategoryData());
+    dispatch(fetchProductData());
   }, [dispatch]);
-  const { categories, status, error } = useSelector(
-    (state) => state.categoryApi
-  );
+  const categoriesData = useSelector((state) => state.categoryApi);
+  const productsData = useSelector((state) => state.recomemdedProduct);
+  const productDataStatus = productsData.status;
+  const categoryDataStatus = categoriesData.status;
   return (
     <>
+  {  ( categoryDataStatus === "success" &&
+          productDataStatus === "success")    &&
       <div>
-        {status === "success" && <Header />}
-        {status === "success" &&    <Outlet />}
-        {status === "success" && <Footer />}
-      </div>
+        <Header/>
+        <Outlet/>
+        <Footer />
+      </div>}
     </>
   );
 }
