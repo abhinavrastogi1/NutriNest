@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 function SmartBasket() {
 
   const { productsData } = useSelector((state) => state.recomemdedProduct);
-  console.log(productsData)
   return (
     <div className=" bg-[#F7F7F7] p-5 mt-8 ">
       <div className="flex justify-between px-3 mt-2">
@@ -32,7 +31,7 @@ function SmartBasket() {
           </div>
         </div>
       </div>
-      <div className="flex  gap-[10px] overflow-hidden  ">
+      <div className="flex  gap-[10px]  ">
       { productsData && productsData.length > 0 && productsData.map((products) =>
           products.productData.map((product) => {
           return  <CardLg key={product.productId} product={product}/>
