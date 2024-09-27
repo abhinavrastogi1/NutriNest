@@ -26,18 +26,23 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
   const [originalPrice, setOriginalPrice] = useState(
     product.originalPriceWithWeight[weight]
   );
-  const [showPrice, setShowprice] = useState(false);
+  const [isHovered, setIsHovered] = useState(null);
+  const [showPrice, setShowprice] = useState(null);
   const imageAlt = product.imageAlt;
   const images = product.images[0];
   const brand = product.brand;
   const productName = product.productName;
   const rating = "";
   const stars = "";
-
+  useEffect(() => {
+    setOffer(product.discount[weight]),
+      setDiscountedPrice(product.discountedPriceWithWeight[weight]);
+    setOriginalPrice(product.originalPriceWithWeight[weight]);
+  }, [weight]);
   return (
     <>
       {
-        <div className="h-[551px] w-[266px] p-[10px] my-3 bg-white flex flex-col justify-evenly shadow-xl rounded-xl ">
+        <div className="h-[551px] w-[266px] p-[10px] my-3 bg-white flex flex-col justify-evenly shadow-xl rounded-xl relative ">
           <div className="h-[250px] w-[246px] p-6 border-gray-300 border-[1px] rounded-md relative">
             <div className="absolute top-0 left-0 rounded-tl-md rounded-br-md bg-[#476F00] ">
               <p className="text-white font-medium text-[12px] px-2 py-[3px]">
@@ -81,7 +86,7 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
           <div className="relative">
             <button
               className={`flex justify-between h-[30px] w-full py-1 pl-2 
-             text-gray-600  text-[13px] font-medium  border-gray-300 border-[1px] rounded-md hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"}`}
+             text-gray-600  text-[12px] font-medium  border-gray-300 border-[1px] rounded-md hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"}`}
               onClick={() => {
                 setShowprice(!showPrice);
               }}
@@ -104,39 +109,78 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
             </button>
             {showPrice && productsWeight.length !== 1 && (
               <div
-                className="bg-white w-80 z-10 absolute transition-all duration-1000 ease-in-out
-               transform  border-gray-300 border-[1px]  rounded-md px-[10px]"
+                className="bg-white w-80 z-50 absolute transition-all duration-1000 ease-in-out
+               transform  border-gray-300 border-[1px]  rounded-md px-[10px] mt-1"
               >
                 {productsWeight.map((weights, index) => (
-                  <div className={`h-16 w-[300px] bg-white my-2 p-2 ${(weights===weight) ?"border-[#76B900]":"border-gray-300"} border-gray-300 border-[1px] rounded-md hover:shadow-md`}>
+                  <div
+                    key={index}
+                    className={`h-16 w-[300px] bg-white my-2 p-2   
+                  ${weights === weight ? "border-[#76B900]" : "border-gray-300"}  border-[1px] rounded-md hover:shadow-md`}
+                    onClick={() => {
+                      setweight(weights);
+                      setShowprice(false);
+                    }}
+                    onMouseEnter={() => {
+                      setIsHovered(index);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(null);
+                    }}
+                  >
                     <div className="flex justify-between ">
-                      <div className="text-[13px] font-medium text-gray-600 ">
+                      <div className="text-[12px] font-medium text-gray-600 ">
                         <h3>{weights}</h3>
                       </div>
-                     { (weights===weight) && <div>
-                        <FcCheckmark
-                          style={{
-                            strokeWidth: "2px",
-                            color: "#76B900",
-                            fontSize: "14px",
-                          }}
-                        />
-                      </div>}
+                      {weights === weight && (
+                        <div>
+                          <FcCheckmark
+                            style={{
+                              strokeWidth: "2px",
+                              color: "#76B900",
+                              fontSize: "14px",
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
-                    <div className="flex">
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
+                    <div className="flex justify-between">
+                      <div className="flex">
+                        <div className="py-1 ">
+                          <h2 className="bg-[#F1F8E6] text-[#476F00] text-[11px] p-[2px] font-semibold">
+                            {offer}% oFF
+                          </h2>
+                        </div>
+                        <div className="flex gap-2 h-6 text-[14px]  items-center ml-1">
+                          <p className="font-semibold pt-[3px] ">{`₹${discountedPrice}`}</p>
+                          <span>
+                            <p className="line-through text-gray-600 text-[12px] pt-[3px]">
+                              {`₹${originalPrice}`}
+                            </p>
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        {isHovered == index && (
+                          <button
+                            className="bg-[#CC0000]  text-white text-xs rounded-sm py-[2px] px-2 font-medium"
+                            onClick={() => {
+                              console.log("HELLO");
+                            }}
+                          >
+                            Add
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
             )}
-            <div className="flex gap-2 h-6 text-[13px]  items-center">
+            <div className="flex gap-2 h-6 text-[14px]  items-center">
               <p className="font-semibold ">{`₹${discountedPrice}`}</p>
               <span>
-                <p className="line-through text-gray-600 text-sm ">
+                <p className="line-through text-gray-600 text-[12px] ">
                   {`₹${originalPrice}`}
                 </p>
               </span>

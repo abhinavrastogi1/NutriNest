@@ -196,111 +196,113 @@ const categorytree = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, categoryData, "list of product category"));
 });
 const recomemdedProduct = asyncHandler(async (req, res) => {
-  const recomendedProductData = await Product.aggregate([ {
-    $sort: {
-    "id":1
-    }
-  },
-      {
-        $group: {
-          _id: "$category",
-          productdata: {
-            $push: "$$ROOT",
+  const recomendedProductData = await Product.aggregate([
+    {
+      $sort: {
+        id: 1,
+      },
+    },
+    {
+      $group: {
+        _id: "$category",
+        productdata: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $unwind: "$productdata",
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "productdata.category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: "$category",
+    },
+    {
+      $addFields: {
+        category: {
+          level1: "$category.category.level1",
+          level2: "$category.category.level2",
+          level3: "$category.category.level3",
+        },
+      },
+    },
+    {
+      $project: {
+        "category.level1": 1,
+        "category.level2": 1,
+        "category.level3": 1,
+        productdata: 1,
+      },
+    },
+    {
+      $project: {
+        "productdata.createdAt": 0,
+        "productdata.updatedAt": 0,
+        "productdata.__v": 0,
+      },
+    },
+    {
+      $addFields: {
+        images: {
+          $slice: ["$productdata.images", 1],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        productdata: {
+          $push: {
+            _id: "$productdata._id",
+            productName: "$productdata.productName",
+            productId: "$productdata.id",
+            images: "$images",
+            description: "$productdata.description",
+            brand: "$productdata.brand",
+            originalPriceWithWeight: "$productdata.originalPriceWithWeight",
+            discount: "$productdata.discount",
+            discountedPriceWithWeight: "$productdata.discountedPriceWithWeight",
+            quantity: "$productdata.quantity",
+            categoryDetails: "$category",
+            categoryId: "$productdata.category",
+            imageAlt: "$productdata.productName",
           },
         },
-      },
-      {
-        $unwind: "$productdata",
-      },
-      {
-        $lookup: {
-          from: "categories",
-          localField: "productdata.category",
-          foreignField: "_id",
-          as: "category",
+        count: {
+          $sum: 1,
         },
       },
-      {
-        $unwind: "$category",
+    },
+    {
+      $sort: {
+        "productdata.productId": 1,
       },
-      {
-        $addFields: {
-          category: {
-            level1: "$category.category.level1",
-            level2: "$category.category.level2",
-            level3: "$category.category.level3",
-          },
+    },
+    {
+      $addFields: {
+        productData: {
+          $slice: ["$productdata", 2],
         },
       },
-      {
-        $project: {
-          "category.level1": 1,
-          "category.level2": 1,
-          "category.level3": 1,
-          productdata: 1,
-        },
+    },
+    {
+      $project: {
+        productdata: 0,
+        _id: 0,
+        count: 0,
       },
-      {
-        $project: {
-          "productdata.createdAt": 0,
-          "productdata.updatedAt": 0,
-          "productdata.__v": 0,
-        },
-      },
-      {
-        $addFields: {
-          images: {
-            $slice: ["$productdata.images", 1],
-          },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id",
-          productdata: {
-            $push: {
-              _id: "$productdata._id",
-              productName: "$productdata.productName",
-              productId: "$productdata.id",
-              images: "$images",
-              description: "$productdata.description",
-              brand: "$productdata.brand",
-              originalPriceWithWeight: "$productdata.originalPriceWithWeight",
-              discount: "$productdata.discount",
-              discountedPriceWithWeight: "$productdata.discountedPriceWithWeight",
-              quantity: "$productdata.quantity",
-              categoryDetails: "$category",
-              categoryId: "$productdata.category",
-              imageAlt: "$productdata.productName",
-            },
-          },
-          count: {
-            $sum: 1,
-          },
-        },
-      },
-   {
-     $sort: {
-       "productdata.productId": 1
-     }
-   },{
-    $addFields:{
-      productData:{
-       $slice: ["$productdata", 2]
-      }
-    }
-  },
-      {
-        $project: {
-          productdata:0,
-          _id: 0,
-          count: 0,
-        },
-      },{
-        $limit: 10
-  }
-   
-    ]);
+    },
+    {
+      $limit: 10,
+    },
+  ]);
   if (!recomendedProductData) {
     throw new ApiError(501, "something went wrong while fetching product data");
   }
