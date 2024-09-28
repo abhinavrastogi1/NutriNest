@@ -15,14 +15,14 @@ function SmartBasket() {
         productArr.push(product);
       })
     );
+
   const NoOfProduct = productArr.length;
+  console.log(NoOfProduct/4)
   function onForwardClick() {
-    console.log(slideShow);
-    if (slideShow < Math.floor(NoOfProduct / 4)-1)
-      setSlideShow(slideShow+1)
-      ;
+    if (slideShow < Math.floor(NoOfProduct / 4) - 1)
+      setSlideShow(slideShow + 1);
     else {
-      setSlideShow((NoOfProduct / 4 )-1)
+      setSlideShow(NoOfProduct / 4 - 1);
     }
   }
   function onBackwardClick() {
@@ -47,7 +47,8 @@ function SmartBasket() {
 
           <div>
             <button
-              className="rounded-md shadow-lg p-2 bg-white mx-3 "
+              className={`rounded-md shadow-lg p-2 mx-3
+                 ${slideShow <=0? "bg-[#EEEEEE]": "bg-white"}`}
               onClick={() => {
                 onBackwardClick();
               }}
@@ -55,7 +56,7 @@ function SmartBasket() {
               <IoIosArrowBack className="text-xl" />
             </button>
             <button
-              className="rounded-md shadow-lg p-2 bg-white"
+              className={`rounded-md shadow-lg p-2 ${slideShow>= NoOfProduct/4-1 ?"bg-[#EEEEEE]":" bg-white"}`}
               onClick={() => {
                 onForwardClick();
               }}
@@ -65,13 +66,18 @@ function SmartBasket() {
           </div>
         </div>
       </div>
-      <div
-        className={`flex  gap-[10px]  relative transition-transform duration-500   `}
-        style={{ transform: `translateX(${-slideShow * 100}%)  ` }}
-      >
-        {productArr.slice(0,9).map((product) => {
-          return <CardLg key={product.productId} product={product} />;
+<div className="relative w-full  ">
+    <div className="justify-between  w-full h-full overflow-hidden"  >
+      {console.log(slideShow)}
+       <ul className={` transition-transform duration-500 flex  `}
+       style={{ transform: `translateX(${-slideShow * 100}%)  ` }}>
+         <ul className="flex">
+         {productArr.map((product) => {
+          return <li className="px-[3.90px]"><CardLg key={product.productId } product={product} /></li>
         })}
+        </ul>
+        </ul>
+      </div>
       </div>
     </div>
   );
