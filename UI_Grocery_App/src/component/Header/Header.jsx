@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import bigbasket from "../../assets/images/bigbasket.png";
 import search from "../../assets/images/search.png";
 import compass from "../../assets/images/compass.png";
@@ -9,11 +9,43 @@ import smartbasket from "../../assets/images/smartbasket.png";
 import LiItmes from "../HeaderComponent/LiItmes";
 import ShopByCategory from "../HeaderComponent/ShopByCategory";
 import CategoryButton from "../HeaderComponent/CategoryButton";
+import { scrolltoggle, toggleSwitch } from "../../store/Feature/Ui_component/ToggleVisibility";
+import { useDispatch, useSelector } from "react-redux";
+
+
+
 
 function Header() {
+
+  const isVisible = useSelector((state) => state.toggleVisibility.toggle);
+const dispatch=useDispatch()
+const handleScroll = () => {
+  // Check if the window has been scrolled down by any amount
+  if (window.scrollY > 0) {
+      // Set the state to true when scrolled
+      dispatch(scrolltoggle(false))
+  } 
+};
+
+useEffect(() => {
+  // Add scroll event listener
+  window.addEventListener('scroll', handleScroll);
+
+  // Clean up the event listener on component unmount
+  return () => {
+      window.removeEventListener('scroll', handleScroll);
+  };
+}, []);
+const onClose =()=>{
+  dispatch(toggleSwitch())
+}
   return (
-    <header className="bg-white shadow-lg">
-      <div className="grid grid-rows-2 mx-4 sm:mx-8 md:mx-16 lg:mx-48 h-28 ">
+  <>  
+    <header className="bg-white shadow-lg ">
+    {isVisible && <div className="absolute inset-y-[-150px] inset-x-0 bg-black opacity-50 z-20"  onClick={onClose} >
+      <h1 className="absolute top-0 left-0 text-white">hello0000000000000000000000000</h1>
+      </div>}
+      <div className="grid grid-rows-2 mx-48 sm:mx-8 md:mx-16 lg:mx-48 h-28 ">
         <div className="flex flex-row gap-3 m-2">
           <div>
             <img
@@ -74,6 +106,7 @@ function Header() {
         </div>
       </div>
     </header>
+    </>
   );
 }
 

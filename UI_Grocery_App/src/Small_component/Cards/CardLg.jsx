@@ -42,8 +42,8 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
   return (
     <>
       {
-        <div className="h-[551px] w-[266px] p-[10px] my-3 bg-white flex flex-col justify-evenly shadow-xl rounded-xl relative ">
-          <div className="h-[250px] w-[246px] p-6 border-gray-300 border-[1px] rounded-md relative">
+        <div className="h-[551px] w-[266px] p-[10px] my-3 bg-white flex flex-col justify-evenly shadow-xl rounded-xl overflow-visible ">
+          <div className="h-[250px] w-[246px] p-6 border-gray-300 border-[1px] rounded-md relative ">
             <div className="absolute top-0 left-0 rounded-tl-md rounded-br-md bg-[#476F00] ">
               <p className="text-white font-medium text-[12px] px-2 py-[3px]">
                 {offer}% OFF
@@ -83,7 +83,7 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
             )}
           </div>
           {/* price data */}
-          <div className="relative">
+          <div className=" relative ">
             <button
               className={`flex justify-between h-[30px] w-full py-1 pl-2 
              text-gray-600  text-[12px] font-medium  border-gray-300 border-[1px] rounded-md hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"}`}
@@ -109,8 +109,8 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
             </button>
             {showPrice && productsWeight.length !== 1 && (
               <div
-                className="bg-white w-80 z-50 absolute transition-all duration-1000 ease-in-out
-               transform  border-gray-300 border-[1px]  rounded-md px-[10px] mt-1"
+                className="bg-white w-80 z-50  absolute top-7 transition-all duration-1000 ease-in-out
+               transform  border-gray-300 border-[1px]  rounded-md px-[10px] mt-1 overflow-ellipsis"
               >
                 {productsWeight.map((weights, index) => (
                   <div

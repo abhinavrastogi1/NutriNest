@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 
-import { useSelector } from "react-redux";
-
+import {  useSelector } from "react-redux";
 function ShopByCategory() {
+ 
   const { categories } = useSelector((state) => state.categoryApi);
   const isVisible = useSelector((state) => state.toggleVisibility.toggle);
-
   const [activeUl2, SetActiveUl2] = useState("beverages");
   const [activeUl3, SetactiveUl3] = useState("tea");
   useEffect(() => {
-    
-
   }, [activeUl2,activeUl3])
-  
   return (
     <>
       <div>
+     
         {isVisible && (
-          <div className="bg-slate-600 absolute top-10 left-2 z-10">
+          
+          <div className="bg-slate-600 absolute top-10 left-2 z-30">
+            
             <div className="flex">
               <ul className="bg-[#202020] w-[227px] text-xs text-white ">
                 {categories.map((item, index) => (
@@ -73,6 +72,6 @@ function ShopByCategory() {
       </div>
     </>
   );
-}
+  }
 
 export default ShopByCategory;
