@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
-import CardLg from "../../Small_component/Cards/CardLg";
+import CardLg from "../../../Small_component/Cards/CardLg";
+
 
 function BestSeller() {
   return (

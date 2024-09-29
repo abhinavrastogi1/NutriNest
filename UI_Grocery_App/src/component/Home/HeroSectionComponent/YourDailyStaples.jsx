@@ -1,5 +1,5 @@
 import React from 'react'
-import CardSm from '../../Small_component/Cards/CardSm'
+import CardSm from '../../../Small_component/Cards/CardSm'
 
 function YourDailyStaples() {
     return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import NeuPass from "../../assets/images/NeuPass.png"
+import NeuPass from "../../../assets/images/NeuPass.png"
 
 function Buttons() {
   return (

@@ -14,12 +14,10 @@ function App() {
   }, [dispatch]);
   const categoriesData = useSelector((state) => state.categoryApi);
   const productsData = useSelector((state) => state.recomemdedProduct);
-  const productDataStatus = productsData.status;
-  const categoryDataStatus = categoriesData.status;
   return (
     <>
-  {  ( categoryDataStatus === "success" &&
-          productDataStatus === "success")    &&
+  {  ( categoriesData.status === "success" &&
+          productsData.status === "success")    &&
       <div>
         <Header/>
         <Outlet/>

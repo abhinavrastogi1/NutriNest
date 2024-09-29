@@ -1,8 +1,8 @@
 import react from "react";
-import AutoSlider from "../../Small_component/AutoSlider";
+import HeroSection from "./HeroSection/HeroSection";
 import Bottom_autoSlider from "../../Small_component/Bottom_autoSlider";
-import About from "../HeroSectionComponent/About";
-import HeroSection from "../HeroSection/HeroSection";
+import AutoSlider from "../../Small_component/AutoSlider";
+import About from "./HeroSectionComponent/About";
 
 function Home() {
   return (

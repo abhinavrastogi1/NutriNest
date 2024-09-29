@@ -1,5 +1,5 @@
 import React from 'react'
-import CardMd from '../../Small_component/Cards/CardMd'
+import CardMd from '../../../Small_component/Cards/CardMd'
 
 function FruitsAndVegetable( ) {
 

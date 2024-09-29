@@ -1,5 +1,5 @@
  import React from 'react'
- import arrow from "../../assets/images/arrow.png";
+ import arrow from "../../../assets/images/arrow.png";
  
  function LiItmes() {
    return (

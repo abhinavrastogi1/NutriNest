@@ -1,12 +1,11 @@
 import React from 'react'
-import CardSm from '../../Small_component/Cards/CardSm'
+import CardSm from '../../../Small_component/Cards/CardSm'
 
-function BeautyAndHygiene() {
+function HomeAndKitchen() {
     return (
         <div className="mt-8">
-    
        <div className="h-[46px]">
-              <h1 className="text-2xl  font-bold">Beauty & Hygiene</h1>
+              <h1 className="text-2xl  font-bold">Your Daily Staples</h1>
             </div>
           <div className='flex gap-7 '>
             <CardSm/>
@@ -20,4 +19,4 @@ function BeautyAndHygiene() {
       )
 }
 
-export default BeautyAndHygiene
+export default HomeAndKitchen

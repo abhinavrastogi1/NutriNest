@@ -1,7 +1,7 @@
 import React from 'react'
 import { TiArrowSortedDown } from "react-icons/ti";
-import { toggleSwitch } from "../../store/Feature/Ui_component/ToggleVisibility";
 import { useSelector ,useDispatch} from 'react-redux';
+import { toggleSwitch } from '../../../store/Feature/Ui_component/ToggleVisibility';
 function CategoryButton() {
     const isVisible=useSelector((state)=>(state.toggleVisibility.toggle))
     const dispatch=useDispatch()

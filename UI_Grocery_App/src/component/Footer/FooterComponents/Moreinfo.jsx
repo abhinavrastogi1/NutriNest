@@ -1,6 +1,6 @@
 import React from "react";
-import footerBBlogo from "../../assets/images/footer_bb_logo.png";
-import Facebook_logo from "../../assets/images/Facebook_logo.jpeg";
+import footerBBlogo from "../../../assets/images/footer_bb_logo.png";
+import Facebook_logo from "../../../assets/images/Facebook_logo.jpeg";
 function Moreinfo() {
   return (
     <div className="mx-48 grid grid-cols-3  ">

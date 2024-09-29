@@ -88,7 +88,8 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
           <div   ref={location}>
             <button
               className={`flex justify-between h-[30px] w-full py-1 pl-2  relative
-             text-gray-600  text-[12px] font-medium  border-gray-300 border-[1px] rounded-md hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"}`}
+             text-gray-600  text-[12px] font-medium  border-gray-300 border-[1px] rounded-md
+              hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"} ${ productsWeight.length === 1 &&"bg-[#F7F7F7]"}`}
               onClick={() => {
                 setShowprice(!showPrice);
               }}

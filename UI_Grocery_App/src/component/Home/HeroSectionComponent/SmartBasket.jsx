@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
-import CardLg from "../../Small_component/Cards/CardLg";
+import CardLg from "../../../Small_component/Cards/CardLg";
 import { useSelector } from "react-redux";
 function SmartBasket() {
   const { productsData } = useSelector((state) => state.recomemdedProduct);
