@@ -3,8 +3,9 @@ import { IoIosArrowDown } from "react-icons/io";
 import { CiBookmark } from "react-icons/ci";
 import { TiStarFullOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
-import { FcCheckmark } from "react-icons/fc";
 
+import PriceList from "./PriceList.jsx";
+import { useRef } from "react";
 function CardLg({ product }) {
   if (!product) {
     return null;
@@ -39,6 +40,7 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
       setDiscountedPrice(product.discountedPriceWithWeight[weight]);
     setOriginalPrice(product.originalPriceWithWeight[weight]);
   }, [weight]);
+  const location = useRef();
   return (
     <>
       {
@@ -83,9 +85,9 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
             )}
           </div>
           {/* price data */}
-          <div className=" relative ">
+          <div   ref={location}>
             <button
-              className={`flex justify-between h-[30px] w-full py-1 pl-2 
+              className={`flex justify-between h-[30px] w-full py-1 pl-2  relative
              text-gray-600  text-[12px] font-medium  border-gray-300 border-[1px] rounded-md hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"}`}
               onClick={() => {
                 setShowprice(!showPrice);
@@ -107,75 +109,19 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
                 />
               )}
             </button>
+
             {showPrice && productsWeight.length !== 1 && (
-              <div
-                className="bg-white w-80 z-50  absolute top-7 transition-all duration-1000 ease-in-out
-               transform  border-gray-300 border-[1px]  rounded-md px-[10px] mt-1 overflow-ellipsis"
-              >
-                {productsWeight.map((weights, index) => (
-                  <div
-                    key={index}
-                    className={`h-16 w-[300px] bg-white my-2 p-2   
-                  ${weights === weight ? "border-[#76B900]" : "border-gray-300"}  border-[1px] rounded-md hover:shadow-md`}
-                    onClick={() => {
-                      setweight(weights);
-                      setShowprice(false);
-                    }}
-                    onMouseEnter={() => {
-                      setIsHovered(index);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovered(null);
-                    }}
-                  >
-                    <div className="flex justify-between ">
-                      <div className="text-[12px] font-medium text-gray-600 ">
-                        <h3>{weights}</h3>
-                      </div>
-                      {weights === weight && (
-                        <div>
-                          <FcCheckmark
-                            style={{
-                              strokeWidth: "2px",
-                              color: "#76B900",
-                              fontSize: "14px",
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex justify-between">
-                      <div className="flex">
-                        <div className="py-1 ">
-                          <h2 className="bg-[#F1F8E6] text-[#476F00] text-[11px] p-[2px] font-semibold">
-                            {offer}% oFF
-                          </h2>
-                        </div>
-                        <div className="flex gap-2 h-6 text-[14px]  items-center ml-1">
-                          <p className="font-semibold pt-[3px] ">{`₹${discountedPrice}`}</p>
-                          <span>
-                            <p className="line-through text-gray-600 text-[12px] pt-[3px]">
-                              {`₹${originalPrice}`}
-                            </p>
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        {isHovered == index && (
-                          <button
-                            className="bg-[#CC0000]  text-white text-xs rounded-sm py-[2px] px-2 font-medium"
-                            onClick={() => {
-                              console.log("HELLO");
-                            }}
-                          >
-                            Add
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <PriceList
+                productsWeight={productsWeight}
+                setweight={setweight}
+                setShowprice={setShowprice}
+                setIsHovered={setIsHovered}
+                isHovered={isHovered}
+                weight={weight}
+                location={location}
+                setOffer={setOffer}
+                product={product}
+              />
             )}
             <div className="flex gap-2 h-6 text-[14px]  items-center">
               <p className="font-semibold ">{`₹${discountedPrice}`}</p>
