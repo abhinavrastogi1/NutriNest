@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CategoryButton from "./HeaderComponent/CategoryButton";
 import ShopByCategory from "./HeaderComponent/ShopByCategory";
 import LiItmes from "./HeaderComponent/LiItmes";
+import { Link } from "react-router-dom";
 
 function Header() {
   const isVisible = useSelector((state) => state.toggleVisibility.toggle);
@@ -76,9 +77,11 @@ function Header() {
               </button>
             </div>
             <div>
+              <Link  to="/basket">
               <button className="cart-color rounded-md px-2 py-1">
                 <img src={cart} className="w-11 h-8" alt="cart icon" />
               </button>
+              </Link>
             </div>
           </div>
           <div className="flex flex-row m-2 justify-between relative">

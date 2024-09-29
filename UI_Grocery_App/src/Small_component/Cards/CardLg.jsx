@@ -3,19 +3,14 @@ import { IoIosArrowDown } from "react-icons/io";
 import { CiBookmark } from "react-icons/ci";
 import { TiStarFullOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
-
 import PriceList from "./PriceList.jsx";
 import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addData } from "../../store/Feature/Basket/basketData.js";
 function CardLg({ product }) {
   if (!product) {
     return null;
   }
-
-  /*
-discount: {1kg: 31, 250gm: 36, 500gm: 33}
-discountedPriceWithWeight: {1kg: 57, 250gm: 14.5, 500gm: 28.5}
-originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
- */
   const productsWeight = Object.keys(product.discount);
   if (productsWeight.length == 0) return null;
   const [weight, setweight] = useState(productsWeight[0]);
@@ -41,6 +36,8 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
     setOriginalPrice(product.originalPriceWithWeight[weight]);
   }, [weight]);
   const location = useRef();
+
+const dispatch=useDispatch()
   return (
     <>
       {
@@ -155,7 +152,8 @@ originalPriceWithWeight: {1kg: 82.11, 250gm: 22.6, 500gm: 42.5}
                 }}
               />
             </button>
-            <button className="text-[#CC0000] text-center w-[80%] rounded-md border-[1px] font-semibold border-[#CC0000]">
+            <button className="text-[#CC0000] text-center w-[80%] rounded-md border-[1px]
+             font-semibold border-[#CC0000] "onClick= {()=>{dispatch(addData(product))}}>
               Add
             </button>
           </div>

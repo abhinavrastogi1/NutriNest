@@ -5,7 +5,7 @@ function CardMd({ type, offer }) {
   type = "Fresh vegetables";
   offer = " MIN 27% OFF";
   return (
-    <div className="h-[197px] w-[263px]    rounded-lg shadow-md p-2 pl-0">
+    <div className="h-[197px] w-[263px]  hover:shadow-2xl  rounded-lg shadow-md p-2 pl-0">
       <div className="h-[133px]   ">
         <img
           src={vegitable}

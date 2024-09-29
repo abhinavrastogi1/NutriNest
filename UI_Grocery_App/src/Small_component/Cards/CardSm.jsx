@@ -4,7 +4,7 @@ function CardSm({ type, offer }) {
   type = "Atta & Flour";
   offer = " UPTO 27% OFF";
   return (
-    <div className="h-[126px] w-[167px] p-1 pl-0  rounded-lg shadow-md">
+    <div className="h-[126px] w-[167px] hover:shadow-2xl p-1 pl-0  rounded-lg shadow-md">
       <div className="h-[90px]">
         <img
           src={flour}

@@ -6,6 +6,7 @@ import store from "./store/index.js";
 import { Provider } from "react-redux";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./component/Home/Home.jsx";
+import Basket from "./component/Basket/Basket.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      {
+        path: "/basket",
+        element: <Basket/>,
+      },
     ],
   },
 ]);
@@ -24,5 +29,5 @@ createRoot(document.getElementById("root")).render(
     <StrictMode>
       <RouterProvider router={router} />
     </StrictMode>
-  </Provider>,
+  </Provider>
 );
