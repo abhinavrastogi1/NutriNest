@@ -317,90 +317,81 @@ const findProductsByCategory = asyncHandler(async (req, res) => {
   if (!categoryName) {
     throw new ApiError(404, "categoryname not found");
   }
-  const products = await Product.aggregate([
-    {
-      $group: {
-        _id: "$category",
-        product: {
-          $push: "$$ROOT",
-        },
+  const products = await Product.aggregate([{
+    $lookup: {
+      from: "categories",
+      localField: "category",
+      foreignField: "_id",
+      as: "categoryData"
+    }
+  },
+  {
+    $addFields: {
+      category: "$categoryData.category",
+      categoryId: "$category"
+    }
+  }, {
+    $addFields: {
+      images: {
+        $slice: ["$images", 1]
+      }
+    }
+  },
+  {
+    $addFields: {
+      category: {
+        $arrayElemAt: ["$category", 0]
+      }
+    }
+  },
+  {
+    $addFields: {
+      productData: {
+        _id: "$_id",
+        productName: "$productName",
+        id: "$id",
+        images: "$images",
+        description: "$description",
+        brand: "$brand",
+        originalPriceWithWeight:
+          "$originalPriceWithWeight",
+        discount: "$discount",
+        discountedPriceWithWeight:
+          "$discountedPriceWithWeight",
+        category: "$category",
+        categoryId: "$categoryId",
+      }
+    }
+  },
+  {
+    $project: {
+      productData: 1,
+      _id: 0
+    }
+  },
+  {
+    $match: {
+      "productData.category.level1":
+        "fruits & vegitable"
+    }
+  },{
+    $sort: {
+"productData.productName":1
+    }
+},{
+    $group: {
+      _id: null,
+      products: {
+        $push: "$productData"
       },
-    },
-    {
-      $unwind: "$product",
-    },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "product.category",
-        foreignField: "_id",
-        as: "categoryData",
-      },
-    },
-    {
-      $addFields: {
-        category: "$categoryData.category",
-      },
-    },
-    {
-      $addFields: {
-        images: {
-          $slice: ["$product.images", 1],
-        },
-      },
-    },
-    {
-      $addFields: {
-        category: {
-          $arrayElemAt: ["$category", 0],
-        },
-      },
-    },
-    {
-      $addFields: {
-        productData: {
-          _id: "$product._id",
-          productName: "$product.productName",
-          id: "$product.id",
-          images: "$images",
-          description: "$product.description",
-          categoryId: "$product.category",
-          brand: "$product.brand",
-          originalPriceWithWeight: "$product.originalPriceWithWeight",
-          discount: "$product.discount",
-          discountedPriceWithWeight: "$product.discountedPriceWithWeight",
-          category: "$category",
-        },
-      },
-    },
-    {
-      $project: {
-        productData: 1,
-        _id: 0,
-      },
-    },
-    {
-      $match: {
-        "productData.category.level1": "fruits & vegitable",
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        products: {
-          $push: "$productData",
-        },
-        count: {
-          $sum: 1,
-        },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-      },
-    },
-  ]);
+    }
+  },
+  {
+    $project: {
+      _id: 0
+    }
+  }
+]);
 
   if (products.length === 0) {
     throw new ApiError(
@@ -420,91 +411,83 @@ const findProductsBySubCategory = asyncHandler(async (req, res) => {
   if (!categoryName) {
     throw new ApiError(404, "categoryname not found");
   }
-  const products = await Product.aggregate([
-    {
-      $group: {
-        _id: "$category",
-        product: {
-          $push: "$$ROOT",
-        },
+  const products = await Product.aggregate([{
+    $lookup: {
+      from: "categories",
+      localField: "category",
+      foreignField: "_id",
+      as: "categoryData"
+    }
+  },
+  {
+    $addFields: {
+      category: "$categoryData.category",
+      categoryId: "$category"
+    }
+  }, {
+    $addFields: {
+      images: {
+        $slice: ["$images", 1]
+      }
+    }
+  },
+  {
+    $addFields: {
+      category: {
+        $arrayElemAt: ["$category", 0]
+      }
+    }
+  },
+  {
+    $addFields: {
+      productData: {
+        _id: "$_id",
+        productName: "$productName",
+        id: "$id",
+        images: "$images",
+        description: "$description",
+        brand: "$brand",
+        originalPriceWithWeight:
+          "$originalPriceWithWeight",
+        discount: "$discount",
+        discountedPriceWithWeight:
+          "$discountedPriceWithWeight",
+        category: "$category",
+        categoryId: "$categoryId",
+      }
+    }
+  },
+  {
+    $project: {
+      productData: 1,
+      _id: 0
+    }
+  },
+  {
+    $match: {
+      "productData.category.level1":
+        "fruits & vegitable"
+    }
+  },{
+    $sort: {
+"productData.productName":1
+    }
+},{
+    $group: {
+      _id: null,
+      products: {
+        $push: "$productData"
       },
-    },
-    {
-      $unwind: "$product",
-    },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "product.category",
-        foreignField: "_id",
-        as: "categoryData",
-      },
-    },
-    {
-      $addFields: {
-        category: "$categoryData.category",
-      },
-    },
-    {
-      $addFields: {
-        images: {
-          $slice: ["$product.images", 1],
-        },
-      },
-    },
-    {
-      $addFields: {
-        category: {
-          $arrayElemAt: ["$category", 0],
-        },
-      },
-    },
-    {
-      $addFields: {
-        productData: {
-          _id: "$product._id",
-          productName: "$product.productName",
-          id: "$product.id",
-          images: "$images",
-          description: "$product.description",
-          categoryId: "$product.category",
-          brand: "$product.brand",
-          originalPriceWithWeight: "$product.originalPriceWithWeight",
-          discount: "$product.discount",
-          discountedPriceWithWeight: "$product.discountedPriceWithWeight",
-          category: "$category",
-        },
-      },
-    },
-    {
-      $project: {
-        productData: 1,
-        _id: 0,
-      },
-    },
-    {
-      $match: {
-        "productData.category.level1": categoryName,
-        "productData.category.level2": subCategoryName,
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        products: {
-          $push: "$productData",
-        },
-        count: {
-          $sum: 1,
-        },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-      },
-    },
-  ]);
+    }
+  },
+  {
+    $project: {
+      _id: 0
+    }
+  }
+ 
+  
+]);
   if (products.length === 0) {
     throw new ApiError(
       404,
@@ -521,92 +504,81 @@ const findProductsBySubSubCategory = asyncHandler(async (req, res) => {
   if (!categoryName) {
     throw new ApiError(404, "Products found successfully");
   }
-  const products = await Product.aggregate([
-    {
-      $group: {
-        _id: "$category",
-        product: {
-          $push: "$$ROOT",
-        },
+  const products = await Product.aggregate([{
+    $lookup: {
+      from: "categories",
+      localField: "category",
+      foreignField: "_id",
+      as: "categoryData"
+    }
+  },
+  {
+    $addFields: {
+      category: "$categoryData.category",
+      categoryId: "$category"
+    }
+  }, {
+    $addFields: {
+      images: {
+        $slice: ["$images", 1]
+      }
+    }
+  },
+  {
+    $addFields: {
+      category: {
+        $arrayElemAt: ["$category", 0]
+      }
+    }
+  },
+  {
+    $addFields: {
+      productData: {
+        _id: "$_id",
+        productName: "$productName",
+        id: "$id",
+        images: "$images",
+        description: "$description",
+        brand: "$brand",
+        originalPriceWithWeight:
+          "$originalPriceWithWeight",
+        discount: "$discount",
+        discountedPriceWithWeight:
+          "$discountedPriceWithWeight",
+        category: "$category",
+        categoryId: "$categoryId",
+      }
+    }
+  },
+  {
+    $project: {
+      productData: 1,
+      _id: 0
+    }
+  },
+  {
+    $match: {
+      "productData.category.level1":
+        "fruits & vegitable"
+    }
+  },{
+    $sort: {
+"productData.productName":1
+    }
+},{
+    $group: {
+      _id: null,
+      products: {
+        $push: "$productData"
       },
-    },
-    {
-      $unwind: "$product",
-    },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "product.category",
-        foreignField: "_id",
-        as: "categoryData",
-      },
-    },
-    {
-      $addFields: {
-        category: "$categoryData.category",
-      },
-    },
-    {
-      $addFields: {
-        images: {
-          $slice: ["$product.images", 1],
-        },
-      },
-    },
-    {
-      $addFields: {
-        category: {
-          $arrayElemAt: ["$category", 0],
-        },
-      },
-    },
-    {
-      $addFields: {
-        productData: {
-          _id: "$product._id",
-          productName: "$product.productName",
-          id: "$product.id",
-          images: "$images",
-          description: "$product.description",
-          categoryId: "$product.category",
-          brand: "$product.brand",
-          originalPriceWithWeight: "$product.originalPriceWithWeight",
-          discount: "$product.discount",
-          discountedPriceWithWeight: "$product.discountedPriceWithWeight",
-          category: "$category",
-        },
-      },
-    },
-    {
-      $project: {
-        productData: 1,
-        _id: 0,
-      },
-    },
-    {
-      $match: {
-        "productData.category.level1": categoryName,
-        "productData.category.level2": subCategoryName,
-        "productData.category.level3": subSubcateoryName,
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        products: {
-          $push: "$productData",
-        },
-        count: {
-          $sum: 1,
-        },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-      },
-    },
-  ]);
+    }
+  },
+  {
+    $project: {
+      _id: 0
+    }
+  }
+]);
   if (products.length === 0) {
     throw new ApiError(
       404,
