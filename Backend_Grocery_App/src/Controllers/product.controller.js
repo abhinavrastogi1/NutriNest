@@ -1,4 +1,3 @@
-import { json } from "express";
 import { Category } from "../Models/category.models.js";
 import { Product } from "../Models/product.models.js";
 
@@ -313,4 +312,318 @@ const recomemdedProduct = asyncHandler(async (req, res) => {
     );
 });
 
-export { listProduct, categorytree, recomemdedProduct };
+const findProductsByCategory = asyncHandler(async (req, res) => {
+  const { categoryName } = req?.params;
+  if (!categoryName) {
+    throw new ApiError(404, "categoryname not found");
+  }
+  const products = await Product.aggregate([
+    {
+      $group: {
+        _id: "$category",
+        product: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $unwind: "$product",
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "product.category",
+        foreignField: "_id",
+        as: "categoryData",
+      },
+    },
+    {
+      $addFields: {
+        category: "$categoryData.category",
+      },
+    },
+    {
+      $addFields: {
+        images: {
+          $slice: ["$product.images", 1],
+        },
+      },
+    },
+    {
+      $addFields: {
+        category: {
+          $arrayElemAt: ["$category", 0],
+        },
+      },
+    },
+    {
+      $addFields: {
+        productData: {
+          _id: "$product._id",
+          productName: "$product.productName",
+          id: "$product.id",
+          images: "$images",
+          description: "$product.description",
+          categoryId: "$product.category",
+          brand: "$product.brand",
+          originalPriceWithWeight: "$product.originalPriceWithWeight",
+          discount: "$product.discount",
+          discountedPriceWithWeight: "$product.discountedPriceWithWeight",
+          category: "$category",
+        },
+      },
+    },
+    {
+      $project: {
+        productData: 1,
+        _id: 0,
+      },
+    },
+    {
+      $match: {
+        "productData.category.level1": "fruits & vegitable",
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        products: {
+          $push: "$productData",
+        },
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+      },
+    },
+  ]);
+
+  if (products.length === 0) {
+    throw new ApiError(
+      404,
+      "We couldn't find anything matching your query. Try something else"
+    );
+  }
+
+  res
+    .status(201)
+    .json(new ApiResponse(201, products, "Products found successfully"));
+});
+
+const findProductsBySubCategory = asyncHandler(async (req, res) => {
+  const { categoryName, subCategoryName } = req?.params;
+
+  if (!categoryName) {
+    throw new ApiError(404, "categoryname not found");
+  }
+  const products = await Product.aggregate([
+    {
+      $group: {
+        _id: "$category",
+        product: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $unwind: "$product",
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "product.category",
+        foreignField: "_id",
+        as: "categoryData",
+      },
+    },
+    {
+      $addFields: {
+        category: "$categoryData.category",
+      },
+    },
+    {
+      $addFields: {
+        images: {
+          $slice: ["$product.images", 1],
+        },
+      },
+    },
+    {
+      $addFields: {
+        category: {
+          $arrayElemAt: ["$category", 0],
+        },
+      },
+    },
+    {
+      $addFields: {
+        productData: {
+          _id: "$product._id",
+          productName: "$product.productName",
+          id: "$product.id",
+          images: "$images",
+          description: "$product.description",
+          categoryId: "$product.category",
+          brand: "$product.brand",
+          originalPriceWithWeight: "$product.originalPriceWithWeight",
+          discount: "$product.discount",
+          discountedPriceWithWeight: "$product.discountedPriceWithWeight",
+          category: "$category",
+        },
+      },
+    },
+    {
+      $project: {
+        productData: 1,
+        _id: 0,
+      },
+    },
+    {
+      $match: {
+        "productData.category.level1": categoryName,
+        "productData.category.level2": subCategoryName,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        products: {
+          $push: "$productData",
+        },
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+      },
+    },
+  ]);
+  if (products.length === 0) {
+    throw new ApiError(
+      404,
+      "We couldn't find anything matching your query. Try something else"
+    );
+  }
+
+  res
+    .status(201)
+    .json(new ApiResponse(201, products, "category sorted product fetched"));
+});
+const findProductsBySubSubCategory = asyncHandler(async (req, res) => {
+  const { categoryName, subCategoryName, subSubcateoryName } = req?.params;
+  if (!categoryName) {
+    throw new ApiError(404, "Products found successfully");
+  }
+  const products = await Product.aggregate([
+    {
+      $group: {
+        _id: "$category",
+        product: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $unwind: "$product",
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "product.category",
+        foreignField: "_id",
+        as: "categoryData",
+      },
+    },
+    {
+      $addFields: {
+        category: "$categoryData.category",
+      },
+    },
+    {
+      $addFields: {
+        images: {
+          $slice: ["$product.images", 1],
+        },
+      },
+    },
+    {
+      $addFields: {
+        category: {
+          $arrayElemAt: ["$category", 0],
+        },
+      },
+    },
+    {
+      $addFields: {
+        productData: {
+          _id: "$product._id",
+          productName: "$product.productName",
+          id: "$product.id",
+          images: "$images",
+          description: "$product.description",
+          categoryId: "$product.category",
+          brand: "$product.brand",
+          originalPriceWithWeight: "$product.originalPriceWithWeight",
+          discount: "$product.discount",
+          discountedPriceWithWeight: "$product.discountedPriceWithWeight",
+          category: "$category",
+        },
+      },
+    },
+    {
+      $project: {
+        productData: 1,
+        _id: 0,
+      },
+    },
+    {
+      $match: {
+        "productData.category.level1": categoryName,
+        "productData.category.level2": subCategoryName,
+        "productData.category.level3": subSubcateoryName,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        products: {
+          $push: "$productData",
+        },
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+      },
+    },
+  ]);
+  if (products.length === 0) {
+    throw new ApiError(
+      404,
+      "We couldn't find anything matching your query. Try something else"
+    );
+  }
+
+  res
+    .status(201)
+    .json(new ApiResponse(201, products, "Products found successfully"));
+});
+
+export {
+  listProduct,
+  categorytree,
+  recomemdedProduct,
+  findProductsByCategory,
+  findProductsBySubCategory,
+  findProductsBySubSubCategory,
+};
