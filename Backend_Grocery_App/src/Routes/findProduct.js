@@ -7,10 +7,10 @@ import {
 
 export const findProduct = Router();
 
-findProduct.route("/:categoryName").get(findProductsByCategory);
+findProduct.route("/:mainCategory").get(findProductsByCategory);
 findProduct
-  .route("/:categoryName/:subCategoryName")
+  .route("/:mainCategory/:subCategory")
   .get(findProductsBySubCategory);
 findProduct
-  .route("/:categoryName/:subCategoryName/:subSubcateoryName")
+  .route("/:mainCategory/:subCategory/:subSubCategory")
   .get(findProductsBySubSubCategory);

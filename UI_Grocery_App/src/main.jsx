@@ -7,6 +7,10 @@ import { Provider } from "react-redux";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./component/Home/Home.jsx";
 import Basket from "./component/Basket/Basket.jsx";
+import ProductsBycategory from "./component/CategoryProducts/ProductsByMainCategory.jsx";
+import ProductsBySubCategory from "./component/CategoryProducts/productsBySubCategory.jsx";
+import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -19,7 +23,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/basket",
-        element: <Basket/>,
+        element: <Basket />,
+      },
+      {
+        path: "/:mainCategory",
+        element: <ProductsBycategory />,
+      },
+      {
+        path: "/:mainCategory/:subCategory",
+        element: <ProductsBySubCategory />,
+      },
+      {
+        path: "/:mainCategory/:subCategory/:subSubCategory",
+        element: <ProductsBySubSubCategory/>
       },
     ],
   },
