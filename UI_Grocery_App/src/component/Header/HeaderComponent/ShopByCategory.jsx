@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../../store/Api/fetchProductsByCategorySlice.js";
 import { Link, replace } from "react-router-dom";
+import { scrolltoggle } from "../../../store/Feature/Ui_component/ToggleVisibility.js";
 
 function ShopByCategory() {
   const { categories } = useSelector((state) => state.categoryApi);
@@ -14,7 +15,7 @@ function ShopByCategory() {
     <>
       <div>
         {isVisible && (
-          <div className="bg-slate-600 absolute top-10 left-2 z-30">
+          <div className="bg-slate-600 absolute top-10 left-2 z-30 rounded-3xl">
             <div className="flex">
               <ul className="bg-[#202020] w-[227px] text-xs text-white ">
                 {categories.map((item) => {
@@ -35,6 +36,7 @@ function ShopByCategory() {
                         }}
                         onClick={() => {
                           dispatch(fetchProducts({ mainCategory: activeUl1 }));
+                          dispatch(scrolltoggle(false));
                         }}
                       >
                         {item.mainCategory}
@@ -77,6 +79,7 @@ function ShopByCategory() {
                                   subCategory: activeUl2,
                                 })
                               );
+                              dispatch(scrolltoggle(false));
                             }}
                           >
                             {subCategory.level2}
@@ -123,6 +126,7 @@ function ShopByCategory() {
                                     subSubCategory: activeUl3,
                                   })
                                 );
+                                dispatch(scrolltoggle(false));
                               }}
                             >
                               {subSubCategory.level3}

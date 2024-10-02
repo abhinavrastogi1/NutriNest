@@ -51,7 +51,7 @@ const dispatch=useDispatch()
             <div className="img h-fulll w-full">
               {
                 <Link to="/">
-                  <img src={images} alt={imageAlt} />
+                  <img src={images}  loading="lazy"  alt={imageAlt} />
                 </Link>
               }
             </div>

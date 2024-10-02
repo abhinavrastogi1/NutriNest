@@ -20,22 +20,19 @@ function Header() {
   const isVisible = useSelector((state) => state.toggleVisibility.toggle);
   const dispatch = useDispatch();
   const handleScroll = () => {
-    // Check if the window has been scrolled down by any amount
     if (window.scrollY > 0) {
-      // Set the state to true when scrolled
       dispatch(scrolltoggle(false));
     }
   };
 
   useEffect(() => {
-    // Add scroll event listener
     window.addEventListener("scroll", handleScroll);
 
-    // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const onClose = () => {
     dispatch(toggleSwitch());
   };
@@ -77,10 +74,10 @@ function Header() {
               </button>
             </div>
             <div>
-              <Link  to="/basket">
-              <button className="cart-color rounded-md px-2 py-1">
-                <img src={cart} className="w-11 h-8" alt="cart icon" />
-              </button>
+              <Link to="/basket">
+                <button className="cart-color rounded-md px-2 py-1">
+                  <img src={cart} className="w-11 h-8" alt="cart icon" />
+                </button>
               </Link>
             </div>
           </div>
