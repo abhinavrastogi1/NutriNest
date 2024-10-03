@@ -3,7 +3,7 @@ import CardMd from '../../../Small_component/Cards/CardMd'
 
 function SnackStore() {
     return (
-        <div className="mt-8">
+        <section className="mt-8">
     
        <div className="h-[46px]">
               <h1 className="text-2xl  font-bold">Snack Store</h1>
@@ -14,7 +14,7 @@ function SnackStore() {
             <CardMd/>
             <CardMd/>
           </div>
-        </div>
+        </section>
       )
 }
 

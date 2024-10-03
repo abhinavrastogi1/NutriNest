@@ -4,7 +4,7 @@ import NeuPass from "../../../assets/images/NeuPass.png"
 
 function Buttons() {
   return (
-    <div className="flex gap-[27px] mt-8">
+    <section className="flex gap-[27px] mt-8">
       <Link to="">
         {" "}
         <button className="h-[53px] w-[167px] bg-[#E8E8E8] rounded-md PY-2 px-6 font-extrabold text-sm">
@@ -46,7 +46,7 @@ function Buttons() {
           COMBO STORE
         </button>
       </Link>
-    </div>
+    </section>
   );
 }
 

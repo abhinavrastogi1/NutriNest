@@ -26,7 +26,7 @@ function TopOfferCards() {
   ];
   return (
     <>
-      <div className="mt-8">
+      <section className="mt-8">
         <div className="h-[46px]">
           <h1 className="text-2xl  font-bold">Top Offers</h1>
         </div>
@@ -56,7 +56,7 @@ function TopOfferCards() {
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </>
   );
 }

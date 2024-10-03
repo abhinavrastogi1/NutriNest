@@ -32,7 +32,7 @@ function SmartBasket() {
   }
 
   return (
-    <div className=" bg-[#F7F7F7] p-5 mt-8 z-10  overflow-visible">
+    <section className=" bg-[#F7F7F7] p-5 mt-8 z-10  overflow-visible">
       <div className="flex justify-between px-3 mt-2">
         <div className="text-black font-bold text-[20px] h-full">
           <h1>My Smart Basket</h1>
@@ -74,7 +74,7 @@ function SmartBasket() {
             <ul className="flex">
               {productArr.map((product) => {
                 return (
-                  <li key={product.productId} className="px-[3.90px]">
+                  <li key={product.productId} className="px-[3.90px] list-none">
                     <CardLg product={product} />
                   </li>
                 );
@@ -83,7 +83,7 @@ function SmartBasket() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 export default SmartBasket;

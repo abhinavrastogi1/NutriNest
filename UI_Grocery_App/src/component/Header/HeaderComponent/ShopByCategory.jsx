@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../../store/Api/fetchProductsByCategorySlice.js";
-import { Link, replace } from "react-router-dom";
+import {
+  changestatus,
+  fetchProducts,
+} from "../../../store/Api/fetchProductsByCategorySlice.js";
+import { Link, replace, useNavigate } from "react-router-dom";
 import { scrolltoggle } from "../../../store/Feature/Ui_component/ToggleVisibility.js";
 
 function ShopByCategory() {
@@ -11,6 +14,23 @@ function ShopByCategory() {
   const [activeUl2, SetActiveUl2] = useState("tea");
   const [activeUl3, SetActiveUl3] = useState("leaf & dust tea");
   const dispatch = useDispatch();
+  const status = useSelector((state) => state.fetchProductsByCategory.status);
+  console.log("status", status);
+  useEffect(() => {
+    let category = activeUl1.replace(/( & |, | and | )/g, "-");
+    if (status == "success") {
+      dispatch(changestatus());
+      navigate(`/${category}`, { replace: true });
+    }
+  }, [status == "success"]);
+  const navigate = useNavigate();
+
+  function capitalizeWords(str) {
+    return str
+      ?.split(" ") // Split the string into an array of words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
+      .join(" "); // Join the words back into a string
+  }
   return (
     <>
       <div>
@@ -19,29 +39,24 @@ function ShopByCategory() {
             <div className="flex">
               <ul className="bg-[#202020] w-[227px] text-xs text-white ">
                 {categories.map((item) => {
-                  let category = item.mainCategory.replace(
-                    /( & |, | and | )/g,
-                    "-"
-                  );
                   return (
-                    <Link to={`${category}`} key={item.mainCategory}>
-                      <li
-                        className={`m-2 p-2 ${activeUl1 === item.mainCategory ? "bg-[#404040] font-semibold" : "text-xs text-white"} rounded-md  `}
-                        onMouseEnter={() => {
-                          SetActiveUl1(item.mainCategory);
-                          SetActiveUl2(item.subCategory[0].level2);
-                          SetActiveUl3(
-                            item.subCategory[0].subSubCategory[0].level3
-                          );
-                        }}
-                        onClick={() => {
-                          dispatch(fetchProducts({ mainCategory: activeUl1 }));
-                          dispatch(scrolltoggle(false));
-                        }}
-                      >
-                        {item.mainCategory}
-                      </li>
-                    </Link>
+                    <li
+                      key={item.mainCategory}
+                      className={`m-2 p-2 ${activeUl1 === item.mainCategory ? "bg-[#404040] font-semibold" : "text-xs text-white"} rounded-md  `}
+                      onMouseEnter={() => {
+                        SetActiveUl1(item.mainCategory);
+                        SetActiveUl2(item.subCategory[0].level2);
+                        SetActiveUl3(
+                          item.subCategory[0].subSubCategory[0].level3
+                        );
+                      }}
+                      onClick={() => {
+                        dispatch(fetchProducts({ mainCategory: activeUl1 }));
+                        dispatch(scrolltoggle(false));
+                      }}
+                    >
+                      {capitalizeWords(item.mainCategory)}
+                    </li>
                   );
                 })}
               </ul>
@@ -82,7 +97,7 @@ function ShopByCategory() {
                               dispatch(scrolltoggle(false));
                             }}
                           >
-                            {subCategory.level2}
+                            {capitalizeWords(subCategory.level2)}
                           </li>
                         </Link>
                       );
@@ -129,7 +144,7 @@ function ShopByCategory() {
                                 dispatch(scrolltoggle(false));
                               }}
                             >
-                              {subSubCategory.level3}
+                              {capitalizeWords(subSubCategory.level3)}
                             </li>
                           </Link>
                         );

@@ -3,7 +3,7 @@ import CardSm from '../../../Small_component/Cards/CardSm'
 
 function HomeAndKitchen() {
     return (
-        <div className="mt-8">
+        <section className="mt-8">
        <div className="h-[46px]">
               <h1 className="text-2xl  font-bold">Your Daily Staples</h1>
             </div>
@@ -15,7 +15,7 @@ function HomeAndKitchen() {
             <CardSm/>
             <CardSm/>
           </div>
-        </div>
+        </section>
       )
 }
 

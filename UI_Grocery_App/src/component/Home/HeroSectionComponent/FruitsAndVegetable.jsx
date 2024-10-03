@@ -5,7 +5,7 @@ function FruitsAndVegetable( ) {
 
 
   return (
-    <div className="mt-8">
+    <section className="mt-8">
 
    <div className="h-[46px]">
           <h1 className="text-2xl  font-bold">Fruits and Vegetable</h1>
@@ -16,7 +16,7 @@ function FruitsAndVegetable( ) {
         <CardMd/>
         <CardMd/>
       </div>
-    </div>
+    </section>
   )
 }
 

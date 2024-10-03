@@ -12,8 +12,7 @@ export const fetchProducts = createAsyncThunk(
       } else if (mainCategory && subCategory && !subSubCategory) {
         response = await axios.get(`/api/${mainCategory}/${subCategory}`);
         return response.data.data;
-      } else if (mainCategory && subCategory && subSubCategory);
-      {
+      } else if (mainCategory && subCategory && subSubCategory) {
         response = await axios.get(
           `/api/${mainCategory}/${subCategory}/${subSubCategory}`
         );
@@ -31,7 +30,12 @@ const fetchProductsByCategory = createSlice({
     productsData: [],
     error: null,
   },
-  reducers: {},
+  reducers: {
+    changestatus:(state)=>{
+state.status="idle",
+console.log("inside reducer",state.status)
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
@@ -47,3 +51,4 @@ const fetchProductsByCategory = createSlice({
 });
 
 export default fetchProductsByCategory.reducer;
+export const{changestatus}=fetchProductsByCategory.actions

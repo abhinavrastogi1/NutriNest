@@ -7,7 +7,7 @@ import CardLg from "../../../Small_component/Cards/CardLg";
 
 function BestSeller() {
   return (
-    <div className=" bg-[#F7F7F7] p-5 mt-8 ">
+    <section className=" bg-[#F7F7F7] p-5 mt-8 ">
       <div className="flex justify-between px-3 mt-2">
         {/* top heading of the container */}
 
@@ -38,7 +38,7 @@ function BestSeller() {
         <CardLg />
         <CardLg />
       </div>
-    </div>
+    </section>
   );
 }
 export default BestSeller;

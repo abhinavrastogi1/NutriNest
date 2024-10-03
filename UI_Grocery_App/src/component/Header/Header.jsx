@@ -46,7 +46,7 @@ function Header() {
           ></div>
         )}
         <div className="grid grid-rows-2 mx-48 sm:mx-8 md:mx-16 lg:mx-48 h-28 ">
-          <div className="flex flex-row gap-3 m-2">
+          <div className="flex flex-row gap-3 my-2">
             <div>
               <img
                 src={bigbasket}
@@ -62,8 +62,8 @@ function Header() {
                 className="outline-none col-span-full text-[12px]"
               />
             </div>
-            <div className="gap-x-10 pt-1 mx-3">
-              <button className="button-bg-color rounded-md flex justify-center flex-row space-x-2 p-2 w-52">
+            <div className="gap-x-10 h-full mx-3">
+              <button className="button-bg-color rounded-md flex justify-center flex-row space-x-2 p-2 h-full w-52">
                 <img src={compass} className="w-5 h-5" alt="compass icon" />
                 <span className="text-sm">Search Location</span>
               </button>
@@ -81,7 +81,7 @@ function Header() {
               </Link>
             </div>
           </div>
-          <div className="flex flex-row m-2 justify-between relative">
+          <div className="flex flex-row mt-2 justify-between relative">
             <CategoryButton />
             <ShopByCategory />
             <LiItmes />

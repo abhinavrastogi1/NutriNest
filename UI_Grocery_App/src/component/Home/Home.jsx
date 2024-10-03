@@ -7,12 +7,12 @@ import About from "./HeroSectionComponent/About";
 function Home() {
   return (
     <>
-      <section className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
+      <main className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
         <AutoSlider />
         <HeroSection/>
         <Bottom_autoSlider />
         <About />
-      </section>
+      </main>
     </>
   );
 }

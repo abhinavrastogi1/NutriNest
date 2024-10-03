@@ -9,7 +9,7 @@ function CategoryButton() {
         dispatch(toggleSwitch())
         }
   return (
-    <div className="p-1 ">
+    <div className="py-1 ">
     <button
       className="bg-[#5E9400] py-2 rounded-[5px] w-[170px] flex flex-row  "
       onClick={tooglebutton}
