@@ -4,19 +4,15 @@ import jwt from "jsonwebtoken";
 
 const userSchema = new  mongoose.Schema(
   {
-    fullName: {
+    firstName: {
       type: String,
       required: true,
       trim: true,
     },
-    email: {
+    lastName:{
       type: String,
-      unique: true,
-      index: true,
-      match: [
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "please fill a valid email",
-      ],
+      required: true,
+      trim: true,
     },
     phoneNo: {
       type: String,
@@ -28,13 +24,14 @@ const userSchema = new  mongoose.Schema(
       enum: ["Admin", "User"],
       default: "User",
     },
-    password: {
-      type: String,
-      required: [true, "password is required"],
-    },
     refreshToken: {
       type: String,
     },
+    cart:{
+    type :mongoose.Schema.Types.ObjectId,
+    ref:"Cart",
+    required:true
+    }
   },
   { timestamps: true }
 );

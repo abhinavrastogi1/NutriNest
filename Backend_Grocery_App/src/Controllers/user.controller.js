@@ -2,6 +2,7 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import ApiError from "../Utils/ApiError.js";
 import { User } from "../Models/user.models.js";
 import ApiResponse from "../Utils/ApiResponse.js";
+import twilio from "twilio";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -18,6 +19,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
     );
   }
 };
+
 // registration of use
 const registerUser = asyncHandler(async (req, res) => {
   {
@@ -102,14 +104,12 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
-
   res
     .status(201)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(201, loggedInUser, "log in successfull"));
 });
-
 const logoutUser = asyncHandler(async (req, res) => {
   console.log(req.user);
   const userId = req.user._id; // req.user from verfyjwt middleware
