@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   font-size: 16px;
@@ -70,4 +73,18 @@ body {
 .slick-arrow:hover::before {
   color: black !important;
   opacity: 1 !important;
+}
+
+@layer utilities {
+  .custom-scrollbar:hover::-webkit-scrollbar {
+    width: 7px; /* Scrollbar width */
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 0px; /* Scrollbar width */
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #B6B6B6; /* Scrollbar thumb color */
+    border-radius: 10px; /* Rounded corners on scrollbar */
+    border: 2px solid #f1f1f1; /* Space between thumb and track */
+  }
 }

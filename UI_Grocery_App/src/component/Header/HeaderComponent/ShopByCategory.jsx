@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changestatus,
-  fetchProducts,
-} from "../../../store/Api/fetchProductsByCategorySlice.js";
+
 import { Link, replace, useNavigate } from "react-router-dom";
 import { scrolltoggle } from "../../../store/Feature/Ui_component/ToggleVisibility.js";
+import { fetchProducts } from "../../../store/Api/fetchProductsByCategorySlice.js";
 
 function ShopByCategory() {
   const { categories } = useSelector((state) => state.categoryApi);
@@ -14,22 +12,12 @@ function ShopByCategory() {
   const [activeUl2, SetActiveUl2] = useState("tea");
   const [activeUl3, SetActiveUl3] = useState("leaf & dust tea");
   const dispatch = useDispatch();
-  const status = useSelector((state) => state.fetchProductsByCategory.status);
-  console.log("status", status);
-  useEffect(() => {
-    let category = activeUl1.replace(/( & |, | and | )/g, "-");
-    if (status == "success") {
-      dispatch(changestatus());
-      navigate(`/${category}`, { replace: true });
-    }
-  }, [status == "success"]);
   const navigate = useNavigate();
-
   function capitalizeWords(str) {
     return str
-      ?.split(" ") // Split the string into an array of words
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
-      .join(" "); // Join the words back into a string
+      ?.split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
   }
   return (
     <>
@@ -39,6 +27,7 @@ function ShopByCategory() {
             <div className="flex">
               <ul className="bg-[#202020] w-[227px] text-xs text-white ">
                 {categories.map((item) => {
+                  const category = activeUl1.replace(/( & |, | and | )/g, "-");
                   return (
                     <li
                       key={item.mainCategory}
@@ -51,8 +40,9 @@ function ShopByCategory() {
                         );
                       }}
                       onClick={() => {
-                        dispatch(fetchProducts({ mainCategory: activeUl1 }));
                         dispatch(scrolltoggle(false));
+                        dispatch(fetchProducts({ mainCategory: activeUl1 }));
+                        navigate(`/${category}`);
                       }}
                     >
                       {capitalizeWords(item.mainCategory)}
@@ -88,13 +78,8 @@ function ShopByCategory() {
                               );
                             }}
                             onClick={() => {
-                              dispatch(
-                                fetchProducts({
-                                  mainCategory: activeUl1,
-                                  subCategory: activeUl2,
-                                })
-                              );
                               dispatch(scrolltoggle(false));
+                              dispatch(fetchProducts({mainCategory:activeUl1,subCategory:activeUl2}))
                             }}
                           >
                             {capitalizeWords(subCategory.level2)}
@@ -110,7 +95,7 @@ function ShopByCategory() {
                     (subCategory) =>
                       subCategory.level2 === activeUl2 &&
                       subCategory.subSubCategory?.map((subSubCategory) => {
-                        const maincategory = activeUl1.replace(
+                        const category = activeUl1.replace(
                           /( & |, | and | )/g,
                           "-"
                         );
@@ -125,7 +110,7 @@ function ShopByCategory() {
                         );
                         return (
                           <Link
-                            to={`${maincategory}/${subcategory}/${subsubcategory}`}
+                            to={`${category}/${subcategory}/${subsubcategory}`}
                             key={subSubCategory.level3}
                           >
                             <li
@@ -134,13 +119,6 @@ function ShopByCategory() {
                                 SetActiveUl3(subSubCategory.level3);
                               }}
                               onClick={() => {
-                                dispatch(
-                                  fetchProducts({
-                                    mainCategory: activeUl1,
-                                    subCategory: activeUl2,
-                                    subSubCategory: activeUl3,
-                                  })
-                                );
                                 dispatch(scrolltoggle(false));
                               }}
                             >
