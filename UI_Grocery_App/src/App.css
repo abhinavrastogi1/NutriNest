@@ -77,14 +77,14 @@ body {
 
 @layer utilities {
   .custom-scrollbar:hover::-webkit-scrollbar {
-    width: 7px; /* Scrollbar width */
+    width: 7px;
   }
   .custom-scrollbar::-webkit-scrollbar {
-    width: 0px; /* Scrollbar width */
+    width: 0px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #B6B6B6; /* Scrollbar thumb color */
-    border-radius: 10px; /* Rounded corners on scrollbar */
-    border: 2px solid #f1f1f1; /* Space between thumb and track */
+    background-color: #b6b6b6;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
   }
 }

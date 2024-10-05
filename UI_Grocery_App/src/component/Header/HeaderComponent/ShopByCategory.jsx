@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, replace, useNavigate } from "react-router-dom";
 import { scrolltoggle } from "../../../store/Feature/Ui_component/ToggleVisibility.js";
 import { fetchProducts } from "../../../store/Api/fetchProductsByCategorySlice.js";
+import { subSubCategoryReducer } from "../../../store/Feature/CategoriesActiveState.js";
 
 function ShopByCategory() {
   const { categories } = useSelector((state) => state.categoryApi);
@@ -79,7 +80,12 @@ function ShopByCategory() {
                             }}
                             onClick={() => {
                               dispatch(scrolltoggle(false));
-                              dispatch(fetchProducts({mainCategory:activeUl1,subCategory:activeUl2}))
+                              dispatch(
+                                fetchProducts({
+                                  mainCategory: activeUl1,
+                                  subCategory: activeUl2,
+                                })
+                              );
                             }}
                           >
                             {capitalizeWords(subCategory.level2)}
@@ -120,6 +126,20 @@ function ShopByCategory() {
                               }}
                               onClick={() => {
                                 dispatch(scrolltoggle(false));
+                                dispatch(
+                                  fetchProducts({
+                                    mainCategory: activeUl1,
+                                    subCategory: activeUl2,
+                                    subSubCategory: activeUl3,
+                                  })
+                                );
+                                dispatch(
+                                  subSubCategoryReducer({
+                                    mainCategory: activeUl1,
+                                    subCategory: activeUl2,
+                                    subSubCategory: activeUl3,
+                                  })
+                                );
                               }}
                             >
                               {capitalizeWords(subSubCategory.level3)}

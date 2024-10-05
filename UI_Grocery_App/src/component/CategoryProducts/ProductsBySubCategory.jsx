@@ -1,4 +1,3 @@
-;
 import React, { useEffect, useState } from "react";
 import { FiHome } from "react-icons/fi";
 import { FaSliders } from "react-icons/fa6";
@@ -9,6 +8,7 @@ import CardLg from "../../Small_component/Cards/CardLg.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchProducts } from "../../store/Api/fetchProductsByCategorySlice.js";
 import somethingwentwrong from "../../assets/images/somethingwentwrong.png";
+import { IoIosArrowBack } from "react-icons/io";
 function ProductsBySubCategory() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,33 +16,56 @@ function ProductsBySubCategory() {
   const [hoverRelevance, setHoverRelevance] = useState(false);
   const [filterToggle, setFilterToggle] = useState(true);
   const [showMore, setShowMore] = useState(false);
+  let mainCategoryParams = useParams().mainCategory;
+  let subCategoryParams = useParams().subCategory;
+  
   const { categories } = useSelector((state) => state.categoryApi);
   const { productsData, status } = useSelector(
     (state) => state.fetchProductsByCategory
   );
-  let mainCategoryParams = useParams().mainCategory;
-  mainCategoryParams = mainCategoryParams.replace(/[-]/g, "");
-  function tolowercase(str) {
+  function removeSpace(str) {
     return str.replace(/( & |, | and | )/g, "");
   }
+  function removeSpecialChar(str) {
+    return str.replace(/( & |, | and | )/g, "-");
+  }
   useEffect(() => {
-    categories.some((category) => {
-      if (tolowercase(category.mainCategory) === mainCategoryParams) {
-        dispatch(fetchProducts({ mainCategory: category.mainCategory }));
-        return true;
-      }
-    });
-  }, []);
+    mainCategoryParams = mainCategoryParams.replace(/[-]/g, "");
+    subCategoryParams = subCategoryParams.replace(/[-]/g, "");
+    const mainCategoryMatch = categories?.find(
+      (category) => removeSpace(category.mainCategory) === mainCategoryParams
+    );
 
-  const mainCategory = productsData[0]?.products[0].category.level1;
-  const mainCategoryArr = categories.filter(
+    const subCategoryMatch = mainCategoryMatch?.subCategory.find(
+      (subCategory) => removeSpace(subCategory.level2) === subCategoryParams
+    );
+
+    if (subCategoryMatch) {
+      dispatch(
+        fetchProducts({
+          mainCategory: mainCategoryMatch.mainCategory,
+          subCategory: subCategoryMatch.level2,
+        })
+      );
+    }
+  }, []);
+  const mainCategory = productsData[0]?.products[0]?.category.level1;
+  const subCategory = productsData[0]?.products[0].category.level2;
+
+  const mainCategoryobj = categories?.find(
     (category) => category.mainCategory === mainCategory
   );
-  let subCategoryArr = [];
-  mainCategoryArr[0]?.subCategory.map((subCategory) => {
-    subCategoryArr.push(subCategory.level2);
+
+  const subCategoryArr = mainCategoryobj?.subCategory.find(
+    (subCategoryObj) => subCategoryObj.level2 === subCategory
+  );
+
+  const subSubCategoryArr = [];
+  subCategoryArr?.subSubCategory.map((subSubCategory) => {
+    subSubCategoryArr.push(subSubCategory.level3);
   });
-  const noOfProductsFound = productsData[0]?.products.length;
+
+  const noOfProducts = productsData[0]?.products.length;
   function capitalizeWords(str) {
     return str
       ?.split(" ")
@@ -56,10 +79,12 @@ function ProductsBySubCategory() {
       {status == "success" ? (
         <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48  flex flex-wrap justify-between bg-[#f7f7f7]">
           <div className="flex border-dotted border-b-2 w-full pb-3 pt-2">
+            {/* Home icon */}
             <span>
               {" "}
               <FiHome className="  m-1 " />
             </span>
+            {/* Home Button */}
             <button
               className="text-[15px] font-medium flex pt-[2px] "
               onClick={() => {
@@ -72,20 +97,38 @@ function ProductsBySubCategory() {
                 <h1>/</h1>
               </span>
             </button>
+            {/* Main Category Button */}
             <button
-              className="text-[15px] font-semibold pt-[2px]"
+              className="text-[15px] font-medium flex pt-[2px] "
               onClick={() => {
-                navigate("");
+                dispatch(fetchProducts({ mainCategory:mainCategory }));
+                navigate(`/${removeSpecialChar(mainCategory)}`);
               }}
             >
               {capitalizeWords(mainCategory)}
+              <span className="mx-2">
+                {" "}
+                <h1>/</h1>
+              </span>
+            </button>
+            {/* sub Category Button */}
+            <button
+              className="text-[15px] font-semibold pt-[2px]"
+              onClick={() => {
+                dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
+                navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
+              }}
+            >
+              {capitalizeWords(subCategory)}
             </button>
           </div>
+        {/* no of product div */}
           <div className="flex w-full my-4 text-gray-700">
             <h1 className="text-lg">
-              {capitalizeWords(mainCategory)} <span>({noOfProductsFound})</span>
+              {capitalizeWords(subCategory)} <span>({noOfProducts})</span>
             </h1>
           </div>
+        {/* active and relavance button */}
           <div className="flex flex-row  w-full justify-between">
             <button
               className={`flex py-1 px-6 border-[1px] rounded-[4px] w-[170px]
@@ -137,7 +180,7 @@ function ProductsBySubCategory() {
               </span>
             </button>
           </div>
-
+          {/* main section */}
           <section className=" border-dotted border-t-2 mt-4 py-2 w-full flex    ">
             <div className="flex flex-wrap justify-between w-full relative">
               {filterToggle && (
@@ -147,36 +190,52 @@ function ProductsBySubCategory() {
                       Shop by Category
                     </h1>
                   </div>
+                  <button
+                    className="flex m-2 ml-1"
+                    onClick={() => {
+                      dispatch(fetchProducts({ mainCategory: mainCategory }));
+                      navigate(`/${removeSpecialChar(mainCategory)}`);
+                    }}
+                  >
+                    {" "}
+                    <IoIosArrowBack className="m-2" />
+                    <h1 className="font-semibold text-[15px] flex p-1">
+                      {capitalizeWords(mainCategory)}
+                    </h1>
+                  </button>
                   <div className=" bg-white p-2  ">
                     <div className=" flex flex-col ">
-                      <button className="text-[#76B900] text-[15px] p-2 flex justy-start  pl-0 font-medium ">
-                        <span> {capitalizeWords(mainCategory)}</span>
+                      <button className="text-[#76B900] text-[15px] p-2 flex justy-start  pl-0 font-medium "
+                      >
+                        <span> {capitalizeWords(subCategory)}</span>
                       </button>
-                      {subCategoryArr?.slice(0, 2).map((subCategory) => (
+                      {subSubCategoryArr?.slice(0, 2).map((subSubCategory) => (
                         <button
-                          key={subCategory}
+                          key={subSubCategory}
                           className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                           onClick={() => {
-                            navigate("/");
+                            dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory,subSubCategory:subSubCategory }));
+                            navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`);
                           }}
                         >
-                          <span>{capitalizeWords(subCategory)}</span>
+                          <span>{capitalizeWords(subSubCategory)}</span>
                         </button>
                       ))}
                       {showMore &&
-                        subCategoryArr?.slice(2).map((subCategory) => (
+                        subSubCategoryArr?.slice(2).map((subSubCategory) => (
                           <button
-                            key={subCategory}
+                            key={subSubCategory}
                             className="p-2 border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                             onClick={() => {
-                              navigate("/");
+                              dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory,subSubCategory:subSubCategory }));
+                              navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`);
                             }}
                           >
-                            <span>{capitalizeWords(subCategory)}</span>
+                            <span>{capitalizeWords(subSubCategory)}</span>
                           </button>
                         ))}
                     </div>
-                    {subCategoryArr.length > 2 && (
+                    {subSubCategoryArr.length > 2 && (
                       <button
                         className=" rounded-md underline text-sm m-2 ml-0 font-medium"
                         onClick={() => {
@@ -189,8 +248,11 @@ function ProductsBySubCategory() {
                   </div>
                 </div>
               )}
+
+              {/* to render the products */}
+
               <ul
-                className={`flex flex-wrap   ${filterToggle ? "w-[846px] gap-6" : "w-full justify-between"} `}
+                className={`flex flex-wrap  ${filterToggle ? "w-[846px] gap-6   " : noOfProducts == 2 || noOfProducts == 3 ? "w-full gap-6" : "w-full justify-between"} `}
               >
                 {productsData[0]?.products.map((product) => (
                   <li key={product.id} className=" list-none ">

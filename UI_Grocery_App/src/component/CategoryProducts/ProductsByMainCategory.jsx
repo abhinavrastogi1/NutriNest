@@ -24,24 +24,28 @@ function ProductsBycategory() {
   function tolowercase(str) {
     return str.replace(/( & |, | and | )/g, "");
   }
+  function removeSpecialChar(str) {
+    return str.replace(/( & |, | and | )/g, "-");
+  }
   useEffect(() => {
-    categories.some((category) => {
-      if (tolowercase(category.mainCategory) === mainCategoryParams) {
-        dispatch(fetchProducts({ mainCategory: category.mainCategory }));
-        return true;
-      }
-    });
+    const mainCatgoryMatch = categories?.find(
+      (category) => tolowercase(category.mainCategory) === mainCategoryParams
+    );
+    if (mainCatgoryMatch) {
+      dispatch(fetchProducts({ mainCategory: mainCatgoryMatch.mainCategory }));
+    }
   }, []);
 
   const mainCategory = productsData[0]?.products[0].category.level1;
-  const mainCategoryArr = categories.filter(
+  const subCategory = productsData[0]?.products[0].category.level2;
+  const mainCategoryobj = categories.find(
     (category) => category.mainCategory === mainCategory
   );
   let subCategoryArr = [];
-  mainCategoryArr[0]?.subCategory.map((subCategory) => {
+  mainCategoryobj?.subCategory.map((subCategory) => {
     subCategoryArr.push(subCategory.level2);
   });
-  const noOfProductsFound = productsData[0]?.products.length;
+  const noOfProducts = productsData[0]?.products.length;
   function capitalizeWords(str) {
     return str
       ?.split(" ")
@@ -59,6 +63,7 @@ function ProductsBycategory() {
               {" "}
               <FiHome className="  m-1 " />
             </span>
+            {/* Home button */}
             <button
               className="text-[15px] font-medium flex pt-[2px] "
               onClick={() => {
@@ -71,20 +76,24 @@ function ProductsBycategory() {
                 <h1>/</h1>
               </span>
             </button>
+            {/* Main category button */}
             <button
               className="text-[15px] font-semibold pt-[2px]"
               onClick={() => {
-                navigate("");
+                dispatch(fetchProducts({ mainCategory:mainCategory  }));
+                        navigate(`/${removeSpecialChar(mainCategory)}`);
               }}
             >
               {capitalizeWords(mainCategory)}
             </button>
           </div>
+          {/* No of Product div */}
           <div className="flex w-full my-4 text-gray-700">
             <h1 className="text-lg">
-              {capitalizeWords(mainCategory)} <span>({noOfProductsFound})</span>
+              {capitalizeWords(mainCategory)} <span>({noOfProducts})</span>
             </h1>
           </div>
+          {/* Show and relevance button */}
           <div className="flex flex-row  w-full justify-between">
             <button
               className={`flex py-1 px-6 border-[1px] rounded-[4px] w-[170px]
@@ -136,7 +145,7 @@ function ProductsBycategory() {
               </span>
             </button>
           </div>
-
+{/* Main section */}
           <section className=" border-dotted border-t-2 mt-4 py-2 w-full flex    ">
             <div className="flex flex-wrap justify-between w-full relative">
               {filterToggle && (
@@ -156,7 +165,8 @@ function ProductsBycategory() {
                           key={subCategory}
                           className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                           onClick={() => {
-                            navigate("/");
+                            dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
+                            navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
                           }}
                         >
                           <span>{capitalizeWords(subCategory)}</span>
@@ -168,7 +178,8 @@ function ProductsBycategory() {
                             key={subCategory}
                             className="p-2 border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                             onClick={() => {
-                              navigate("/");
+                              dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
+                              navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
                             }}
                           >
                             <span>{capitalizeWords(subCategory)}</span>
@@ -189,7 +200,7 @@ function ProductsBycategory() {
                 </div>
               )}
               <ul
-                className={`flex flex-wrap   ${filterToggle ? "w-[846px] gap-6" : "w-full justify-between"} `}
+               className={`flex flex-wrap  ${filterToggle ? "w-[846px] gap-6   " : noOfProducts == 2 || noOfProducts == 3 ? "w-full gap-6" : "w-full justify-between"} `}
               >
                 {productsData[0]?.products.map((product) => (
                   <li key={product.id} className=" list-none ">
