@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import { CiBookmark } from "react-icons/ci";
+import { RxTriangleUp } from "react-icons/rx";
+import { MdBookmarkAdded } from "react-icons/md";
+import { MdBookmarkBorder } from "react-icons/md";
 import { TiStarFullOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import PriceList from "./PriceList.jsx";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addData } from "../../store/Feature/Basket/basketData.js";
+import SaveLaterbtn from "./SaveLaterbtn.jsx";
 function CardLg({ product }) {
   if (!product) {
     return null;
   }
+  const [addItems, setAddItems] = useState(0);
+  const [removeItems, setRemoveItems] = useState(0);
+  const [saveforLater, setSaveForLater] = useState(false);
   const productsWeight = Object.keys(product.discount);
   if (productsWeight.length == 0) return null;
   const [weight, setweight] = useState(productsWeight[0]);
@@ -30,6 +36,7 @@ function CardLg({ product }) {
   const productName = product.productName;
   const rating = "";
   const stars = "";
+  const SaveLaterbtnLocation = useRef();
   useEffect(() => {
     setOffer(product.discount[weight]),
       setDiscountedPrice(product.discountedPriceWithWeight[weight]);
@@ -37,7 +44,7 @@ function CardLg({ product }) {
   }, [weight]);
   const location = useRef();
 
-const dispatch=useDispatch()
+  const dispatch = useDispatch();
   return (
     <>
       {
@@ -51,7 +58,7 @@ const dispatch=useDispatch()
             <div className="img h-fulll w-full">
               {
                 <Link to="/">
-                  <img src={images}  loading="lazy"  alt={imageAlt} />
+                  <img src={images} loading="lazy" alt={imageAlt} />
                 </Link>
               }
             </div>
@@ -82,11 +89,11 @@ const dispatch=useDispatch()
             )}
           </div>
           {/* price data */}
-          <div   ref={location}>
+          <div ref={location}>
             <button
               className={`flex justify-between h-[30px] w-full py-1 pl-2  relative
              text-gray-600  text-[12px] font-medium  border-gray-300 border-[1px] rounded-md
-              hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"} ${ productsWeight.length === 1 &&"bg-[#F7F7F7]"}`}
+              hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"} ${productsWeight.length === 1 && "bg-[#F7F7F7]"}`}
               onClick={() => {
                 setShowprice(!showPrice);
               }}
@@ -141,24 +148,36 @@ const dispatch=useDispatch()
               </button>
             </div>
           </div>
-          <div className="flex flex-row justify-between gap-4">
-            <button className="h-[35px] w-[17%]   rounded-md border-[1px] border-gray-600">
-              <CiBookmark
-                className="justify-center "
-                style={{
-                  strokeWidth: "1.5px",
-                  fontSize: "18px",
-                  width: "40px",
-                }}
-              />
+          <div className="flex flex-row justify-between gap-2 relative">
+            <button
+              ref={SaveLaterbtnLocation}
+              className="h-[35px] w-[15%]   rounded-md border-[1px] border-gray-600 "
+              onClick={() => {
+                setSaveForLater(!saveforLater);
+              }}
+            >
+              {saveforLater ? (
+                <MdBookmarkAdded className="justify-center m-2  text-[19px]  " />
+              ) : (
+                <MdBookmarkBorder className="justify-center m-2  text-[19px] " />
+              )}
             </button>
-            <button className="text-[#CC0000] text-center w-[80%] rounded-md border-[1px]
-             font-semibold border-[#CC0000] "onClick= {()=>{dispatch(addData(product))}}>
+
+            <button
+              className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
+             font-semibold border-[#CC0000] hover:bg-[#cc0000] hover:text-white `}
+              onClick={() => {
+                dispatch(addData(product));
+              }}
+            >
               Add
             </button>
+
           </div>
+          <SaveLaterbtn  SaveLaterbtnLocation={SaveLaterbtnLocation}/>
         </div>
       }
+
     </>
   );
 }

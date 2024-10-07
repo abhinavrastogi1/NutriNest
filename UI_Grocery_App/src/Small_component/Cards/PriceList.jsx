@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { FcCheckmark } from "react-icons/fc";
 function PriceList({

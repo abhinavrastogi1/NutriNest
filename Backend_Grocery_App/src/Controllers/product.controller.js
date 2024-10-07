@@ -261,7 +261,7 @@ const recomemdedProduct = asyncHandler(async (req, res) => {
           $push: {
             _id: "$productdata._id",
             productName: "$productdata.productName",
-            productId: "$productdata.id",
+            id: "$productdata.id",
             images: "$images",
             description: "$productdata.description",
             brand: "$productdata.brand",
@@ -281,7 +281,7 @@ const recomemdedProduct = asyncHandler(async (req, res) => {
     },
     {
       $sort: {
-        "productdata.productId": 1,
+        "productdata.id": 1,
       },
     },
     {
@@ -502,7 +502,7 @@ const findProductsBySubCategory = asyncHandler(async (req, res) => {
 });
 const findProductsBySubSubCategory = asyncHandler(async (req, res) => {
   const { mainCategory, subCategory, subSubCategory } = req?.params;
-  if (!mainCategory ) {
+  if (!mainCategory) {
     throw new ApiError(404, "Products found successfully");
   }
   const products = await Product.aggregate([

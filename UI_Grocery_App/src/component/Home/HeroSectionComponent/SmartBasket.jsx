@@ -74,7 +74,7 @@ function SmartBasket() {
             <ul className="flex">
               {productArr.map((product) => {
                 return (
-                  <li key={product.productId} className="px-[3.90px] list-none">
+                  <li key={product.id} className="px-[3.90px] list-none">
                     <CardLg product={product} />
                   </li>
                 );

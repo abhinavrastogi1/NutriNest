@@ -3,7 +3,6 @@ import bigbasket from "../../assets/images/bigbasket.png";
 import search from "../../assets/images/search.png";
 import compass from "../../assets/images/compass.png";
 import profile from "../../assets/images/profile.png";
-import cart from "../../assets/images/cart.png";
 import offers from "../../assets/images/offers.png";
 import smartbasket from "../../assets/images/smartbasket.png";
 import {
@@ -14,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CategoryButton from "./HeaderComponent/CategoryButton";
 import ShopByCategory from "./HeaderComponent/ShopByCategory";
 import LiItmes from "./HeaderComponent/LiItmes";
-import { Link } from "react-router-dom";
+import BasketButon from "./HeaderComponent/BasketButon";
 
 function Header() {
   const isVisible = useSelector((state) => state.toggleVisibility.toggle);
@@ -73,14 +72,9 @@ function Header() {
                 <img src={profile} className="w-12 h-19" alt="profile icon" />
               </button>
             </div>
-            <div>
-              <Link to="/basket">
-                <button className="cart-color rounded-md px-2 py-1">
-                  <img src={cart} className="w-11 h-8" alt="cart icon" />
-                </button>
-              </Link>
-            </div>
+            <BasketButon />
           </div>
+
           <div className="flex flex-row mt-2 justify-between relative">
             <CategoryButton />
             <ShopByCategory />
