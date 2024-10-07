@@ -22,11 +22,17 @@ function ShopByCategory() {
   }
   return (
     <>
-      <div>
+      <div
+        className={`transition-transform duration-700 ease-in-out transform ${
+          isVisible ? "scale-100" : "scale-0"
+        } origin-top-left z-30  absolute top-10 left-2 rounded-lg`}
+      >
         {isVisible && (
-          <div className="bg-slate-600 absolute top-10 left-2 z-30 rounded-3xl">
-            <div className="flex">
-              <ul className="bg-[#202020] w-[227px] text-xs text-white ">
+          <div className={`bg-slate-600   rounded-lg 
+               `}
+          >
+            <div className="flex rounded-lg">
+              <ul className="bg-[#202020] w-[227px] text-xs text-white rounded-tl-lg rounded-bl-lg">
                 {categories.map((item) => {
                   const category = activeUl1.replace(/( & |, | and | )/g, "-");
                   return (
@@ -95,7 +101,7 @@ function ShopByCategory() {
                     })
                 )}
               </ul>
-              <ul className="bg-[#FFF] w-[227px] text-xs  text-black ">
+              <ul className="bg-[#FFF] w-[227px] text-xs  text-black rounded-tr-lg rounded-br-lg">
                 {categories.map((item) =>
                   item.subCategory.map(
                     (subCategory) =>

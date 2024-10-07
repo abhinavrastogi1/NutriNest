@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import { RxTriangleUp } from "react-icons/rx";
 import { MdBookmarkAdded } from "react-icons/md";
 import { MdBookmarkBorder } from "react-icons/md";
 import { TiStarFullOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import PriceList from "./PriceList.jsx";
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addData } from "../../store/Feature/Basket/basketData.js";
 import SaveLaterbtn from "./SaveLaterbtn.jsx";
 function CardLg({ product }) {
@@ -16,6 +15,7 @@ function CardLg({ product }) {
   }
   const [addItems, setAddItems] = useState(0);
   const [removeItems, setRemoveItems] = useState(0);
+  const [addBtnTransition, setAddBtnTransition] = useState(true);
   const [saveforLater, setSaveForLater] = useState(false);
   const productsWeight = Object.keys(product.discount);
   if (productsWeight.length == 0) return null;
@@ -43,7 +43,7 @@ function CardLg({ product }) {
     setOriginalPrice(product.originalPriceWithWeight[weight]);
   }, [weight]);
   const location = useRef();
-
+  const [hoverSaveLater, setHoverSaveLater] = useState(false);
   const dispatch = useDispatch();
   return (
     <>
@@ -155,6 +155,12 @@ function CardLg({ product }) {
               onClick={() => {
                 setSaveForLater(!saveforLater);
               }}
+              onMouseEnter={() => {
+                setHoverSaveLater(true);
+              }}
+              onMouseLeave={() => {
+                setHoverSaveLater(false);
+              }}
             >
               {saveforLater ? (
                 <MdBookmarkAdded className="justify-center m-2  text-[19px]  " />
@@ -163,21 +169,42 @@ function CardLg({ product }) {
               )}
             </button>
 
-            <button
-              className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
-             font-semibold border-[#CC0000] hover:bg-[#cc0000] hover:text-white `}
-              onClick={() => {
-                dispatch(addData(product));
-              }}
-            >
-              Add
-            </button>
+            {addBtnTransition ? (
+              <button
+                className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
+             font-semibold border-[#CC0000] hover:bg-[#cc0000] hover:text-white  
+             } origin-bottom`}
+                onClick={() => {
+                  dispatch(addData(product));
+                  setAddBtnTransition(false);
+                }}
+              >
+                Add
+              </button>
+            ) : (
+             <div className="relative"> <button
+             className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
+          font-semibold border-[#CC0000] hover:bg-[#cc0000] hover:text-[#303030]  transition-transform duration-100 ease-in-out transform ${
+            !addBtnTransition ? "scale-y-0" : "scale-y-100"
+          } origin-bottom`}
+             onClick={() => {
+               dispatch(addData(product));
+             }}
+           >
+             Adding..
+           </button>
+           <div className="absolute top-0 ">hello</div></div>
+            )}
 
           </div>
-          <SaveLaterbtn  SaveLaterbtnLocation={SaveLaterbtnLocation}/>
+          {hoverSaveLater && (
+            <SaveLaterbtn
+              SaveLaterbtnLocation={SaveLaterbtnLocation}
+              saveforLater={saveforLater}
+            />
+          )}
         </div>
       }
-
     </>
   );
 }
