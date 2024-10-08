@@ -1,19 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { json } from "react-router-dom";
 
 const basketData = createSlice({
   name: "basketData",
   initialState: {
-    productsData: [],
+    productsData: {},
   },
   reducers: {
-    addData: (state, action) => {
-      console.log(state.productsData);
-      state.productsData.push(action.payload);
+    addData: (state = initialState, action) => {
+      const { id, item } = action.payload;
+      state.productsData[id] = item;
+      localStorage.setItem("cart", JSON.stringify(state.productsData));
     },
-    removeData:(state,action)=>{
-        state.productsData.pop()
+    removeData: (state, action) => {
+      const { id } = action.payload;
+      delete state.productsData[id];
+      localStorage.setItem("cart", JSON.stringify(state.productsData));
+    },
+    UpdateFromLocalStorage:(state,action)=>{
+    state.productsData=action.payload
     }
   },
 });
-export const { addData } = basketData.actions;
+export const { addData, removeData ,UpdateFromLocalStorage} = basketData.actions;
 export default basketData.reducer;

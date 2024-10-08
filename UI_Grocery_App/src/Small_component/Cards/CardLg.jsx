@@ -1,50 +1,78 @@
 import React, { useState, useEffect } from "react";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoMdTrendingUp } from "react-icons/io";
 import { MdBookmarkAdded } from "react-icons/md";
 import { MdBookmarkBorder } from "react-icons/md";
 import { TiStarFullOutline } from "react-icons/ti";
+import { FaMinus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PriceList from "./PriceList.jsx";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { addData } from "../../store/Feature/Basket/basketData.js";
+import { useDispatch, useSelector } from "react-redux";
+import { addData, removeData } from "../../store/Feature/Basket/basketData.js";
 import SaveLaterbtn from "./SaveLaterbtn.jsx";
 function CardLg({ product }) {
   if (!product) {
     return null;
   }
-  const [addItems, setAddItems] = useState(0);
-  const [removeItems, setRemoveItems] = useState(0);
+  const [hoverSaveLater, setHoverSaveLater] = useState(false);
+  const [isHovered, setIsHovered] = useState(null);
+  const [showPrice, setShowprice] = useState(null);
+  const [noOfproduct, setNoOfproduct] = useState(0);
   const [addBtnTransition, setAddBtnTransition] = useState(true);
   const [saveforLater, setSaveForLater] = useState(false);
+  const SaveLaterbtnLocation = useRef();
+  const location = useRef();
+  const dispatch = useDispatch();
   const productsWeight = Object.keys(product.discount);
-  if (productsWeight.length == 0) return null;
-  const [weight, setweight] = useState(productsWeight[0]);
 
+  const [weight, setweight] = useState(productsWeight[0]);
   const [offer, setOffer] = useState(product.discount[weight]);
+  if (productsWeight.length == 0) return null;
+
   const [discountedPrice, setDiscountedPrice] = useState(
     product.discountedPriceWithWeight[weight]
   );
   const [originalPrice, setOriginalPrice] = useState(
     product.originalPriceWithWeight[weight]
   );
-  const [isHovered, setIsHovered] = useState(null);
-  const [showPrice, setShowprice] = useState(null);
   const imageAlt = product.imageAlt;
   const images = product.images[0];
   const brand = product.brand;
   const productName = product.productName;
   const rating = "";
   const stars = "";
-  const SaveLaterbtnLocation = useRef();
+  const id = product.id;
   useEffect(() => {
     setOffer(product.discount[weight]),
       setDiscountedPrice(product.discountedPriceWithWeight[weight]);
     setOriginalPrice(product.originalPriceWithWeight[weight]);
   }, [weight]);
-  const location = useRef();
-  const [hoverSaveLater, setHoverSaveLater] = useState(false);
-  const dispatch = useDispatch();
+
+  function addProduct() {
+    if (noOfproduct < 6) setNoOfproduct(noOfproduct + 1);
+  }
+
+  function removeProduct() {
+    if (noOfproduct - 1 == 0) {
+      setAddBtnTransition(true);
+      dispatch(removeData({ id: id }));
+    }
+    if (noOfproduct > 0) setNoOfproduct(noOfproduct - 1);
+  }
+
+  useEffect(() => {
+    if (noOfproduct !== 0)
+      dispatch(
+        addData({
+          id: id,
+          item: {
+            productName: productName,
+            quantity: noOfproduct,
+          },
+        })
+      );
+  }, [noOfproduct]);
   return (
     <>
       {
@@ -172,30 +200,56 @@ function CardLg({ product }) {
             {addBtnTransition ? (
               <button
                 className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
-             font-semibold border-[#CC0000] hover:bg-[#cc0000] hover:text-white  
+             font-semibold border-[#CC0000] hover:bg-[#cc0000]  hover:text-white  
              } origin-bottom`}
                 onClick={() => {
-                  dispatch(addData(product));
+                  addProduct();
                   setAddBtnTransition(false);
                 }}
               >
                 Add
               </button>
             ) : (
-             <div className="relative"> <button
-             className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
-          font-semibold border-[#CC0000] hover:bg-[#cc0000] hover:text-[#303030]  transition-transform duration-100 ease-in-out transform ${
-            !addBtnTransition ? "scale-y-0" : "scale-y-100"
-          } origin-bottom`}
-             onClick={() => {
-               dispatch(addData(product));
-             }}
-           >
-             Adding..
-           </button>
-           <div className="absolute top-0 ">hello</div></div>
+              //   : (
+              //     <div className="relative">
+              //       <button
+              //         className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
+              // font-semibold border-[#CC0000] hover:bg-[#cc0000] hover:text-[#303030]  transition-transform duration-100 ease-in-out transform ${
+              //   !addBtnTransition ? "scale-y-0" : "scale-y-100"
+              // } origin-bottom`}
+              //         onClick={() => {
+              //           dispatch(addData(product));
+              //         }}
+              //       >
+              //         Adding..
+              //       </button>
+              //     </div>
+              //   )
+              <div className="w-[85%]  flex  rounded-md ">
+                <button
+                  className="bg-[#CC0000] w-1/3 text-white pl-6 text-center rounded-tl-md rounded-bl-md 
+                 "
+                  onClick={() => {
+                    removeProduct();
+                  }}
+                >
+                  {" "}
+                  <FaMinus />
+                </button>
+                <div className=" w-1/3 border-[#CC0000] border-2 pt-1 text-[#CC0000]  font-medium  ">
+                  <h3 className="h-full w-full text-center">{noOfproduct}</h3>
+                </div>
+                <button
+                  className="bg-[#CC0000] w-1/3 text-white pl-6  text-center 
+                rounded-br-md rounded-tr-md "
+                  onClick={() => {
+                    addProduct();
+                  }}
+                >
+                  <FaPlus />
+                </button>
+              </div>
             )}
-
           </div>
           {hoverSaveLater && (
             <SaveLaterbtn

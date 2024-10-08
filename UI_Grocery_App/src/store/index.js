@@ -5,6 +5,7 @@ import recomemdedProduct from "./Api/recomendedProduct.js";
 import basketData from "./Feature/Basket/basketData.js";
 import fetchProductsByCategory from "./Api/fetchProductsByCategorySlice.js";
 import CategoriesActiveState from "./Feature/CategoriesActiveState.js";
+
 const store = configureStore({
   reducer: {
     toggleVisibility: toggleVisibility,
