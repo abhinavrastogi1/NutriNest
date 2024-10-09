@@ -15,7 +15,10 @@ function App() {
     dispatch(fetchProductData());
   }, [dispatch]);
   useEffect(() => {
-    dispatch(UpdateFromLocalStorage(JSON.parse(localStorage.getItem("cart"))));
+    if (localStorage?.getItem("cart"))
+      dispatch(
+        UpdateFromLocalStorage(JSON.parse(localStorage?.getItem("cart")))
+      );
   }, []);
   const categoriesData = useSelector((state) => state.categoryApi);
   const productsData = useSelector((state) => state.recomemdedProduct);

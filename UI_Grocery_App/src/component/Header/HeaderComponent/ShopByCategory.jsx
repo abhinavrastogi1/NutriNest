@@ -28,7 +28,7 @@ function ShopByCategory() {
         } origin-top-left z-30  absolute top-10 left-2 rounded-lg`}
       >
         {isVisible && (
-          <div className={`bg-slate-600   rounded-lg 
+          <div className={`bg-black  rounded-lg 
                `}
           >
             <div className="flex rounded-lg">

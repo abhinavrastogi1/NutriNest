@@ -25,7 +25,6 @@ function CardLg({ product }) {
   const location = useRef();
   const dispatch = useDispatch();
   const productsWeight = Object.keys(product.discount);
-
   const [weight, setweight] = useState(productsWeight[0]);
   const [offer, setOffer] = useState(product.discount[weight]);
   if (productsWeight.length == 0) return null;
@@ -73,6 +72,8 @@ function CardLg({ product }) {
         })
       );
   }, [noOfproduct]);
+  
+   
   return (
     <>
       {
@@ -121,7 +122,8 @@ function CardLg({ product }) {
             <button
               className={`flex justify-between h-[30px] w-full py-1 pl-2  relative
              text-gray-600  text-[12px] font-medium  border-gray-300 border-[1px] rounded-md
-              hover:border-gray-600 ${showPrice && productsWeight.length !== 1 && "bg-[#404040]"} ${productsWeight.length === 1 && "bg-[#F7F7F7]"}`}
+              hover:border-gray-600 ${showPrice && productsWeight.length !== 1 &&
+                 "bg-[#404040]"} ${productsWeight.length === 1 && "bg-[#F7F7F7]"}`}
               onClick={() => {
                 setShowprice(!showPrice);
               }}
@@ -154,6 +156,7 @@ function CardLg({ product }) {
                 location={location}
                 setOffer={setOffer}
                 product={product}
+
               />
             )}
             <div className="flex gap-2 h-6 text-[14px]  items-center">

@@ -6,6 +6,7 @@ import profile from "../../assets/images/profile.png";
 import offers from "../../assets/images/offers.png";
 import smartbasket from "../../assets/images/smartbasket.png";
 import {
+  loginToggleSwitch,
   scrolltoggle,
   toggleSwitch,
 } from "../../store/Feature/Ui_component/ToggleVisibility";
@@ -14,8 +15,10 @@ import CategoryButton from "./HeaderComponent/CategoryButton";
 import ShopByCategory from "./HeaderComponent/ShopByCategory";
 import LiItmes from "./HeaderComponent/LiItmes";
 import BasketButon from "./HeaderComponent/BasketButon";
+import LoginPage from "./HeaderComponent/LoginPage";
 
 function Header() {
+  const { loginToggle } = useSelector((state) => state.toggleVisibility);
   const isVisible = useSelector((state) => state.toggleVisibility.toggle);
   const dispatch = useDispatch();
   const handleScroll = () => {
@@ -68,10 +71,16 @@ function Header() {
               </button>
             </div>
             <div>
-              <button className="button-bg-color rounded-md px-2 pt-1">
+              <button
+                className="button-bg-color rounded-md px-2 pt-1"
+                onClick={() => {
+                  dispatch(loginToggleSwitch());
+                }}
+              >
                 <img src={profile} className="w-12 h-19" alt="profile icon" />
               </button>
             </div>
+            <div> {loginToggle && <LoginPage   />}</div>
             <BasketButon />
           </div>
 
