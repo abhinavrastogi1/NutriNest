@@ -2,21 +2,30 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const userSchema = new  mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
       required: true,
       trim: true,
     },
-    lastName:{
+    lastName: {
       type: String,
       required: true,
       trim: true,
     },
     phoneNo: {
       type: String,
-      unique:true,
+      unique: true,
+      required: true,
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    password: {
+      type: String,
       required: true,
     },
     role: {
@@ -27,22 +36,23 @@ const userSchema = new  mongoose.Schema(
     refreshToken: {
       type: String,
     },
-    cart:{
-    type :mongoose.Schema.Types.ObjectId,
-    ref:"Cart",
-    required:true
-    }
+    cart: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Cart",
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  this.passwordHash = await bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
+  console.log(await bcrypt.compare(password, this.password));
   return await bcrypt.compare(password, this.password);
 };
 
