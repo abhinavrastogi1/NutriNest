@@ -2,7 +2,6 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import ApiError from "../Utils/ApiError.js";
 import { User } from "../Models/user.models.js";
 import ApiResponse from "../Utils/ApiResponse.js";
-import { Cart } from "../Models/cart.models.js";
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -39,24 +38,38 @@ const UserExist = asyncHandler(async (req, res) => {
   }
 });
 const registerUser = asyncHandler(async (req, res) => {
-  const { firstName, lastName, phoneNo, password, cart } = req.body;
-  if (firstName == "" || lastName == "" || phoneNo == "" || password == "") {
+  const { firstName, lastName, phoneNo, password, email } = req.body;
+  if (
+    firstName == "" ||
+    lastName == "" ||
+    phoneNo == "" ||
+    password == "" ||
+    email == ""
+  ) {
     throw new ApiError(401, "all fields are required");
   }
-  const newCart=  await Cart.create({
-    
-  })
-  const user = await User.create({
-    firstName: firstName,
+  let user = await User.findOne({ phoneNo });
+
+  if (user) {
+    throw new ApiError(401, "user already exist");
+  }
+  user = await User.create({
+    firstName,
     lastName,
     phoneNo,
-    cart,
+    email,
+    password,
   });
+  if (!user) {
+    throw new ApiError(402, "something went wrong while registering");
+  }
+  res
+    .status(200)
+    .json(new ApiResponse(200, user, "user successfully registered"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
   const { password, phoneNo } = req.body;
-
   const user = await User.findOne({ phoneNo });
 
   if (!user) {
@@ -69,6 +82,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
   );
+  
   if ((!accessToken, !refreshToken)) {
     throw new ApiError(
       501,

@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import bigbasket from "../../assets/images/bigbasket.png";
 import search from "../../assets/images/search.png";
 import compass from "../../assets/images/compass.png";
-import profile from "../../assets/images/profile.png";
 import offers from "../../assets/images/offers.png";
 import smartbasket from "../../assets/images/smartbasket.png";
+import { FaCircleUser } from "react-icons/fa6";
+
 import {
   loginToggleSwitch,
   scrolltoggle,
@@ -20,6 +21,8 @@ import LoginPage from "./HeaderComponent/LoginPage";
 function Header() {
   const { loginToggle } = useSelector((state) => state.toggleVisibility);
   const isVisible = useSelector((state) => state.toggleVisibility.toggle);
+  const { login } = useSelector((state) => state.loginSlice);
+  const [profileDetails, setProfileDetails] = useState(false);
   const dispatch = useDispatch();
   const handleScroll = () => {
     if (window.scrollY > 0) {
@@ -71,16 +74,24 @@ function Header() {
               </button>
             </div>
             <div>
-              <button
-                className="button-bg-color rounded-md px-2 pt-1"
-                onClick={() => {
-                  dispatch(loginToggleSwitch());
-                }}
-              >
-                <img src={profile} className="w-12 h-19" alt="profile icon" />
-              </button>
+              {!login ? (
+                <button
+                  className="bg-black rounded-md px-6 py-1"
+                  onClick={() => {
+                    dispatch(loginToggleSwitch());
+                  }}
+                >
+                  <h2 className="text-white text-[10px] font-semibold ">
+                    Login/ Sign Up
+                  </h2>
+                </button>
+              ) : (
+                <button className="rounded-md bg-[#EEEEEE]  h-full w-[64px] flex justify-center items-center">
+                  <FaCircleUser className="text-[21px]" />
+                </button>
+              )}
             </div>
-            <div> {loginToggle && <LoginPage   />}</div>
+            <div> {loginToggle && <LoginPage />}</div>
             <BasketButon />
           </div>
 

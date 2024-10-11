@@ -1,5 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { json } from "react-router-dom";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+
 
 const basketData = createSlice({
   name: "basketData",

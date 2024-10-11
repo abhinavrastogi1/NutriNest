@@ -6,6 +6,7 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { loginToggleSwitch } from "../../../store/Feature/Ui_component/ToggleVisibility";
 import axios from "axios";
+import { isloggedin } from "../../../store/Feature/Basket/LoginSlice";
 
 function LoginPage() {
   const { productsData } = useSelector((state) => state.basketData);
@@ -16,7 +17,6 @@ function LoginPage() {
     email: "",
     firstName: "",
     lastName: "",
-    cart: productsData,
   });
   const [registerUser, setRegisterUser] = useState(false);
   function onChangeHandle(e) {
@@ -31,13 +31,13 @@ function LoginPage() {
     try {
       const response = await axios.post("/api/users/UserExist", formData);
       if (response?.data.data === "new User") {
-        console.log(formData);
         setRegisterUser(true);
       } else if (response?.data.data === "userExist") {
         const response = await axios.post("/api/users/login", formData);
-        console.log(response);
+
         if (response.data.message === "log in successfull")
           dispatch(loginToggleSwitch());
+        dispatch(isloggedin(true));
       }
     } catch (error) {
       throw error;
@@ -48,7 +48,12 @@ function LoginPage() {
     try {
       console.log(formData);
       const response = await axios.post("/api/users/registerUser", formData);
-      console.log(response.data);
+      if (response.data.message === "user successfully registered") {
+        const response = await axios.post("/api/users/login", formData);
+        if (response.data.message === "log in successfull")
+          dispatch(loginToggleSwitch());
+        dispatch(isloggedin(true));
+      }
     } catch (error) {
       throw error;
     }
