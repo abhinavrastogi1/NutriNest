@@ -15,10 +15,10 @@ function App() {
     dispatch(fetchProductData());
   }, []);
   useEffect(() => {
-    if (localStorage?.getItem("cart"))
-      dispatch(
-        UpdateFromLocalStorage(JSON.parse(localStorage?.getItem("cart")))
-      );
+    if (!localStorage?.getItem("cart")) {
+      localStorage.setItem("cart", JSON.stringify({}));
+    }
+    dispatch(UpdateFromLocalStorage(JSON.parse(localStorage?.getItem("cart"))));
   }, []); // Consider adding `localStorage` data as a dependency
 
   const categoriesData = useSelector((state) => state.categoryApi);

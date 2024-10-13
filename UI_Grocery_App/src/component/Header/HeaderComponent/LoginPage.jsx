@@ -41,7 +41,7 @@ function LoginPage() {
         const cartData = JSON.parse(localStorage?.getItem("cart"));
         if (cartData) {
           dispatch(
-            BasketApi({ route: "addCacheProductoCart", cacheData: cartData })
+            BasketApi({ route: "addCacheProductToCart", cacheData: cartData })
           );
         }
       }
@@ -70,7 +70,7 @@ function LoginPage() {
       dispatch(loginToggleSwitch());
       dispatch(isloggedin(true));
       const cartData = JSON.parse(localStorage?.getItem("cart"));
-      if (cartData && Object.keys(cartData)?.length !== 0) {
+      if (cartData ) {
         dispatch(BasketApi({ route: "createNewCart", cacheData: cartData }));
       }
     } catch (error) {

@@ -7,7 +7,7 @@ import {
 } from "../Controllers/user.controller.js";
 import verifyJwt from "../Middlewares/authmiddleware.js";
 import {
-  addCacheProductoCart,
+  addCacheProductToCart,
   createNewCart,
 } from "../Controllers/cart.controller.js";
 const userRouter = Router();
@@ -16,5 +16,5 @@ userRouter.route("/UserExist").post(UserExist);
 userRouter.route("/login").post(loginUser);
 userRouter.route("/logout").post(verifyJwt, logoutUser);
 userRouter.route("/createNewCart").post(verifyJwt, createNewCart);
-userRouter.route("/addCacheProductoCart").post(verifyJwt, addCacheProductoCart);
+userRouter.route("/addCacheProductToCart").post(verifyJwt, addCacheProductToCart);
 export default userRouter;

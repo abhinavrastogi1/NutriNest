@@ -69,6 +69,9 @@ function CardLg({ product }) {
             productName: productName,
             quantity: noOfproduct,
             _id: product._id,
+            discountedPrice: discountedPrice,
+            originalPrice: originalPrice,
+            offer: offer,
           },
         })
       );
