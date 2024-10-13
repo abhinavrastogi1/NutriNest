@@ -1,8 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
-
-
+import { createSlice } from "@reduxjs/toolkit";
 const basketData = createSlice({
   name: "basketData",
   initialState: {
@@ -19,10 +15,11 @@ const basketData = createSlice({
       delete state.productsData[id];
       localStorage.setItem("cart", JSON.stringify(state.productsData));
     },
-    UpdateFromLocalStorage:(state,action)=>{
-    state.productsData=action.payload
-    }
+    UpdateFromLocalStorage: (state, action) => {
+      state.productsData = action.payload;
+    },
   },
 });
-export const { addData, removeData ,UpdateFromLocalStorage} = basketData.actions;
+export const { addData, removeData, UpdateFromLocalStorage } =
+  basketData.actions;
 export default basketData.reducer;

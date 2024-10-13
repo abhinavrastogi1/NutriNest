@@ -10,7 +10,7 @@ import Basket from "./component/Basket/Basket.jsx";
 import ProductsBycategory from "./component/CategoryProducts/ProductsByMainCategory.jsx";
 import ProductsBySubCategory from "./component/CategoryProducts/productsBySubCategory.jsx";
 import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx";
-import noCategoryFound from "./component/CategoryProducts/noCategoryFound.jsx"
+import noCategoryFound from "./component/CategoryProducts/noCategoryFound.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,12 +35,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/:mainCategory/:subCategory/:subSubCategory",
-        element: <ProductsBySubSubCategory/>
+        element: <ProductsBySubSubCategory />,
       },
       {
-        path:"/No Category Found",
-        element:<noCategoryFound/>
-      }
+        path: "/No Category Found",
+        element: <noCategoryFound />,
+      },
     ],
   },
 ]);

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginToggleSwitch } from "../../../store/Feature/Ui_component/ToggleVisibility";
 import axios from "axios";
 import { isloggedin } from "../../../store/Feature/Basket/LoginSlice";
+import { BasketApi } from "../../../store/Api/BasketApi";
 
 function LoginPage() {
   const { productsData } = useSelector((state) => state.basketData);
@@ -34,10 +35,15 @@ function LoginPage() {
         setRegisterUser(true);
       } else if (response?.data.data === "userExist") {
         const response = await axios.post("/api/users/login", formData);
-
         if (response.data.message === "log in successfull")
           dispatch(loginToggleSwitch());
         dispatch(isloggedin(true));
+        const cartData = JSON.parse(localStorage?.getItem("cart"));
+        if (cartData) {
+          dispatch(
+            BasketApi({ route: "addCacheProductoCart", cacheData: cartData })
+          );
+        }
       }
     } catch (error) {
       throw error;
@@ -46,16 +52,29 @@ function LoginPage() {
   async function onRegisterSubmit(e) {
     e.preventDefault();
     try {
-      console.log(formData);
-      const response = await axios.post("/api/users/registerUser", formData);
-      if (response.data.message === "user successfully registered") {
-        const response = await axios.post("/api/users/login", formData);
-        if (response.data.message === "log in successfull")
-          dispatch(loginToggleSwitch());
-        dispatch(isloggedin(true));
+      const registerationResponse = await axios.post(
+        "/api/users/registerUser",
+        formData
+      );
+
+      if (
+        registerationResponse.data.message !== "user successfully registered"
+      ) {
+        throw new Error("Registraton Failed");
+      }
+      const loginResponse = await axios.post("/api/users/login", formData);
+
+      if (loginResponse.data.message !== "log in successfull") {
+        throw new Error("login failed");
+      }
+      dispatch(loginToggleSwitch());
+      dispatch(isloggedin(true));
+      const cartData = JSON.parse(localStorage?.getItem("cart"));
+      if (cartData && Object.keys(cartData)?.length !== 0) {
+        dispatch(BasketApi({ route: "createNewCart", cacheData: cartData }));
       }
     } catch (error) {
-      throw error;
+      console.error("Error during registration or login:", error);
     }
   }
   const dispatch = useDispatch();

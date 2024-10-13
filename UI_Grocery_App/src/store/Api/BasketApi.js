@@ -3,16 +3,15 @@ import axios from "axios";
 
 export const BasketApi = createAsyncThunk(
   "BasketApiSlice/BasketApi",
-  async (localStorage) => {
+  async ({ route, cacheData }) => {
     try {
-      const response = await axios.post("/api/users/cart", localStorage);
+      const response = await axios.post(`/api/users/${route}`, cacheData);
       console.log(response.data);
     } catch (error) {
-      throw error;
+      console.log("error while creating Cart", error);
     }
   }
 );
-
 const BasketApiSlice = createSlice({
   name: "BasketApiSlice",
   initialState: {
