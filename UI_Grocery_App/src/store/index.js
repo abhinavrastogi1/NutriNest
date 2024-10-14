@@ -7,6 +7,7 @@ import fetchProductsByCategory from "./Api/fetchProductsByCategorySlice.js";
 import CategoriesActiveState from "./Feature/CategoriesActiveState.js";
 import loginSlice from "./Feature/Basket/LoginSlice.js";
 import BasketApiSlice from "./Api/BasketApi.js";
+import FetchBasketSlice from "./Api/FetchBasketSlice.js";
 const store = configureStore({
   reducer: {
     toggleVisibility: toggleVisibility,
@@ -17,6 +18,7 @@ const store = configureStore({
     CategoriesActiveState: CategoriesActiveState,
     loginSlice: loginSlice,
     BasketApiSlice: BasketApiSlice,
+    FetchBasketSlice,FetchBasketSlice
   },
 });
 export default store;

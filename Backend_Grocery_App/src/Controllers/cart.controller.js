@@ -59,7 +59,8 @@ const addCacheProductToCart = asyncHandler(async (req, res) => {
   cartData.forEach((existingProduct) => {
     // Check if the existing product is already in the cartCachedData
     const existsInCache = cartCachedData.some(
-      (cachedProduct) => existingProduct.productId.toString() === cachedProduct._id
+      (cachedProduct) =>
+        existingProduct.productId.toString() === cachedProduct._id
     );
     // If it doesn't exist in the cache, add it to cartItems
     if (!existsInCache) {
@@ -80,7 +81,105 @@ const addCacheProductToCart = asyncHandler(async (req, res) => {
   res.json(new ApiResponse(200, cart, "Cart Data"));
 });
 
-const getCart=asyncHandler(async(req,res)=>{
-
-})
-export { createNewCart, addCacheProductToCart,getCart };
+const getCart = asyncHandler(async (req, res) => {
+  const userDetails = req?.user;
+  if (!userDetails) {
+    throw new ApiError(501, "something went wrong while fetching userDetails");
+  }
+  const cart = await Cart.aggregate([
+    {
+      $match: {
+        user: new mongoose.Types.ObjectId(userDetails?._id),
+      },
+    },
+    {
+      $unwind: "$item",
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "item.productId",
+        foreignField: "_id",
+        as: "item.productId",
+      },
+    },
+    {
+      $project: {
+        item: 1,
+        user: 1,
+      },
+    },
+    {
+      $addFields: {
+        "item.productId": {
+          $arrayElemAt: ["$item.productId", 0],
+        },
+      },
+    },
+    {
+      $addFields: {
+        "item.productId.images": {
+          $slice: ["$item.productId.images", 1],
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "item.productId.category",
+        foreignField: "_id",
+        as: "item.productId.category",
+      },
+    },
+    {
+      $addFields: {
+        "item.productId.category": {
+          $arrayElemAt: ["$item.productId.category", 0],
+        },
+      },
+    },
+    {
+      $addFields: {
+        "item.productId.category": "$item.productId.category.category",
+      },
+    },
+    {
+      $project: {
+        "item.productId.createdAt": 0,
+        "item.productId.originalPriceWithWeight": 0,
+        "item.productId.discount": 0,
+        "item.productId.discountedPriceWithWeight": 0,
+        "item.productId.quantity": 0,
+        "item.productId.packSizes": 0,
+        "item.productId.__v": 0,
+        "item.productId.updatedAt": 0,
+      },
+    },
+    {
+      $group: {
+        _id: {
+          mainCategory: "$item.productId.category.level1",
+          user: "$user",
+          _id: "$_id",
+        },
+        item: {
+          $push: "$item",
+        },
+      },
+    },
+    {
+      $addFields: {
+        user: "$_id.user",
+        _id: "$_id._id",
+        mainCateory: "$_id.mainCategory",
+      },
+    },
+  ]);
+  if (!cart) {
+    throw new ApiError(501, "something went wrong while fetching cart Data");
+  }
+  res
+    .status(200)
+    .json(new ApiResponse(200, cart, "cartData successfully recieved"));
+});
+export { createNewCart, addCacheProductToCart, getCart };
