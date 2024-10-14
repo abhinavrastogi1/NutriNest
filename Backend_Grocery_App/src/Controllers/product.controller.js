@@ -595,6 +595,98 @@ const findProductsBySubSubCategory = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, products, "Products found successfully"));
 });
 
+const searchProduct = asyncHandler(async (req, res) => {
+  const { search } = req?.query;
+  if (!search) {
+    throw new ApiError(501, "something went wrong while searching");
+  }
+  const searchResult = await Product.aggregate([
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $addFields: {
+        category: {
+          $arrayElemAt: ["$category.category", 0],
+        },
+        images: {
+          $slice: ["$images", 1],
+        },
+      },
+    },
+    {
+      $project: {
+        createdAt: 0,
+        updatedAt: 0,
+        __v: 0,
+      },
+    },
+    {
+      $match: {
+        $or: [
+          {
+            productName: {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            "category.level1": {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            "category.level2": {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            "category.level3": {
+              $regex: search,
+              $options: "i",
+            },
+          },
+        ],
+      },
+    },
+    {
+      $sort: {
+        id: 1,
+      },
+    },
+    {
+      $group: {
+        _id: "$category.level1",
+        Products: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $addFields: {
+        mainCategory: "$_id",
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+      },
+    },
+  ]);
+  if (!searchResult) {
+    throw new ApiError(404, "Not found");
+  }
+  res.status(200).json(new ApiResponse(200, searchResult, "search Results"));
+});
+
+const productInfo = asyncHandler(async (req, res) => {});
 export {
   listProduct,
   categorytree,
@@ -602,4 +694,6 @@ export {
   findProductsByCategory,
   findProductsBySubCategory,
   findProductsBySubSubCategory,
+  searchProduct,
+  productInfo,
 };

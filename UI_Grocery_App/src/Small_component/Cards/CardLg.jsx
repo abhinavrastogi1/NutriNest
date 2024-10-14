@@ -76,7 +76,7 @@ function CardLg({ product }) {
         })
       );
   }, [noOfproduct]);
-
+console.log("inside")
   return (
     <>
       {

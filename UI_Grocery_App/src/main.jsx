@@ -11,6 +11,7 @@ import ProductsBycategory from "./component/CategoryProducts/ProductsByMainCateg
 import ProductsBySubCategory from "./component/CategoryProducts/productsBySubCategory.jsx";
 import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx";
 import noCategoryFound from "./component/CategoryProducts/noCategoryFound.jsx";
+import Search from "./component/Search/Search.jsx";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/No Category Found",
         element: <noCategoryFound />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
     ],
   },

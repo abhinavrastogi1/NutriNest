@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import bigbasket from "../../assets/images/bigbasket.png";
-import search from "../../assets/images/search.png";
+
 import compass from "../../assets/images/compass.png";
 import offers from "../../assets/images/offers.png";
 import smartbasket from "../../assets/images/smartbasket.png";
@@ -17,6 +17,7 @@ import ShopByCategory from "./HeaderComponent/ShopByCategory";
 import LiItmes from "./HeaderComponent/LiItmes";
 import BasketButon from "./HeaderComponent/BasketButon";
 import LoginPage from "./HeaderComponent/LoginPage";
+import SearchButton from "./HeaderComponent/SearchButton";
 
 function Header() {
   const { loginToggle } = useSelector((state) => state.toggleVisibility);
@@ -59,14 +60,7 @@ function Header() {
                 alt="bigbasket logo"
               />
             </div>
-            <div className="flex flex-row border-[1px] border-border-color rounded-md w-[60%]">
-              <img src={search} className="h-5 m-2" alt="search" />
-              <input
-                type="text"
-                placeholder="Search for Products ..."
-                className="outline-none col-span-full text-[12px]"
-              />
-            </div>
+           <SearchButton/>
             <div className="gap-x-10 h-full mx-3">
               <button className="button-bg-color rounded-md flex justify-center flex-row space-x-2 p-2 h-full w-52">
                 <img src={compass} className="w-5 h-5" alt="compass icon" />
