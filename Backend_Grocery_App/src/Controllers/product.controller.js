@@ -670,6 +670,11 @@ const searchProduct = asyncHandler(async (req, res) => {
       },
     },
     {
+      $sort: {
+        "Products.0.id": 1,
+      },
+    },
+    {
       $addFields: {
         mainCategory: "$_id",
       },

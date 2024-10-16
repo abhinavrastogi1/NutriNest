@@ -242,7 +242,7 @@ function ProductsBySubCategory() {
                           setShowMore(!showMore);
                         }}
                       >
-                        Show more +{" "}
+                         { showMore ?<span>Show less -</span>:<span>Show more +</span>}
                       </button>
                     )}
                   </div>

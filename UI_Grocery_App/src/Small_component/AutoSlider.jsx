@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Surfexcel from "../assets/images/Surfexcel.png";
 import Dove from "../assets/images/Dove.png";
+import { Link } from "react-router-dom";
 
 function AutoSlider() {
   const [imageIndex, setImageIndex] = useState(0);
 
   const slides = [
-    { id: 1, url: Surfexcel, href: "https://google.com" },
-    { id: 2, url: Dove, href: "./" },
+    { id: 1, url: Surfexcel, href: "/" },
+    { id: 2, url: Dove, href: "/" },
   ];
 
   useEffect(() => {
@@ -28,13 +29,13 @@ function AutoSlider() {
       >
         {slides.map((slide, index) => (
           <div key={slide.id} className="flex-shrink-0 w-full">
-            <a href={slide.href}>
-              <img
+            
+             <Link to="/"> <img
                 src={slide.url}
                 className="w-full h-full object-cover"
                 alt={`Slide ${slide.id}`}
               />
-            </a>
+            </Link>
           </div>
         ))}
       </div>

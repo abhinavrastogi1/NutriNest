@@ -76,7 +76,7 @@ function CardLg({ product }) {
         })
       );
   }, [noOfproduct]);
-console.log("inside")
+
   return (
     <>
       {
@@ -99,7 +99,7 @@ console.log("inside")
             <div className="text-[13px]">
               <h6>{brand}</h6>
             </div>
-            <div className="h-[45px] text-[14px] flex flex-wrap font-medium">
+            <div className="h-[45px] text-[14px] flex flex-nowrap overflow-y-hidden font-medium">
               <p>{productName}</p>
             </div>
             {rating && stars && (

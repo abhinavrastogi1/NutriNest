@@ -8,6 +8,9 @@ import CardLg from "../../Small_component/Cards/CardLg.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchProducts } from "../../store/Api/fetchProductsByCategorySlice.js";
 import somethingwentwrong from "../../assets/images/somethingwentwrong.png";
+import { SearchApi } from "../../store/Api/SearchSlice.js";
+import { RxCross2 } from "react-icons/rx";
+
 function Search() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -15,18 +18,12 @@ function Search() {
   const [hoverRelevance, setHoverRelevance] = useState(false);
   const [filterToggle, setFilterToggle] = useState(true);
   const [showMore, setShowMore] = useState(false);
-  const { categories } = useSelector((state) => state.categoryApi);
   const { status, productsData } = useSelector((state) => state.SearchSlice);
-  console.log(productsData);
   const queryParams = new URLSearchParams(location.search);
   const query = queryParams.get("q");
-
-  function tolowercase(str) {
-    return str.replace(/( & |, | and | )/g, "");
-  }
-  function removeSpecialChar(str) {
-    return str.replace(/( & |, | and | )/g, "-");
-  }
+  useEffect(() => {
+    dispatch(SearchApi(query));
+  }, []);
   function capitalizeWords(str) {
     return str
       ?.split(" ")
@@ -35,14 +32,42 @@ function Search() {
       })
       .join(" ");
   }
-  const mainCategory = productsData?.mainCategory;
-
   let noOfProducts = 0;
   productsData?.forEach((product) => {
     if (Array.isArray(product.Products)) {
       noOfProducts += product.Products.length;
     }
   });
+  let mainCategroyArr = productsData?.map((product) => product.mainCategory);
+
+  const categroyArr = [];
+  productsData.forEach((product) => {
+    const setData = new Set();
+    const mainCategory = product.mainCategory;
+    product?.Products?.forEach((productData) => {
+      setData.add(productData.category.level2);
+    });
+    categroyArr.push({
+      subCategory: Array.from(setData),
+      mainCategory: mainCategory,
+    });
+  });
+  const [filterArr, setFilterArr] = useState([]);
+  const filterlength = categroyArr.length;
+  function addFilter(subCategoryItem) {
+    const set = new Set([...filterArr, subCategoryItem]);
+    console.log(Array.from(set));
+    setFilterArr(Array.from(set));
+  }
+  function removeFilter(subCatgory) {
+    if (filterArr.length == 1) {
+      setFilterArr([]);
+    }
+    const set = new Set([...filterArr]);
+    set.delete(subCatgory);
+    console.log(Array.from(set));
+    setFilterArr(Array.from(set));
+  }
   return (
     <main className=" bg-[#f7f7f7]">
       {status == "success" ? (
@@ -72,8 +97,9 @@ function Search() {
           </div>
           {/* No of Product div */}
           <div className="flex w-full my-4 text-gray-700">
-            <h1 className="text-lg">
-              <span>({noOfProducts})</span> result for {query}
+            <h1 className="text-md font-medium">
+              <span className="font-bold text-lg">{noOfProducts}</span> result
+              for "{query}"
             </h1>
           </div>
           {/* Show and relevance button */}
@@ -131,76 +157,128 @@ function Search() {
           {/* Main section */}
           <section className=" border-dotted border-t-2 mt-4 py-2 w-full flex    ">
             <div className="flex flex-wrap justify-between w-full relative">
-              {filterToggle && (
-                // <div className=" overflow-y-auto h-[250px] w-[266px] sticky top-0 custom-scrollbar ">
-                //   <div className="mb-4 mt-6">
-                //     <h1 className="font-semibold text-[17px]">
-                //       Shop by Category
-                //     </h1>
-                //   </div>
-                //   <div className=" bg-white p-2  ">
-                //     <div className=" flex flex-col ">
-                //       <button className="text-[#76B900] text-[15px] p-2 flex justy-start  pl-0 font-medium ">
-                //         <span> {capitalizeWords(mainCategory)}</span>
-                //       </button>
-                //       {subCategoryArr?.slice(0, 2).map((subCategory) => (
-                //         <button
-                //           key={subCategory}
-                //           className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
-                //           onClick={() => {
-                //             dispatch(
-                //               fetchProducts({
-                //                 mainCategory: mainCategory,
-                //                 subCategory: subCategory,
-                //               })
-                //             );
-                //             navigate(
-                //               `/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
-                //             );
-                //           }}
-                //         >
-                //           <span>{capitalizeWords(subCategory)}</span>
-                //         </button>
-                //       ))}
-                //       {showMore &&
-                //         subCategoryArr?.slice(2).map((subCategory) => (
-                //           <button
-                //             key={subCategory}
-                //             className="p-2 border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
-                //             onClick={() => {
-                //               dispatch(
-                //                 fetchProducts({
-                //                   mainCategory: mainCategory,
-                //                   subCategory: subCategory,
-                //                 })
-                //               );
-                //               navigate(
-                //                 `/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
-                //               );
-                //             }}
-                //           >
-                //             <span>{capitalizeWords(subCategory)}</span>
-                //           </button>
-                //         ))}
-                //     </div>
-                //     {subCategoryArr.length > 2 && (
-                //       <button
-                //         className=" rounded-md underline text-sm m-2 ml-0 font-medium"
-                //         onClick={() => {
-                //           setShowMore(!showMore);
-                //         }}
-                //       >
-                //         Show more +{" "}
-                //       </button>
-                //     )}
-                //   </div>
-                // </div>
-                <h1>hello</h1>
+              {filterToggle > 0 && (
+                <div className=" overflow-y-auto h-[500px] w-[266px] sticky top-0 custom-scrollbar ">
+                  {filterArr.length > 0 && (
+                    <div className="mb-4 mt-3 bg-white p-2 flex flex-col">
+                      <div className=" flex justify-between ">
+                        <button className="text-sm font-semibold">
+                          Filters
+                        </button>
+                        <button
+                          className="text-xs text-[#CC0000] font-semibold"
+                          onClick={() => {
+                            setFilterArr([]);
+                          }}
+                        >
+                          Clear
+                        </button>
+                      </div>
+                      <div className="my-2  ">
+                        {filterArr?.map((subCatgory, index) => (
+                          <button
+                            key={index}
+                            className="text-xs bg-[#EEEEEE] flex my-1 justify-start p-[6px] rounded-md"
+                            onClick={() => {
+                              removeFilter(subCatgory);
+                            }}
+                          >
+                            <span className="hover:line-through ">
+                              {capitalizeWords(subCatgory)}
+                            </span>
+                            <span>
+                              <RxCross2 className="text-[15px] mx-1" />
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="mb-4 mt-6">
+                    <h1 className="font-semibold text-[17px]">
+                      Shop by Category
+                    </h1>
+                  </div>
+
+                  <div className=" bg-white p-2  ">
+                    <div>
+                      {categroyArr.slice(0, 1).map((item) => {
+                        return (
+                          <div
+                            className=" flex flex-col  "
+                            key={item.mainCategory}
+                          >
+                            <button className="text-[#76B900] text-[15px] p-2 flex justy-start  pl-0 font-medium ">
+                              <span> {capitalizeWords(item.mainCategory)}</span>
+                            </button>
+                            {item.subCategory.map((subCategory) => {
+                              return (
+                                <button
+                                  key={subCategory}
+                                  className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
+                                  onClick={() => {
+                                    addFilter(subCategory);
+                                  }}
+                                >
+                                  <span>{capitalizeWords(subCategory)}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {showMore && (
+                      <div>
+                        {categroyArr.slice(1).map((item) => {
+                          return (
+                            <div
+                              className=" flex flex-col  "
+                              key={item.mainCategory}
+                            >
+                              <button className="text-[#76B900] text-[15px] p-2 flex justy-start  pl-0 font-medium ">
+                                <span>
+                                  {" "}
+                                  {capitalizeWords(item.mainCategory)}
+                                </span>
+                              </button>
+                              {item.subCategory.map((subCategory) => (
+                                <button
+                                  key={subCategory}
+                                  className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
+                                  onClick={() => {
+                                    addFilter(subCategory);
+                                  }}
+                                >
+                                  <span>{capitalizeWords(subCategory)}</span>
+                                </button>
+                              ))}
+                            </div>
+                          );
+                        })}{" "}
+                      </div>
+                    )}
+                    {filterlength > 1 && (
+                      <button
+                        className=" rounded-md underline text-sm m-2 ml-0 font-medium"
+                        onClick={() => {
+                          setShowMore(!showMore);
+                        }}
+                      >
+                        {showMore ? (
+                          <span>Show less -</span>
+                        ) : (
+                          <span>Show more +</span>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
               )}
               <ul
                 className={`flex flex-wrap  ${filterToggle ? "w-[846px] gap-6   " : noOfProducts == 2 || noOfProducts == 3 ? "w-full gap-6" : "w-full justify-between"} `}
               >
-                {productsData?.forEach((productinfo) =>
+                {productsData?.map((productinfo) =>
                   productinfo?.Products.map((product) => (
                     <li key={product.id} className=" list-none ">
                       <CardLg product={product} />
