@@ -7,14 +7,14 @@ export const fetchProducts = createAsyncThunk(
     try {
       let response = undefined;
       if (mainCategory && !subCategory && !subSubCategory) {
-        response = await axios.get(`/api/${mainCategory}`);
+        response = await axios.get(`/api/findProduct/${mainCategory}`);
         return response.data.data;
       } else if (mainCategory && subCategory && !subSubCategory) {
-        response = await axios.get(`/api/${mainCategory}/${subCategory}`);
+        response = await axios.get(`/api/findProduct/${mainCategory}/${subCategory}`);
         return response.data.data;
       } else if (mainCategory && subCategory && subSubCategory) {
         response = await axios.get(
-          `/api/${mainCategory}/${subCategory}/${subSubCategory}`
+          `/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
         );
         return response.data.data;
       }

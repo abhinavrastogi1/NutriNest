@@ -117,7 +117,7 @@ function ProductsBySubSubCategory() {
               className="text-[15px] font-medium flex pt-[2px] "
               onClick={() => {
                 dispatch(fetchProducts({ mainCategory: mainCategory }));
-                navigate(`/${removeSpecialChar(mainCategory)}`);
+                navigate(`/cd/${removeSpecialChar(mainCategory)}`);
               }}
             >
               {capitalizeWords(mainCategory)}
@@ -136,7 +136,7 @@ function ProductsBySubSubCategory() {
                   })
                 );
                 navigate(
-                  `/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
+                  `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
                 );
               }}
             >
@@ -157,7 +157,7 @@ function ProductsBySubSubCategory() {
                   })
                 );
                 navigate(
-                  `/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
+                  `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
                 );
               }}
             >
@@ -233,7 +233,7 @@ function ProductsBySubSubCategory() {
                     className="flex m-2 ml-1"
                     onClick={() => {
                       dispatch(fetchProducts({ mainCategory: mainCategory }));
-                      navigate(`/${removeSpecialChar(mainCategory)}`);
+                      navigate(`/cd/${removeSpecialChar(mainCategory)}`);
                     }}
                   >
                     {" "}
@@ -254,7 +254,7 @@ function ProductsBySubSubCategory() {
                             })
                           );
                           navigate(
-                            `/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
+                           `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
                           );
                         }}
                       >
@@ -274,7 +274,7 @@ function ProductsBySubSubCategory() {
                               })
                             );
                             navigate(
-                              `/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
+                              `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
                             );
                           }}
                         >
@@ -296,7 +296,7 @@ function ProductsBySubSubCategory() {
                                 })
                               );
                               navigate(
-                                `/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
+                                `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
                               );
                             }}
                           >

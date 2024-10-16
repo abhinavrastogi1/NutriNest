@@ -49,7 +49,7 @@ function ShopByCategory() {
                       onClick={() => {
                         dispatch(scrolltoggle(false));
                         dispatch(fetchProducts({ mainCategory: activeUl1 }));
-                        navigate(`/${category}`);
+                        navigate(`/cd/${category}`);
                       }}
                     >
                       {capitalizeWords(item.mainCategory)}
@@ -72,7 +72,7 @@ function ShopByCategory() {
                       );
                       return (
                         <Link
-                          to={`${category}/${subcategory}`}
+                          to={`/cd/${category}/${subcategory}`}
                           key={subCategory.level2}
                         >
                           {" "}
@@ -122,7 +122,7 @@ function ShopByCategory() {
                         );
                         return (
                           <Link
-                            to={`${category}/${subcategory}/${subsubcategory}`}
+                            to={`/cd/${category}/${subcategory}/${subsubcategory}`}
                             key={subSubCategory.level3}
                           >
                             <li

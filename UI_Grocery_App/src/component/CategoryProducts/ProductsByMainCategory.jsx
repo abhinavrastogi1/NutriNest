@@ -81,7 +81,7 @@ function ProductsBycategory() {
               className="text-[15px] font-semibold pt-[2px]"
               onClick={() => {
                 dispatch(fetchProducts({ mainCategory:mainCategory  }));
-                        navigate(`/${removeSpecialChar(mainCategory)}`);
+                        navigate(`/cd/${removeSpecialChar(mainCategory)}`);
               }}
             >
               {capitalizeWords(mainCategory)}
@@ -166,7 +166,7 @@ function ProductsBycategory() {
                           className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                           onClick={() => {
                             dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
-                            navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
+                            navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
                           }}
                         >
                           <span>{capitalizeWords(subCategory)}</span>
@@ -179,7 +179,7 @@ function ProductsBycategory() {
                             className="p-2 border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                             onClick={() => {
                               dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
-                              navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
+                              navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
                             }}
                           >
                             <span>{capitalizeWords(subCategory)}</span>

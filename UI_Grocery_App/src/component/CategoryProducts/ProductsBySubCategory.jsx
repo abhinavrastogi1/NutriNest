@@ -102,7 +102,7 @@ function ProductsBySubCategory() {
               className="text-[15px] font-medium flex pt-[2px] "
               onClick={() => {
                 dispatch(fetchProducts({ mainCategory:mainCategory }));
-                navigate(`/${removeSpecialChar(mainCategory)}`);
+                navigate(`/cd/${removeSpecialChar(mainCategory)}`);
               }}
             >
               {capitalizeWords(mainCategory)}
@@ -116,7 +116,7 @@ function ProductsBySubCategory() {
               className="text-[15px] font-semibold pt-[2px]"
               onClick={() => {
                 dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
-                navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
+                navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
               }}
             >
               {capitalizeWords(subCategory)}
@@ -194,7 +194,7 @@ function ProductsBySubCategory() {
                     className="flex m-2 ml-1"
                     onClick={() => {
                       dispatch(fetchProducts({ mainCategory: mainCategory }));
-                      navigate(`/${removeSpecialChar(mainCategory)}`);
+                      navigate(`/cd/${removeSpecialChar(mainCategory)}`);
                     }}
                   >
                     {" "}
@@ -215,7 +215,7 @@ function ProductsBySubCategory() {
                           className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                           onClick={() => {
                             dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory,subSubCategory:subSubCategory }));
-                            navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`);
+                            navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`);
                           }}
                         >
                           <span>{capitalizeWords(subSubCategory)}</span>
@@ -228,7 +228,7 @@ function ProductsBySubCategory() {
                             className="p-2 border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                             onClick={() => {
                               dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory,subSubCategory:subSubCategory }));
-                              navigate(`/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`);
+                              navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`);
                             }}
                           >
                             <span>{capitalizeWords(subSubCategory)}</span>

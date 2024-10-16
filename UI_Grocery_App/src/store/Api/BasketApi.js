@@ -8,7 +8,7 @@ export const BasketApi = createAsyncThunk(
       const response = await axios.post(`/api/users/${route}`, cacheData);
       console.log(response.data);
     } catch (error) {
-      console.log("error while creating Cart", error);
+      console.error("error while creating Cart", error);
     }
   }
 );

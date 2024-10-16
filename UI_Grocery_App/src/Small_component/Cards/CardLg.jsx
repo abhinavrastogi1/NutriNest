@@ -10,6 +10,7 @@ import PriceList from "./PriceList.jsx";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addData, removeData } from "../../store/Feature/Basket/basketData.js";
+import { productSliceApi } from "../../store/Api/productSlice.js";
 import SaveLaterbtn from "./SaveLaterbtn.jsx";
 function CardLg({ product }) {
   if (!product) {
@@ -76,7 +77,9 @@ function CardLg({ product }) {
         })
       );
   }, [noOfproduct]);
-
+  function removeSpecialChar(str) {
+    return str.replace(/( & |, | and |\/| \/ | )/g, "-");
+  }
   return (
     <>
       {
@@ -87,9 +90,14 @@ function CardLg({ product }) {
                 {offer}% OFF
               </p>
             </div>
-            <div className="img h-fulll w-full">
+            <div
+              className=" h-fulll w-full"
+              onClick={() => {
+                dispatch(productSliceApi({ _id: product._id }));
+              }}
+            >
               {
-                <Link to="/">
+                <Link to={`/pd/${removeSpecialChar(productName)}`}>
                   <img src={images} loading="lazy" alt={imageAlt} />
                 </Link>
               }

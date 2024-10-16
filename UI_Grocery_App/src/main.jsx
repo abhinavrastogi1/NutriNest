@@ -12,6 +12,7 @@ import ProductsBySubCategory from "./component/CategoryProducts/productsBySubCat
 import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx";
 import noCategoryFound from "./component/CategoryProducts/noCategoryFound.jsx";
 import Search from "./component/Search/Search.jsx";
+import Product from "./component/Product/Product.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,15 +28,15 @@ const router = createBrowserRouter([
         element: <Basket />,
       },
       {
-        path: "/:mainCategory",
+        path: "/cd/:mainCategory",
         element: <ProductsBycategory />,
       },
       {
-        path: "/:mainCategory/:subCategory",
+        path: "/cd/:mainCategory/:subCategory",
         element: <ProductsBySubCategory />,
       },
       {
-        path: "/:mainCategory/:subCategory/:subSubCategory",
+        path: "/cd/:mainCategory/:subCategory/:subSubCategory",
         element: <ProductsBySubSubCategory />,
       },
       {
@@ -45,7 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
-      },
+      },{
+        path:"/pd/:product",
+       element:<Product/>
+      }
     ],
   },
 ]);

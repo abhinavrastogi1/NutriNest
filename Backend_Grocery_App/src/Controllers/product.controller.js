@@ -691,7 +691,10 @@ const searchProduct = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, searchResult, "search Results"));
 });
 
-const productInfo = asyncHandler(async (req, res) => {});
+const productDetails = asyncHandler(async (req, res) => {
+  console.log(req)
+  
+});
 export {
   listProduct,
   categorytree,
@@ -700,5 +703,5 @@ export {
   findProductsBySubCategory,
   findProductsBySubSubCategory,
   searchProduct,
-  productInfo,
+  productDetails,
 };

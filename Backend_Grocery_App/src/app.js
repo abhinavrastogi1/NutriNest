@@ -29,6 +29,6 @@ import productRouter from "./Routes/product.routes.js";
 app.use("/api/product", productRouter);
 //error hadler midleware
 import { findProduct } from "./Routes/findProduct.js";
-app.use("/api", findProduct);
+app.use("/api/findProduct", findProduct);
 app.use(errorhandler);
 export default app;

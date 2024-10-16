@@ -6,7 +6,7 @@ export const FetchBasket = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(`/api/users/getCart`);
-      console.log(response.data);
+      return response.data.data;
     } catch (error) {
       console.log("error while fetching Cart", error);
     }
@@ -15,7 +15,7 @@ export const FetchBasket = createAsyncThunk(
 const FetchBasketSlice = createSlice({
   name: "FetchBasketSlice",
   initialState: {
-    productData: {},
+    productData: [],
     status: "idle",
     error: null,
   },
