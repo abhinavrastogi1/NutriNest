@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Category } from "../Models/category.models.js";
 import { Product } from "../Models/product.models.js";
 
@@ -692,8 +693,47 @@ const searchProduct = asyncHandler(async (req, res) => {
 });
 
 const productDetails = asyncHandler(async (req, res) => {
-  console.log(req)
+  const { _id } = req?.query;
+  if (!_id) {
+    throw new ApiError(401, "_id doesnot exist");
+  }
+  const productDetails = await Product.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(_id),
+      },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $addFields: {
+        category: {
+          $arrayElemAt: ["$category.category", 0],
+        },
+      },
+    },
+    {
+      $project: {
+        createdAt: 0,
+        updatedAt: 0,
+        __v: 0,
+      },
+    },
+  ]);
+  if (!productDetails) {
+    throw new ApiError(
+      401,
+      "something went wrong while finding product details"
+    );
+  }
   
+  res.status(200).json(new ApiResponse(200, productDetails, "product details"));
 });
 export {
   listProduct,
