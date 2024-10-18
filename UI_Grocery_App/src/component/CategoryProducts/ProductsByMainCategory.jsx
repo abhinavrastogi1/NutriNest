@@ -80,8 +80,8 @@ function ProductsBycategory() {
             <button
               className="text-[15px] font-semibold pt-[2px]"
               onClick={() => {
-                dispatch(fetchProducts({ mainCategory:mainCategory  }));
-                        navigate(`/cd/${removeSpecialChar(mainCategory)}`);
+                dispatch(fetchProducts({ mainCategory: mainCategory }));
+                navigate(`/cd/${removeSpecialChar(mainCategory)}`);
               }}
             >
               {capitalizeWords(mainCategory)}
@@ -141,11 +141,11 @@ function ProductsBycategory() {
                 Relevance
               </h2>
               <span>
-                <FaSliders className="m-2 mt-2 text-md" />
+                <FaSliders className="m-2 mt-2 text-base" />
               </span>
             </button>
           </div>
-{/* Main section */}
+          {/* Main section */}
           <section className=" border-dotted border-t-2 mt-4 py-2 w-full flex    ">
             <div className="flex flex-wrap justify-between w-full relative">
               {filterToggle && (
@@ -165,8 +165,15 @@ function ProductsBycategory() {
                           key={subCategory}
                           className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                           onClick={() => {
-                            dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
-                            navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
+                            dispatch(
+                              fetchProducts({
+                                mainCategory: mainCategory,
+                                subCategory: subCategory,
+                              })
+                            );
+                            navigate(
+                              `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
+                            );
                           }}
                         >
                           <span>{capitalizeWords(subCategory)}</span>
@@ -178,8 +185,15 @@ function ProductsBycategory() {
                             key={subCategory}
                             className="p-2 border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                             onClick={() => {
-                              dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
-                              navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
+                              dispatch(
+                                fetchProducts({
+                                  mainCategory: mainCategory,
+                                  subCategory: subCategory,
+                                })
+                              );
+                              navigate(
+                                `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
+                              );
                             }}
                           >
                             <span>{capitalizeWords(subCategory)}</span>
@@ -193,14 +207,18 @@ function ProductsBycategory() {
                           setShowMore(!showMore);
                         }}
                       >
-                        { showMore ?<span>Show less -</span>:<span>Show more +</span>}
+                        {showMore ? (
+                          <span>Show less -</span>
+                        ) : (
+                          <span>Show more +</span>
+                        )}
                       </button>
                     )}
                   </div>
                 </div>
               )}
               <ul
-               className={`flex flex-wrap  ${filterToggle ? "w-[846px] gap-6   " : noOfProducts == 2 || noOfProducts == 3 ? "w-full gap-6" : "w-full justify-between"} `}
+                className={`flex flex-wrap  ${filterToggle ? "w-[846px] gap-6   " : noOfProducts == 2 || noOfProducts == 3 ? "w-full gap-6" : "w-full justify-between"} `}
               >
                 {productsData[0]?.products.map((product) => (
                   <li key={product.id} className=" list-none ">

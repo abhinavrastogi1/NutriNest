@@ -97,7 +97,7 @@ function Search() {
           </div>
           {/* No of Product div */}
           <div className="flex w-full my-4 text-gray-700">
-            <h1 className="text-md font-medium">
+            <h1 className="text-base font-medium">
               <span className="font-bold text-lg">{noOfProducts}</span> result
               for "{query}"
             </h1>
@@ -150,7 +150,7 @@ function Search() {
                 Relevance
               </h2>
               <span>
-                <FaSliders className="m-2 mt-2 text-md" />
+                <FaSliders className="m-2 mt-2 text-base" />
               </span>
             </button>
           </div>

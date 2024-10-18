@@ -156,6 +156,11 @@ const getCart = asyncHandler(async (req, res) => {
       },
     },
     {
+      $sort: {
+        id: 1,
+      },
+    },
+    {
       $group: {
         _id: {
           mainCategory: "$item.productId.category.level1",
@@ -165,6 +170,14 @@ const getCart = asyncHandler(async (req, res) => {
         item: {
           $push: "$item",
         },
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
       },
     },
     {
@@ -172,6 +185,11 @@ const getCart = asyncHandler(async (req, res) => {
         user: "$_id.user",
         _id: "$_id._id",
         mainCateory: "$_id.mainCategory",
+      },
+    },
+    {
+      $project: {
+        count: 0,
       },
     },
   ]);

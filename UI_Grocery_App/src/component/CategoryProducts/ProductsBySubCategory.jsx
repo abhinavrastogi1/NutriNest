@@ -18,7 +18,7 @@ function ProductsBySubCategory() {
   const [showMore, setShowMore] = useState(false);
   let mainCategoryParams = useParams().mainCategory;
   let subCategoryParams = useParams().subCategory;
-  
+
   const { categories } = useSelector((state) => state.categoryApi);
   const { productsData, status } = useSelector(
     (state) => state.fetchProductsByCategory
@@ -101,7 +101,7 @@ function ProductsBySubCategory() {
             <button
               className="text-[15px] font-medium flex pt-[2px] "
               onClick={() => {
-                dispatch(fetchProducts({ mainCategory:mainCategory }));
+                dispatch(fetchProducts({ mainCategory: mainCategory }));
                 navigate(`/cd/${removeSpecialChar(mainCategory)}`);
               }}
             >
@@ -115,20 +115,27 @@ function ProductsBySubCategory() {
             <button
               className="text-[15px] font-semibold pt-[2px]"
               onClick={() => {
-                dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory }));
-                navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`);
+                dispatch(
+                  fetchProducts({
+                    mainCategory: mainCategory,
+                    subCategory: subCategory,
+                  })
+                );
+                navigate(
+                  `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
+                );
               }}
             >
               {capitalizeWords(subCategory)}
             </button>
           </div>
-        {/* no of product div */}
+          {/* no of product div */}
           <div className="flex w-full my-4 text-gray-700">
             <h1 className="text-lg">
               {capitalizeWords(subCategory)} <span>({noOfProducts})</span>
             </h1>
           </div>
-        {/* active and relavance button */}
+          {/* active and relavance button */}
           <div className="flex flex-row  w-full justify-between">
             <button
               className={`flex py-1 px-6 border-[1px] rounded-[4px] w-[170px]
@@ -176,7 +183,7 @@ function ProductsBySubCategory() {
                 Relevance
               </h2>
               <span>
-                <FaSliders className="m-2 mt-2 text-md" />
+                <FaSliders className="m-2 mt-2 text-base" />
               </span>
             </button>
           </div>
@@ -205,8 +212,7 @@ function ProductsBySubCategory() {
                   </button>
                   <div className=" bg-white p-2  ">
                     <div className=" flex flex-col ">
-                      <button className="text-[#76B900] text-[15px] p-2 flex justy-start  pl-0 font-medium "
-                      >
+                      <button className="text-[#76B900] text-[15px] p-2 flex justy-start  pl-0 font-medium ">
                         <span> {capitalizeWords(subCategory)}</span>
                       </button>
                       {subSubCategoryArr?.slice(0, 2).map((subSubCategory) => (
@@ -214,8 +220,16 @@ function ProductsBySubCategory() {
                           key={subSubCategory}
                           className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                           onClick={() => {
-                            dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory,subSubCategory:subSubCategory }));
-                            navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`);
+                            dispatch(
+                              fetchProducts({
+                                mainCategory: mainCategory,
+                                subCategory: subCategory,
+                                subSubCategory: subSubCategory,
+                              })
+                            );
+                            navigate(
+                              `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
+                            );
                           }}
                         >
                           <span>{capitalizeWords(subSubCategory)}</span>
@@ -227,8 +241,16 @@ function ProductsBySubCategory() {
                             key={subSubCategory}
                             className="p-2 border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
                             onClick={() => {
-                              dispatch(fetchProducts({ mainCategory:mainCategory ,subCategory:subCategory,subSubCategory:subSubCategory }));
-                              navigate(`/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`);
+                              dispatch(
+                                fetchProducts({
+                                  mainCategory: mainCategory,
+                                  subCategory: subCategory,
+                                  subSubCategory: subSubCategory,
+                                })
+                              );
+                              navigate(
+                                `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
+                              );
                             }}
                           >
                             <span>{capitalizeWords(subSubCategory)}</span>
@@ -242,7 +264,11 @@ function ProductsBySubCategory() {
                           setShowMore(!showMore);
                         }}
                       >
-                         { showMore ?<span>Show less -</span>:<span>Show more +</span>}
+                        {showMore ? (
+                          <span>Show less -</span>
+                        ) : (
+                          <span>Show more +</span>
+                        )}
                       </button>
                     )}
                   </div>

@@ -216,7 +216,7 @@ function ProductsBySubSubCategory() {
                 Relevance
               </h2>
               <span>
-                <FaSliders className="m-2 mt-2 text-md" />
+                <FaSliders className="m-2 mt-2 text-base" />
               </span>
             </button>
           </div>
@@ -254,7 +254,7 @@ function ProductsBySubSubCategory() {
                             })
                           );
                           navigate(
-                           `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
+                            `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
                           );
                         }}
                       >
@@ -311,7 +311,11 @@ function ProductsBySubSubCategory() {
                           setShowMore(!showMore);
                         }}
                       >
-                        { showMore ?<span>Show less -</span>:<span>Show more +</span>}
+                        {showMore ? (
+                          <span>Show less -</span>
+                        ) : (
+                          <span>Show more +</span>
+                        )}
                       </button>
                     )}
                   </div>
