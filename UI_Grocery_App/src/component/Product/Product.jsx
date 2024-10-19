@@ -5,12 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/Api/fetchProductsByCategorySlice";
 function Product() {
   const { productData } = useSelector((state) => state.productSlice);
-  const productDetails = productData[0];
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   if (productData.length === 0) {
     return null;
   }
+  const productDetails = productData[0];
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log("product data", productDetails);
   function removeSpecialChar(str) {
     return str.replace(/( & |, | and | )/g, "-");
@@ -131,9 +132,7 @@ function Product() {
             </div>
           </div>
         </div>
-        <div className="h-[1000px] bg-black">
-          
-        </div>
+        <div className="h-[1000px] bg-black"></div>
       </div>
     </div>
   );

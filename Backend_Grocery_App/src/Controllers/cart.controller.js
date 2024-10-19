@@ -184,7 +184,7 @@ const getCart = asyncHandler(async (req, res) => {
       $addFields: {
         user: "$_id.user",
         _id: "$_id._id",
-        mainCateory: "$_id.mainCategory",
+        mainCategory: "$_id.mainCategory",
       },
     },
     {
