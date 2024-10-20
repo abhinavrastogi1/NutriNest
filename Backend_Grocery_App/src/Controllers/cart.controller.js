@@ -200,4 +200,34 @@ const getCart = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, cart, "cartData successfully recieved"));
 });
-export { createNewCart, addCacheProductToCart, getCart };
+const updateCart = asyncHandler(async (req, res) => {
+  const { _id, quantity, Cart_id } = req?.query;
+
+  const cart = await Cart.findOneAndUpdate(
+    {
+      _id: new mongoose.Types.ObjectId(Cart_id),
+      "item._id": new mongoose.Types.ObjectId(_id),
+    },
+    {
+      $set: {
+        "item.$.quantity": quantity,
+      },
+    },
+    { new: true }
+  );
+  if (!cart) {
+    throw new ApiError(502, "something went wrong while updating cart");
+  }
+  res.status(200).json(new ApiResponse(200, cart, "cart is updated"));
+});
+const deleteProductFromCart = asyncHandler(async (req, res) => {
+  console.log(req.query);
+  res.status(200).json(new ApiResponse(200, req.query, "cart is updated"));
+});
+export {
+  createNewCart,
+  addCacheProductToCart,
+  getCart,
+  deleteProductFromCart,
+  updateCart,
+};

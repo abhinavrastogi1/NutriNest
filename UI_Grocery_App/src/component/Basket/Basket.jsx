@@ -1,16 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import CartCard from "../../Small_component/Cards/CartCard";
+import BasketMainCategory from "./BasketMainCategory";
 function Basket() {
-  function capitalizeWords(str) {
-    return str
-      ?.split(" ")
-      .map((word) => {
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-      })
-      .join(" ");
-  }
-  const { productData } = useSelector((state) => state.FetchBasketSlice);
+  const { productData,status } = useSelector((state) => state.FetchBasketSlice);
   console.log("productData", productData);
   return (
     <div>
@@ -65,24 +57,12 @@ function Basket() {
             </div>
           </div>
           <div>
-            {productData?.map((products) => {
-              return (
-                <div key={products?.mainCategory}>
-                  <div className="ml-3 mt-4">
-                    <h1 className="text-[15px] font-semibold">
-                      {capitalizeWords(products?.mainCategory)}
-                    </h1>
-                    <div className="bg-[#FF8800] h-[2px] w-10 mt-2"></div>
-                  </div>
-                  {products?.item.map((productDetails) => (
-                    <CartCard
-                      productDetails={productDetails}
-                      key={productDetails.productId.id}
-                    />
-                  ))}
-                </div>
-              );
-            })}
+            {productData?.map((products) => (
+              <BasketMainCategory
+                products={products}
+                key={products?.mainCategory}
+              />
+            ))}
           </div>
         </div>
       ) : (
