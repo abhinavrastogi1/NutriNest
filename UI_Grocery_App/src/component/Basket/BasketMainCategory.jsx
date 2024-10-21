@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import CartCard from "../../Small_component/Cards/CartCard";
+import {
+  removeProductPrice,
+  subProductPrice,
+} from "../../store/Feature/Basket/CheckOutSlice";
+import { useDispatch } from "react-redux";
 
 function BasketMainCategory({ products }) {
+  const dispatch = useDispatch();
   function capitalizeWords(str) {
     return str
       ?.split(" ")
@@ -17,6 +23,9 @@ function BasketMainCategory({ products }) {
   function removeCategory() {
     setRemoveMainCategory(removeMainCategory - 1);
   }
+  function removeProduct(subTotal, Saved) {
+    dispatch(removeProductPrice({ subTotal, Saved }));
+  }
   return (
     <>
       {removeMainCategory > 0 && (
@@ -31,6 +40,7 @@ function BasketMainCategory({ products }) {
             <CartCard
               productDetails={productDetails}
               removeCategory={removeCategory}
+              removeProduct={removeProduct}
               key={productDetails.productId.id}
             />
           ))}

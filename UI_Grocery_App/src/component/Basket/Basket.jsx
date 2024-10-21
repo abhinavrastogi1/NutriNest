@@ -2,8 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import BasketMainCategory from "./BasketMainCategory";
 function Basket() {
-  const { productData,status } = useSelector((state) => state.FetchBasketSlice);
-  console.log("productData", productData);
+  const { productData } = useSelector((state) => state.FetchBasketSlice);
+  const { subTotal, savings } = useSelector((state) => (state.checkOutSlice));
+  console.log("value of subtotal",subTotal, savings)
   return (
     <div>
       {productData?.length !== 0 ? (
@@ -16,7 +17,7 @@ function Basket() {
               <div className="flex flex-col ">
                 <div>
                   <h2 className="text-white px-2 text-base font-semibold">
-                    Subtotal (5 items) : ₹ 1219.26
+                    Subtotal (5 items) : ₹ {subTotal.toFixed(2)}
                   </h2>
                 </div>
                 <div>
@@ -26,7 +27,10 @@ function Basket() {
                    text-sm font-semibold"
                   >
                     Savings:
-                    <span className="font-semibold text-base"> ₹ 500.70</span>
+                    <span className="font-semibold text-base">
+                      {" "}
+                      ₹ {savings.toFixed(2)}
+                    </span>
                   </h2>
                 </div>
               </div>

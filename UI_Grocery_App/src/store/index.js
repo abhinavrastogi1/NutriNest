@@ -9,7 +9,8 @@ import loginSlice from "./Feature/Basket/LoginSlice.js";
 import BasketApiSlice from "./Api/BasketApi.js";
 import FetchBasketSlice from "./Api/FetchBasketSlice.js";
 import SearchSlice from "./Api/SearchSlice.js";
-import productSlice from "./Api/productSlice.js"
+import productSlice from "./Api/productSlice.js";
+import checkOutSlice from "./Feature/Basket/CheckOutSlice.js";
 const store = configureStore({
   reducer: {
     toggleVisibility: toggleVisibility,
@@ -22,7 +23,8 @@ const store = configureStore({
     BasketApiSlice: BasketApiSlice,
     FetchBasketSlice: FetchBasketSlice,
     SearchSlice: SearchSlice,
-    productSlice:productSlice,
+    productSlice: productSlice,
+    checkOutSlice: checkOutSlice,
   },
 });
 export default store;

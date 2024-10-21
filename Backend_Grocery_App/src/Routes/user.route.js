@@ -23,7 +23,7 @@ userRouter
   .route("/addCacheProductToCart")
   .post(verifyJwt, addCacheProductToCart);
 userRouter.route("/getCart").get(verifyJwt, getCart);
-userRouter.route("/addProductToCart").patch(verifyJwt, updateCart);
+userRouter.route("/updateCart").patch(verifyJwt, updateCart);
 userRouter
   .route("/deleteProductFromCart")
   .patch(verifyJwt, deleteProductFromCart);

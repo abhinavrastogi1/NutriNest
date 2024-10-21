@@ -2,13 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaMinus } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";
-import { useSelector } from "react-redux";
-function CartCard({ productDetails, removeCategory }) {
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addProductPrice,
+  initalProductPrice,
+  subProductPrice,
+} from "../../store/Feature/Basket/CheckOutSlice";
+function CartCard({
+  productDetails,
+  removeCategory,
+  removeProduct,
+}) {
   if (!productDetails) {
     return null;
   }
+  const dispatch = useDispatch();
   const { productData } = useSelector((state) => state.FetchBasketSlice);
-
+  const [loading, setLoading] = useState(false);
   const image = productDetails.productId.images;
   const productName = productDetails.productId.productName;
   const quantity = productDetails.quantity;
@@ -16,49 +26,26 @@ function CartCard({ productDetails, removeCategory }) {
   const discountedPrice = productDetails.discountedPrice;
   const savedPrice = originalPrice - discountedPrice;
   const [productQuantity, setProductQuantity] = useState(quantity);
-  const [subTotal, setSubTotal] = useState(
-    (productQuantity * discountedPrice).toFixed(2)
-  );
-  const [Saved, setSaved] = useState((productQuantity * savedPrice).toFixed(2));
-  useEffect(() => {
-    setSubTotal((productQuantity * discountedPrice).toFixed(2));
-    setSaved((productQuantity * savedPrice).toFixed(2));
-  }, [productQuantity]);
-
-  function maxQuantity() {
-    if (productQuantity + 1 >= 6) {
-      setProductQuantity(6);
-    } else {
-      setProductQuantity(productQuantity + 1);
-    }
-  }
-  function minQuantity() {
-    if (productQuantity - 1 <= 0) {
-      setProductQuantity(0);
-    } else {
-      setProductQuantity(productQuantity - 1);
-    }
-  }
-  const [Loading, setLoading] = useState(false);
+  const [subTotal, setSubTotal] = useState(productQuantity * discountedPrice);
+  const [Saved, setSaved] = useState(productQuantity * savedPrice);
   const isRendered = useRef(false);
-  console.log(isRendered.current);
+  const [cartMsg, setCartMsg] = useState("Adding ...");
   useEffect(() => {
-    if (isRendered.current) {
+    setSubTotal(productQuantity * discountedPrice);
+    setSaved(productQuantity * savedPrice);
+  }, [productQuantity]);
+  useEffect(() => {
+    if (isRendered.current && productQuantity != 0) {
       async function updateCart() {
-        setLoading(true);
         try {
-          const response = await axios.patch(
-            "/api/users/addProductToCart",
-            null,
-            {
-              params: {
-                _id: productDetails._id,
-                quantity: productQuantity,
-                Cart_id: productData[0]._id,
-              },
-            }
-          );
-          console.log("response", response);
+          setLoading(true);
+          await axios.patch("/api/users/updateCart", null, {
+            params: {
+              _id: productDetails._id,
+              quantity: productQuantity,
+              Cart_id: productData[0]._id,
+            },
+          });
         } catch (error) {
           console.error("error while updating cart", error);
         } finally {
@@ -68,6 +55,28 @@ function CartCard({ productDetails, removeCategory }) {
       updateCart();
     } else {
       isRendered.current = true;
+      dispatch(initalProductPrice({ subTotal, Saved }));
+    }
+  }, [productQuantity]);
+  useEffect(() => {
+    if (productQuantity === 0) {
+      async function deleteProductFromCart() {
+        try {
+          setLoading(true);
+          await axios.patch("/api/users/deleteProductFromCart", null, {
+            params: {
+              _id: productDetails._id,
+              Cart_id: productData[0]._id,
+            },
+          });
+        } catch (error) {
+          console.error("error while Deleting item", error);
+        } finally {
+          setLoading(false);
+          removeCategory();
+        }
+      }
+      deleteProductFromCart();
     }
   }, [productQuantity]);
 
@@ -97,18 +106,24 @@ function CartCard({ productDetails, removeCategory }) {
           <div className="flex gap-7  ">
             <div className="   h-full w-[168px] flex pt-16">
               <div className="flex flex-col w-full">
-                {Loading ? (
-                  <div>hello</div>
+                {loading ? (
+                  <div className=" h-11 w-full  flex justify-center items-center rounded-md p-2 border-[2px] bg-gray-200 hover:shadow-lg">
+                    <h3 className="text-sm font-medium">{cartMsg}</h3>
+                  </div>
                 ) : (
                   <div className=" h-11 w-full  flex justify-between rounded-md p-2 border-[2px] hover:shadow-lg">
                     <button
                       className=" hover:bg-[#cc0000] hover:text-white p-2 px-4  rounded-md text-[#404040] 
             flex items-center justify-center"
                       onClick={() => {
-                        if (productQuantity - 1 === 0) {
-                          removeCategory();
-                        }
-                        minQuantity();
+                        dispatch(
+                          subProductPrice({ discountedPrice, savedPrice })
+                        );
+                        productQuantity - 1 <= 0
+                          ? (removeProduct(subTotal, Saved),
+                            setProductQuantity(0))
+                          : setProductQuantity(productQuantity - 1);
+                        setCartMsg("Reducing ...");
                       }}
                     >
                       <FaMinus />{" "}
@@ -118,7 +133,16 @@ function CartCard({ productDetails, removeCategory }) {
                       className="hover:bg-[#cc0000] hover:text-white p-2 px-4  rounded-md text-[#404040] 
             flex items-center justify-center"
                       onClick={() => {
-                        maxQuantity();
+                        productQuantity + 1 >= 6
+                          ? setProductQuantity(6)
+                          : setProductQuantity(productQuantity + 1);
+
+                        setCartMsg("Adding ...");
+                        if (productQuantity != 6) {
+                          dispatch(
+                            addProductPrice({ discountedPrice, savedPrice })
+                          );
+                        }
                       }}
                     >
                       <FaPlus />
@@ -129,7 +153,8 @@ function CartCard({ productDetails, removeCategory }) {
                   <button
                     className="text-xs p-1 border-r-[1px]"
                     onClick={() => {
-                      setProductQuantity(0);
+                      removeProduct(subTotal, Saved), setProductQuantity(0);
+                      setCartMsg("Deleting ...");
                     }}
                   >
                     Delete
@@ -142,10 +167,10 @@ function CartCard({ productDetails, removeCategory }) {
             <div className="h-full w-[168px] flex flex-col justify-end pb-9 pr-4 ">
               <div className="text-end font-semibold pb-2">
                 {" "}
-                <h3>₹{subTotal}</h3>{" "}
+                <h3>₹{subTotal.toFixed(2)}</h3>{" "}
               </div>
               <div className="text-end text-[#476F00] text-sm font-medium">
-                <h3> Saved :₹{Saved}</h3>
+                <h3> Saved :₹{Saved.toFixed(2)}</h3>
               </div>
             </div>
           </div>
