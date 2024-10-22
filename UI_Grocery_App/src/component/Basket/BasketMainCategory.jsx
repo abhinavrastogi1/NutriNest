@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import CartCard from "../../Small_component/Cards/CartCard";
 import {
   removeProductPrice,
-  subProductPrice,
 } from "../../store/Feature/Basket/CheckOutSlice";
 import { useDispatch } from "react-redux";
 
@@ -16,13 +15,14 @@ function BasketMainCategory({ products }) {
       })
       .join(" ");
   }
+
   const [removeMainCategory, setRemoveMainCategory] = useState(
     products?.item.length
   );
-
   function removeCategory() {
     setRemoveMainCategory(removeMainCategory - 1);
   }
+  
   function removeProduct(subTotal, Saved) {
     dispatch(removeProductPrice({ subTotal, Saved }));
   }
@@ -36,7 +36,7 @@ function BasketMainCategory({ products }) {
             </h1>
             <div className="bg-[#FF8800] h-[2px] w-10 mt-2"></div>
           </div>
-          {products?.item.map((productDetails) => (
+          {products?.item.map((productDetails,index) => (
             <CartCard
               productDetails={productDetails}
               removeCategory={removeCategory}

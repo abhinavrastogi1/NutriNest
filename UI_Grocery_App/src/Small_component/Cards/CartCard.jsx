@@ -8,11 +8,7 @@ import {
   initalProductPrice,
   subProductPrice,
 } from "../../store/Feature/Basket/CheckOutSlice";
-function CartCard({
-  productDetails,
-  removeCategory,
-  removeProduct,
-}) {
+function CartCard({ productDetails, removeCategory, removeProduct }) {
   if (!productDetails) {
     return null;
   }
@@ -55,7 +51,9 @@ function CartCard({
       updateCart();
     } else {
       isRendered.current = true;
-      dispatch(initalProductPrice({ subTotal, Saved }));
+      if (productQuantity !== 0) {
+        dispatch(initalProductPrice({ subTotal, Saved }));
+      }
     }
   }, [productQuantity]);
   useEffect(() => {
@@ -79,7 +77,10 @@ function CartCard({
       deleteProductFromCart();
     }
   }, [productQuantity]);
-
+  console.log(productName, subTotal, Saved);
+  useEffect(() => {
+    if (productQuantity === 0) removeProduct(subTotal, Saved);
+  }, [productQuantity, subTotal, Saved]);
   return (
     <>
       {productQuantity > 0 && (
@@ -116,14 +117,15 @@ function CartCard({
                       className=" hover:bg-[#cc0000] hover:text-white p-2 px-4  rounded-md text-[#404040] 
             flex items-center justify-center"
                       onClick={() => {
-                        dispatch(
-                          subProductPrice({ discountedPrice, savedPrice })
-                        );
-                        productQuantity - 1 <= 0
-                          ? (removeProduct(subTotal, Saved),
-                            setProductQuantity(0))
-                          : setProductQuantity(productQuantity - 1);
-                        setCartMsg("Reducing ...");
+                        if (productQuantity - 1 <= 0) {
+                          setProductQuantity(0);
+                        } else {
+                          dispatch(
+                            subProductPrice({ discountedPrice, savedPrice })
+                          );
+                          setProductQuantity(productQuantity - 1);
+                          setCartMsg("Reducing ...");
+                        }
                       }}
                     >
                       <FaMinus />{" "}
@@ -153,8 +155,7 @@ function CartCard({
                   <button
                     className="text-xs p-1 border-r-[1px]"
                     onClick={() => {
-                      removeProduct(subTotal, Saved), setProductQuantity(0);
-                      setCartMsg("Deleting ...");
+                      setProductQuantity(0), setCartMsg("Deleting ...");
                     }}
                   >
                     Delete

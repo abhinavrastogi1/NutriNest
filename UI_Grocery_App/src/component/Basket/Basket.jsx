@@ -4,7 +4,6 @@ import BasketMainCategory from "./BasketMainCategory";
 function Basket() {
   const { productData } = useSelector((state) => state.FetchBasketSlice);
   const { subTotal, savings } = useSelector((state) => (state.checkOutSlice));
-  console.log("value of subtotal",subTotal, savings)
   return (
     <div>
       {productData?.length !== 0 ? (

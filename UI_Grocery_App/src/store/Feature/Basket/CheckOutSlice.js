@@ -14,12 +14,8 @@ const checkOutSlice = createSlice({
     },
     removeProductPrice: (state, action) => {
       const { subTotal, Saved } = action.payload;
-      console.log("before",subTotal, Saved)
       state.subTotal -= parseFloat(subTotal);
       state.savings -= parseFloat(Saved);
-      console.log("after",subTotal, Saved)
-
-      
     },
     addProductPrice: (state, action) => {
       const { savedPrice, discountedPrice } = action.payload;

@@ -10,8 +10,6 @@ import { isloggedin } from "../../../store/Feature/Basket/LoginSlice";
 import { BasketApi } from "../../../store/Api/BasketApi";
 
 function LoginPage() {
-  const { productsData } = useSelector((state) => state.basketData);
-
   const [formData, setFormData] = useState({
     phoneNo: "",
     password: "",
@@ -70,7 +68,7 @@ function LoginPage() {
       dispatch(loginToggleSwitch());
       dispatch(isloggedin(true));
       const cartData = JSON.parse(localStorage?.getItem("cart"));
-      if (cartData ) {
+      if (cartData) {
         dispatch(BasketApi({ route: "createNewCart", cacheData: cartData }));
       }
     } catch (error) {
