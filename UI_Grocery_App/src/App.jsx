@@ -7,14 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoryData } from "./store/Api/categoryApi";
 import { fetchProductData } from "./store/Api/recomendedProduct";
 import { UpdateFromLocalStorage } from "./store/Feature/Basket/basketData";
-import { BasketApi } from "./store/Api/BasketApi";
 import { FetchBasket } from "./store/Api/FetchBasketSlice";
+
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategoryData());
     dispatch(fetchProductData());
-    dispatch(FetchBasket())
+    dispatch(FetchBasket());
   }, []);
   useEffect(() => {
     if (!localStorage?.getItem("cart")) {
@@ -22,8 +22,6 @@ function App() {
     }
     dispatch(UpdateFromLocalStorage(JSON.parse(localStorage?.getItem("cart"))));
   }, []); // Consider adding `localStorage` data as a dependency
-
-  
 
   const categoriesData = useSelector((state) => state.categoryApi);
   const productsData = useSelector((state) => state.recomemdedProduct);

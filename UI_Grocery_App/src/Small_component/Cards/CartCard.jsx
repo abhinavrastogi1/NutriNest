@@ -77,7 +77,6 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
       deleteProductFromCart();
     }
   }, [productQuantity]);
-  console.log(productName, subTotal, Saved);
   useEffect(() => {
     if (productQuantity === 0) removeProduct(subTotal, Saved);
   }, [productQuantity, subTotal, Saved]);

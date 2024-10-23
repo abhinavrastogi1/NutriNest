@@ -8,8 +8,11 @@ import { loginToggleSwitch } from "../../../store/Feature/Ui_component/ToggleVis
 import axios from "axios";
 import { isloggedin } from "../../../store/Feature/Basket/LoginSlice";
 import { BasketApi } from "../../../store/Api/BasketApi";
+import { FetchBasket } from "../../../store/Api/FetchBasketSlice";
 
 function LoginPage() {
+  const [incorrectPassword, serIncorrectpassword] = useState(false);
+  const [emailExist, setEmailExist] = useState(false);
   const [formData, setFormData] = useState({
     phoneNo: "",
     password: "",
@@ -42,9 +45,12 @@ function LoginPage() {
             BasketApi({ route: "addCacheProductToCart", cacheData: cartData })
           );
         }
+        dispatch(FetchBasket());
       }
     } catch (error) {
-      throw error;
+      if (error.response.data.message == "password is incorrect") {
+        serIncorrectpassword(true);
+      }
     }
   }
   async function onRegisterSubmit(e) {
@@ -71,8 +77,11 @@ function LoginPage() {
       if (cartData) {
         dispatch(BasketApi({ route: "createNewCart", cacheData: cartData }));
       }
+      dispatch(FetchBasket());
     } catch (error) {
-      console.error("Error during registration or login:", error);
+      if (error.response.data.message == "email already exist") {
+        setEmailExist(true);
+      }
     }
   }
   const dispatch = useDispatch();
@@ -104,13 +113,16 @@ function LoginPage() {
             <p className="text-sm  font-regular text-white pb-1">
               Using Phone No.
             </p>
+
             <div className="border border-orange-500  rounded-lg w-20"></div>
             {registerUser ? (
               <form
-                className="flex flex-col gap-7 w-72 pt-8 pb-2 rounded-md"
+                className="flex flex-col  w-72 pt-8 pb-2 rounded-md"
                 onSubmit={onRegisterSubmit}
               >
-                <div className="flex flex-row justify-between">
+                <div
+                  className={`flex flex-row justify-between ${emailExist ? "mb-3" : "mb-7"}`}
+                >
                   <input
                     placeholder="First Name "
                     type="text"
@@ -119,6 +131,7 @@ function LoginPage() {
                     className="p-2 text-[12px] rounded-sm w-32 outline-none "
                     onChange={onChangeHandle}
                   />
+
                   <input
                     required
                     type="text"
@@ -128,7 +141,11 @@ function LoginPage() {
                     onChange={onChangeHandle}
                   />
                 </div>
-
+                {emailExist && (
+                  <div className="text-red-600 text-xs w-full ">
+                    <h1>Email already exists</h1>
+                  </div>
+                )}
                 <input
                   required
                   type="email"
@@ -140,14 +157,14 @@ function LoginPage() {
 
                 <button
                   type="submit"
-                  className="text-white py-2 px-5 text-sm font-semibold bg-red-700 rounded-sm"
+                  className="text-white py-2 px-5 text-sm font-semibold bg-red-700 rounded-sm mt-7"
                 >
                   Continue
                 </button>
               </form>
             ) : (
               <form
-                className="flex flex-col gap-7 w-72 pt-8 pb-2 rounded-md"
+                className="flex flex-col  w-72 pt-8 pb-2 rounded-md"
                 onSubmit={onSubmitHandle}
               >
                 <input
@@ -156,20 +173,25 @@ function LoginPage() {
                   name="phoneNo"
                   pattern="[0-9]{10}"
                   required
-                  className="p-2 text-[12px] rounded-sm  outline-none "
+                  className={`p-2 text-[12px] rounded-sm  outline-none  ${incorrectPassword ? "mb-3" : "mb-7"}`}
                   onChange={onChangeHandle}
                 />
+                {incorrectPassword && (
+                  <div className="text-red-600 text-xs w-full ">
+                    <h1>Incorrect password</h1>
+                  </div>
+                )}
                 <input
                   required
                   type="password"
                   name="password"
-                  className="p-2 text-[12px] rounded-sm outline-none"
+                  className="p-2 text-[12px] rounded-sm outline-none "
                   placeholder="Enter Your Password "
                   onChange={onChangeHandle}
                 />
                 <button
                   type="submit"
-                  className="text-white py-2 px-5 text-sm font-semibold bg-red-700 rounded-sm"
+                  className="text-white py-2 px-5 text-sm font-semibold bg-red-700 rounded-sm mt-7"
                 >
                   Continue
                 </button>

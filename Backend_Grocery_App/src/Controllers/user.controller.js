@@ -49,9 +49,13 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "all fields are required");
   }
   let user = await User.findOne({ phoneNo });
+  const isEmailalreadyExist = await User.findOne({ email });
 
   if (user) {
     throw new ApiError(401, "user already exist");
+  }
+  if (isEmailalreadyExist) {
+    throw new ApiError(401, "email already exist");
   }
   user = await User.create({
     firstName,
@@ -75,14 +79,14 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError(401, "user doesn't exist please register");
   }
-  const isPasswordValid = user.isPasswordCorrect(password);
+  const isPasswordValid = await user.isPasswordCorrect(password);
   if (!isPasswordValid) {
-    throw new ApiResponse(403, "password is incorrect");
+    throw new ApiError(403, "password is incorrect");
   }
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
   );
-  
+
   if ((!accessToken, !refreshToken)) {
     throw new ApiError(
       501,
@@ -96,6 +100,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    expires: new Date(Date.now() + 86400000),
   };
   res
     .status(201)
@@ -136,5 +141,4 @@ export {
   UserExist,
   loginUser,
   logoutUser,
-
 };

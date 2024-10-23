@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { isloggedin } from "../Feature/Basket/LoginSlice";
+
 
 export const FetchBasket = createAsyncThunk(
   "FetchBasketSlice/FetchBasket",
-  async () => {
+  async (_,{dispatch}) => {
     try {
       const response = await axios.get(`/api/users/getCart`);
+      dispatch(isloggedin(true))
       return response.data.data;
     } catch (error) {
       console.log("error while fetching Cart", error);
