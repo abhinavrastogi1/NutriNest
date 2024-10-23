@@ -3,14 +3,14 @@ import axios from "axios";
 
 export const productSliceApi = createAsyncThunk(
   "productSlice/productSliceApi",
-  async ({ _id }) => {
+  async ({ id }) => {
     try {
       const response = await axios.post(
         "/api/findProduct/productDetails",
         null,
         {
           params: {
-            _id: _id,
+            id:id,
           },
         }
       );

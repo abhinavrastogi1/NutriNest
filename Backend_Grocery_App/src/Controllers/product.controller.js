@@ -693,14 +693,15 @@ const searchProduct = asyncHandler(async (req, res) => {
 });
 
 const productDetails = asyncHandler(async (req, res) => {
-  const { _id } = req?.query;
-  if (!_id) {
-    throw new ApiError(401, "_id doesnot exist");
+  let { id } = req?.query;
+  if (!id) {
+    throw new ApiError(401, "id doesnot exist");
   }
+  id = Number(id);
   const productDetails = await Product.aggregate([
     {
       $match: {
-        _id: new mongoose.Types.ObjectId(_id),
+        id: id,
       },
     },
     {
@@ -732,7 +733,6 @@ const productDetails = asyncHandler(async (req, res) => {
       "something went wrong while finding product details"
     );
   }
-  
   res.status(200).json(new ApiResponse(200, productDetails, "product details"));
 });
 export {

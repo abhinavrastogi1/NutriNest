@@ -93,11 +93,11 @@ function CardLg({ product }) {
             <div
               className=" h-fulll w-full"
               onClick={() => {
-                dispatch(productSliceApi({ _id: product._id }));
+                dispatch(productSliceApi({ id:id }));
               }}
             >
               {
-                <Link to={`/pd/${removeSpecialChar(productName)}`}>
+                <Link to={`/pd/${id}/${removeSpecialChar(productName)}`}>
                   <img src={images} loading="lazy" alt={imageAlt} />
                 </Link>
               }
