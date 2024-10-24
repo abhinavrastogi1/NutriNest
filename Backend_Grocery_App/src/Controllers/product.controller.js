@@ -45,7 +45,7 @@ const listProduct = asyncHandler(async (req, res) => {
     parsedPackSizes,
     categoryDetails;
   try {
-    categoryDetails=JSON.parse(category)
+    categoryDetails = JSON.parse(category);
     parsedOriginalPrice = JSON.parse(originalPriceWithWeight);
     parsedDiscount = JSON.parse(discount);
     parsedDiscountedPrice = JSON.parse(discountedPriceWithWeight);
@@ -53,23 +53,24 @@ const listProduct = asyncHandler(async (req, res) => {
   } catch (err) {
     throw new ApiError(400, "Invalid format ");
   }
-  const level3  = categoryDetails.level3;
+  const level3 = categoryDetails.level3;
   let categorydata = await Category.findOne({ "category.level3": level3 });
   if (!categorydata) {
     categorydata = await Category.create({
       category: categoryDetails,
     });
   }
-
+  console.log(req?.files);
   // Extract images from multer
   const localImages = req?.files || [];
+  console.log(localImages);
   if (localImages.length === 0) {
     throw new ApiError(402, "Images are required");
   }
 
   // Get image paths
   const imagesPath = localImages.map((imagefile) => imagefile.path);
-
+  console.log(imagesPath);
   // Upload images to Cloudinary
   const cloudinaryUrls = await Promise.all(
     imagesPath.map(async (imagePath) => {
@@ -81,7 +82,7 @@ const listProduct = asyncHandler(async (req, res) => {
       }
     })
   );
-
+  console.log(cloudinaryUrls);
   if (cloudinaryUrls.length === 0) {
     throw new ApiError(400, "Images not uploaded. Please try again");
   }
@@ -750,5 +751,4 @@ export {
   findProductsBySubSubCategory,
   searchProduct,
   productDetails,
-  
 };
