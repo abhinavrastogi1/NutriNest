@@ -2,7 +2,8 @@ import { Router } from "express";
 import {
   categorytree,
   listProduct,
-  recomemdedProduct
+  recomemdedProduct,
+  updatecategory,
 } from "../Controllers/product.controller.js";
 import { upload } from "../Middlewares/multer.middleware.js";
 import verifyJwt from "../Middlewares/authmiddleware.js";

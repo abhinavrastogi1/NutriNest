@@ -12,8 +12,8 @@ const listProduct = asyncHandler(async (req, res) => {
   const {
     productName,
     description,
-    categoryName,
     brand,
+    category,
     id,
     originalPriceWithWeight,
     discount,
@@ -24,23 +24,28 @@ const listProduct = asyncHandler(async (req, res) => {
 
   // Validate product fields
   if (
-    [productName, description, categoryName, brand].some(
+    [productName, description, brand].some(
       (field) => typeof field === "string" && field.trim() === ""
     ) ||
-    [originalPriceWithWeight, discount, discountedPriceWithWeight, id].some(
-      (field) => field == null || field === ""
-    ) ||
+    [
+      originalPriceWithWeight,
+      discount,
+      discountedPriceWithWeight,
+      id,
+      category,
+    ].some((field) => field == null || field === "") ||
     isNaN(id)
   ) {
     throw new ApiError(404, "All fields are required and must be valid");
   }
 
-  // Parse price fields
   let parsedOriginalPrice,
     parsedDiscount,
     parsedDiscountedPrice,
-    parsedPackSizes;
+    parsedPackSizes,
+    categoryDetails;
   try {
+    categoryDetails=JSON.parse(category)
     parsedOriginalPrice = JSON.parse(originalPriceWithWeight);
     parsedDiscount = JSON.parse(discount);
     parsedDiscountedPrice = JSON.parse(discountedPriceWithWeight);
@@ -48,11 +53,12 @@ const listProduct = asyncHandler(async (req, res) => {
   } catch (err) {
     throw new ApiError(400, "Invalid format ");
   }
-
-  // Check if category exists or create a new one
-  let category = await Category.findOne({ categoryName });
-  if (!category) {
-    category = await Category.create({ categoryName });
+  const level3  = categoryDetails.level3;
+  let categorydata = await Category.findOne({ "category.level3": level3 });
+  if (!categorydata) {
+    categorydata = await Category.create({
+      category: categoryDetails,
+    });
   }
 
   // Extract images from multer
@@ -85,7 +91,7 @@ const listProduct = asyncHandler(async (req, res) => {
     productName,
     id,
     description,
-    category: category?._id,
+    category: categorydata?._id,
     brand,
     originalPriceWithWeight: parsedOriginalPrice,
     discount: parsedDiscount,
@@ -108,7 +114,7 @@ const listProduct = asyncHandler(async (req, res) => {
 // This controller was made just to change the category  schema
 // const updatecategory=asyncHandler(async(req,res)=>{
 //   console.log(req.body)
-//   const data=JSON.parse(req.body.category)
+//   const data={level1:"fruits & vegitable", level2:"fresh fruits",level3:"apples & pomogranate"}
 //   if (data) {
 //     const { level1, level2, level3 } = data;
 //     console.log(level1, level2, level3); // Should log the values correctly
@@ -744,4 +750,5 @@ export {
   findProductsBySubSubCategory,
   searchProduct,
   productDetails,
+  
 };
