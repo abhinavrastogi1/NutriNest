@@ -8,9 +8,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./component/Home/Home.jsx";
 import Basket from "./component/Basket/Basket.jsx";
 import ProductsBycategory from "./component/CategoryProducts/ProductsByMainCategory.jsx";
-import ProductsBySubCategory from "./component/CategoryProducts/productsBySubCategory.jsx";
-import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx";
-import noCategoryFound from "./component/CategoryProducts/noCategoryFound.jsx";
+import ProductsBySubCategory from "./component/CategoryProducts/ProductsBySubCategory.jsx"
+import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx"
 import Search from "./component/Search/Search.jsx";
 import Product from "./component/Product/Product.jsx";
 
