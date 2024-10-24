@@ -18,13 +18,14 @@ function Product() {
   const productDetails = productData[0];
   console.log(productDetails);
   let productsWeight = [];
+
   if (productData?.length != 0) {
     productsWeight = Object.keys(productDetails?.discount);
   }
+  console.log(productsWeight);
   const [weight, setweight] = useState(productsWeight[0]);
   useEffect(() => {
-    console.log("run");
-    if (productsWeight > 0) {
+    if (productsWeight.length > 0) {
       setweight(productsWeight[0]);
     }
   }, [productsWeight]);
@@ -174,8 +175,10 @@ function Product() {
             </div>
             <div className=" flex flex-col pt-2">
               <div>
-                <h3>{brand}</h3>
-                <h1>
+                <h3 className="text-[#696969] underline text-[15px] font-[450] ">
+                  {brand}
+                </h3>
+                <h1 className="pt-2">
                   {productName},{weight}
                 </h1>
                 <h3>
@@ -249,12 +252,16 @@ function Product() {
               )}
             </div>
           </div>
-          <div className="mt-8 border-t-2 border-dotted ">
-            <h1>{productName}</h1>
-            <div className="p-2 border-[1px] rounded-md">
-              <div>About the product</div>
-              <div>
-                <p>{productDetails?.description}</p>
+          <div className="mt-8 border-t-2 border-dotted text-[#202020] ">
+            <h1 className="text-xl font-bold mt-5">{productName}</h1>
+            <div className="p-2 border-[1px] rounded-md mt-3">
+              <div className="pl-3 mt-3 ">
+                <h4 className="text-sm font-semibold">About the product</h4>
+              </div>
+              <div className=" p-2 border-b-[1px] mx-5">
+                <p className="text-[14px] font-medium flex-wrap">
+                  {productDetails?.description}
+                </p>
               </div>
             </div>
           </div>
