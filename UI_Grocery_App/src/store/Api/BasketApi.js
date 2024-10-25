@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { FetchBasket } from "./FetchBasketSlice";
 
 export const BasketApi = createAsyncThunk(
   "BasketApiSlice/BasketApi",
-  async ({ route, cacheData }) => {
+  async ({ route, cacheData }, { dispatch }) => {
     try {
-      const response = await axios.post(`/api/users/${route}`, cacheData);
-      console.log(response.data);
+      await axios.post(`/api/users/${route}`, cacheData);
+      dispatch(FetchBasket());
+      return null;
     } catch (error) {
       console.error("error while creating Cart", error);
     }
@@ -15,15 +17,13 @@ export const BasketApi = createAsyncThunk(
 const BasketApiSlice = createSlice({
   name: "BasketApiSlice",
   initialState: {
-    productData: {},
     status: "idle",
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(BasketApi.fulfilled, (state, action) => {
+    builder.addCase(BasketApi.fulfilled, (state) => {
       state.status = "success";
-      state.productData = action.payload;
     });
     builder.addCase(BasketApi.pending, (state) => {
       state.status = "pending";

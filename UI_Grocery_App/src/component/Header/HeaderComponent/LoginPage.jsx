@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { RemoveScroll } from "react-remove-scroll";
 import loginpageImg from "../../../assets/images/loginImg.png";
 import { RxCross2 } from "react-icons/rx";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginToggleSwitch } from "../../../store/Feature/Ui_component/ToggleVisibility";
 import axios from "axios";
 import { isloggedin } from "../../../store/Feature/Basket/LoginSlice";
@@ -38,14 +38,13 @@ function LoginPage() {
         const response = await axios.post("/api/users/login", formData);
         if (response.data.message === "log in successfull")
           dispatch(loginToggleSwitch());
-        dispatch(isloggedin(true));
         const cartData = JSON.parse(localStorage?.getItem("cart"));
         if (cartData) {
           dispatch(
             BasketApi({ route: "addCacheProductToCart", cacheData: cartData })
           );
         }
-        dispatch(FetchBasket());
+      
       }
     } catch (error) {
       if (error.response.data.message == "password is incorrect") {
@@ -67,17 +66,15 @@ function LoginPage() {
         throw new Error("Registraton Failed");
       }
       const loginResponse = await axios.post("/api/users/login", formData);
-
       if (loginResponse.data.message !== "log in successfull") {
         throw new Error("login failed");
       }
       dispatch(loginToggleSwitch());
-      dispatch(isloggedin(true));
+
       const cartData = JSON.parse(localStorage?.getItem("cart"));
       if (cartData) {
         dispatch(BasketApi({ route: "createNewCart", cacheData: cartData }));
       }
-      dispatch(FetchBasket());
     } catch (error) {
       if (error.response.data.message == "email already exist") {
         setEmailExist(true);

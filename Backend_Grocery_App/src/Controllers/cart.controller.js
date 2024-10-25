@@ -6,6 +6,9 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import { mongoose } from "mongoose";
 const createNewCart = asyncHandler(async (req, res) => {
   const userDetails = req?.user;
+  if(!userDetails){
+    throw new ApiError(501,"userDetails is not defined")
+  }
   const user = await User.findById(userDetails._id);
   if (!user) {
     new ApiError(402, "user doesnot exist plz register");
@@ -37,6 +40,9 @@ const addCacheProductToCart = asyncHandler(async (req, res) => {
   const userDetails = req?.user;
   const cartCachedData = Object.values(req?.body);
   let cart = [];
+  if(!userDetails){
+    throw new ApiError(501,"userDetails is not defined")
+  }
   const user = await User.findById(userDetails._id);
   if (!user) {
     new ApiError(402, "user doesnot exist plz register");
@@ -202,7 +208,8 @@ const getCart = asyncHandler(async (req, res) => {
 });
 const updateCart = asyncHandler(async (req, res) => {
   const { _id, quantity, Cart_id } = req?.query;
-
+ if(!_id || !quantity ||!Cart_id){
+throw new ApiError(501,"all fields are required") }
   const cart = await Cart.findOneAndUpdate(
     {
       _id: new mongoose.Types.ObjectId(Cart_id),

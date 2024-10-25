@@ -20,8 +20,9 @@ const categoryApi = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCategoryData.fulfilled, (state, action) => {
-      state.status = "success";
       state.categories = action.payload;
+      state.status = "success";
+      
     });
     builder.addCase(fetchCategoryData.pending, (state) => {
       state.status = "pending";

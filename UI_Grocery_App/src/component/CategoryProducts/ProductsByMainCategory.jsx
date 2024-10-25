@@ -29,7 +29,7 @@ function ProductsBycategory() {
   }
   useEffect(() => {
     const mainCatgoryMatch = categories?.find(
-      (category) => tolowercase(category.mainCategory) === mainCategoryParams
+      (category) => tolowercase(category.mainCategory) == mainCategoryParams
     );
     if (mainCatgoryMatch) {
       dispatch(fetchProducts({ mainCategory: mainCatgoryMatch.mainCategory }));

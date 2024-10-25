@@ -23,7 +23,6 @@ function Header() {
   const { loginToggle } = useSelector((state) => state.toggleVisibility);
   const isVisible = useSelector((state) => state.toggleVisibility.toggle);
   const { login } = useSelector((state) => state.loginSlice);
-  const [profileDetails, setProfileDetails] = useState(false);
   const dispatch = useDispatch();
   const handleScroll = () => {
     if (window.scrollY > 0) {
