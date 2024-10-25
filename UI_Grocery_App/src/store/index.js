@@ -13,6 +13,8 @@ import FetchBasketSlice from "./Api/FetchBasketSlice.js";
 import SearchSlice from "./Api/SearchSlice.js";
 import productSlice from "./Api/productSlice.js";
 import checkOutSlice from "./Feature/Basket/CheckOutSlice.js";
+import loading from "./Feature/Ui_component/Loading.js"
+import updateBasket from "./Api/UpdateBasket.js"
 const store = configureStore({
   reducer: {
     toggleVisibility: toggleVisibility,
@@ -27,6 +29,8 @@ const store = configureStore({
     SearchSlice: SearchSlice,
     productSlice: productSlice,
     checkOutSlice: checkOutSlice,
+    loading:loading,
+    updateBasket:updateBasket
   },
 });
 export default store;

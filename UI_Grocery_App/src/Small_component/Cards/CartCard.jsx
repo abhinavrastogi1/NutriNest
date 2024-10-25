@@ -1,22 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaMinus } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addProductPrice,
   initalProductPrice,
   subProductPrice,
 } from "../../store/Feature/Basket/CheckOutSlice";
+import {
+  UpdateCard,
+  deleteProductFromCart,
+} from "../../store/Api/UpdateBasket";
+import { productSliceApi } from "../../store/Api/productSlice";
+import { Link } from "react-router-dom";
 function CartCard({ productDetails, removeCategory, removeProduct }) {
   if (!productDetails) {
     return null;
   }
+  // const { updatingCartstatus } = useSelector((state) => state.loading);
+  const { productId } = useSelector((state) => state.updateBasket);
+
   const dispatch = useDispatch();
   const { productData } = useSelector((state) => state.FetchBasketSlice);
-  const [loading, setLoading] = useState(false);
   const image = productDetails.productId.images;
   const productName = productDetails.productId.productName;
+  const id = productDetails.productId.id;
   const quantity = productDetails.quantity;
   const originalPrice = productDetails.originalPrice;
   const discountedPrice = productDetails.discountedPrice;
@@ -26,29 +34,24 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
   const [Saved, setSaved] = useState(productQuantity * savedPrice);
   const isRendered = useRef(false);
   const [cartMsg, setCartMsg] = useState("Adding ...");
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(productId[id]);
+  }, [productId]);
   useEffect(() => {
     setSubTotal(productQuantity * discountedPrice);
     setSaved(productQuantity * savedPrice);
   }, [productQuantity]);
   useEffect(() => {
     if (isRendered.current && productQuantity != 0) {
-      async function updateCart() {
-        try {
-          setLoading(true);
-          await axios.patch("/api/users/updateCart", null, {
-            params: {
-              _id: productDetails._id,
-              quantity: productQuantity,
-              Cart_id: productData[0]._id,
-            },
-          });
-        } catch (error) {
-          console.error("error while updating cart", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-      updateCart();
+      dispatch(
+        UpdateCard({
+          productDetails: productDetails,
+          productQuantity: productQuantity,
+          productData: productData,
+          id: id,
+        })
+      );
     } else {
       isRendered.current = true;
       if (productQuantity !== 0) {
@@ -58,43 +61,48 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
   }, [productQuantity]);
   useEffect(() => {
     if (productQuantity === 0) {
-      async function deleteProductFromCart() {
-        try {
-          setLoading(true);
-          await axios.patch("/api/users/deleteProductFromCart", null, {
-            params: {
-              _id: productDetails._id,
-              Cart_id: productData[0]._id,
-            },
-          });
-        } catch (error) {
-          console.error("error while Deleting item", error);
-        } finally {
-          setLoading(false);
-          removeCategory();
-        }
-      }
-      deleteProductFromCart();
+      dispatch(
+        deleteProductFromCart({
+          productDetails: productDetails,
+          productData: productData,
+          id: id,
+        })
+      );
+      removeCategory();
     }
   }, [productQuantity]);
   useEffect(() => {
     if (productQuantity === 0) removeProduct(subTotal, Saved);
   }, [productQuantity, subTotal, Saved]);
+  function removeSpecialChar(str) {
+    return str.replace(/( & |, | and |\/| \/ | )/g, "-");
+  }
   return (
     <>
       {productQuantity > 0 && (
         <div className="h-[170px] flex flex-row justify-between border-b-[1px] ">
-          <div className="flex gap-7">
-            <div className="h-full w-[168px] flex justify-center items-center ">
-              <img src={image} className="h-24 w-24" alt={productName} />
-            </div>
-            <div className="h-full w-[457px] flex flex-col justify-center">
-              <div>
-                {" "}
-                <h2 className="text-sm font-medium text-gray-800 py-1">
-                  {productName}
-                </h2>
+          <div
+            className="flex gap-7"
+            onClick={() => {
+              {
+                dispatch(productSliceApi({ id: id }));
+              }
+            }}
+          >
+            <Link to={`/pd/${id}/${removeSpecialChar(productName)}`}>
+              <div className="h-full w-[168px] flex justify-center items-center ">
+                <img src={image} className="h-24 w-24" alt={productName} />
               </div>
+            </Link>
+            <div className="h-full w-[457px] flex flex-col justify-center">
+              <Link to={`/pd/${id}/${removeSpecialChar(productName)}`}>
+                <div>
+                  {" "}
+                  <h2 className="text-sm font-medium text-gray-800 py-1">
+                    {productName}
+                  </h2>
+                </div>
+              </Link>
               <div>
                 <h2 className="text-sm font-medium ">
                   {` ₹${discountedPrice}`}{" "}
@@ -103,6 +111,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
               </div>
             </div>
           </div>
+
           <div className="flex gap-7  ">
             <div className="   h-full w-[168px] flex pt-16">
               <div className="flex flex-col w-full">

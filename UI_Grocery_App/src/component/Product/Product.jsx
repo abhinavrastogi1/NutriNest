@@ -22,13 +22,12 @@ function Product() {
   if (productData?.length != 0) {
     productsWeight = Object.keys(productDetails?.discount);
   }
-  console.log(productsWeight);
   const [weight, setweight] = useState(productsWeight[0]);
   useEffect(() => {
     if (productsWeight.length > 0) {
       setweight(productsWeight[0]);
     }
-  }, [productsWeight]);
+  }, [productData]);
   function removeSpecialChar(str) {
     return str.replace(/( & |, | and | )/g, "-");
   }

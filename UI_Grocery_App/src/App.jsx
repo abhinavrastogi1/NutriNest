@@ -23,19 +23,14 @@ function App() {
     dispatch(UpdateFromLocalStorage(JSON.parse(localStorage?.getItem("cart"))));
   }, []); // Consider adding `localStorage` data as a dependency
 
-  const categoriesData = useSelector((state) => state.categoryApi);
-  const productsData = useSelector((state) => state.recomemdedProduct);
 
   return (
     <>
-      {categoriesData.status === "success" &&
-        productsData.status === "success" && (
-          <div>
-            <Header />
-            <Outlet />
-            <Footer />
-          </div>
-        )}
+      <div>
+        <Header />
+        <Outlet />
+        <Footer />
+      </div>
     </>
   );
 }
