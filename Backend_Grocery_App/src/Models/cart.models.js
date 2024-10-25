@@ -23,6 +23,10 @@ const cartSchema = new Schema(
           type: Number,
           required: true,
         },
+        id: {
+          type: Number,
+          required: true,
+        },
       },
     ],
   },

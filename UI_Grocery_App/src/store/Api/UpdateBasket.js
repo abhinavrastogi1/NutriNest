@@ -3,13 +3,12 @@ import axios from "axios";
 
 export const UpdateCard = createAsyncThunk(
   "updateBasket/UpdateCard",
-  async ({ productDetails, productQuantity, productData, id }) => {
+  async ({ productQuantity, id }) => {
     try {
       await axios.patch("/api/users/updateCart", null, {
         params: {
-          _id: productDetails._id,
+          id: id,
           quantity: productQuantity,
-          Cart_id: productData[0]._id,
         },
       });
       return { id };
@@ -20,17 +19,43 @@ export const UpdateCard = createAsyncThunk(
 );
 export const deleteProductFromCart = createAsyncThunk(
   "updateBasket/deleteProductFromCart",
-  async ({productDetails,productData,id}) => {
+  async ({ id }) => {
     try {
       await axios.patch("/api/users/deleteProductFromCart", null, {
         params: {
-          _id: productDetails._id,
-          Cart_id: productData[0]._id,
+          id: id,
         },
       });
-      return {id}
+      return { id };
     } catch (error) {
       console.error("error while Deleting item", error);
+    } finally {
+      removeCategory();
+    }
+  }
+);
+export const addProductInCart = createAsyncThunk(
+  "updateBasket/addProductInCart",
+  async ({
+    id,
+    quantity,
+    _id,
+    discountedPrice,
+    offer,
+    originalPrice,
+  }) => {
+    try {
+      await axios.patch("/api/users/addProductInCart", {
+        id: id,
+        quantity: quantity,
+        _id: _id,
+        discountedPrice: discountedPrice,
+        originalPrice: originalPrice,
+        offer: offer,
+      });
+      return { id };
+    } catch (error) {
+      console.error("error while adding item", error);
     } finally {
       removeCategory();
     }
@@ -72,6 +97,21 @@ const updateBasket = createSlice({
     });
 
     builder.addCase(deleteProductFromCart.rejected, (state, action) => {
+      state.status = "rejected";
+      state.error = action.error.message;
+    });
+    builder.addCase(addProductInCart.pending, (state, action) => {
+      const { id } = action.meta.arg;
+      state.status = "pending";
+      state.productId[id] = true;
+    });
+    builder.addCase(addProductInCart.fulfilled, (state, action) => {
+      const { id } = action.payload;
+      state.status = "success";
+      state.productId[id] = false;
+    });
+
+    builder.addCase(addProductInCart.rejected, (state, action) => {
       state.status = "rejected";
       state.error = action.error.message;
     });

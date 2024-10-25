@@ -19,9 +19,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
   }
   // const { updatingCartstatus } = useSelector((state) => state.loading);
   const { productId } = useSelector((state) => state.updateBasket);
-
   const dispatch = useDispatch();
-  const { productData } = useSelector((state) => state.FetchBasketSlice);
   const image = productDetails.productId.images;
   const productName = productDetails.productId.productName;
   const id = productDetails.productId.id;
@@ -46,9 +44,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
     if (isRendered.current && productQuantity != 0) {
       dispatch(
         UpdateCard({
-          productDetails: productDetails,
           productQuantity: productQuantity,
-          productData: productData,
           id: id,
         })
       );
@@ -63,8 +59,6 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
     if (productQuantity === 0) {
       dispatch(
         deleteProductFromCart({
-          productDetails: productDetails,
-          productData: productData,
           id: id,
         })
       );

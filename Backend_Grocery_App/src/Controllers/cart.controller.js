@@ -6,8 +6,8 @@ import asyncHandler from "../Utils/asyncHandler.js";
 import { mongoose } from "mongoose";
 const createNewCart = asyncHandler(async (req, res) => {
   const userDetails = req?.user;
-  if(!userDetails){
-    throw new ApiError(501,"userDetails is not defined")
+  if (!userDetails) {
+    throw new ApiError(501, "userDetails is not defined");
   }
   const user = await User.findById(userDetails._id);
   if (!user) {
@@ -27,6 +27,7 @@ const createNewCart = asyncHandler(async (req, res) => {
       discountedPrice: productDetails.discountedPrice,
       originalPrice: productDetails.originalPrice,
       offer: productDetails.offer,
+      id: productDetails.id,
     });
   });
   cart = await Cart.create({
@@ -40,8 +41,8 @@ const addCacheProductToCart = asyncHandler(async (req, res) => {
   const userDetails = req?.user;
   const cartCachedData = Object.values(req?.body);
   let cart = [];
-  if(!userDetails){
-    throw new ApiError(501,"userDetails is not defined")
+  if (!userDetails) {
+    throw new ApiError(501, "userDetails is not defined");
   }
   const user = await User.findById(userDetails._id);
   if (!user) {
@@ -60,6 +61,7 @@ const addCacheProductToCart = asyncHandler(async (req, res) => {
       discountedPrice: productDetails.discountedPrice,
       originalPrice: productDetails.originalPrice,
       offer: productDetails.offer,
+      id: productDetails.id,
     });
   });
   cartData.forEach((existingProduct) => {
@@ -76,6 +78,7 @@ const addCacheProductToCart = asyncHandler(async (req, res) => {
         discountedPrice: existingProduct.discountedPrice,
         originalPrice: existingProduct.originalPrice,
         offer: existingProduct.offer,
+        id: existingProduct.id,
       });
     }
   });
@@ -207,13 +210,19 @@ const getCart = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, cart, "cartData successfully recieved"));
 });
 const updateCart = asyncHandler(async (req, res) => {
-  const { _id, quantity, Cart_id } = req?.query;
- if(!_id || !quantity ||!Cart_id){
-throw new ApiError(501,"all fields are required") }
+  const userDetails = req?.user;
+  const { id, quantity } = req?.query;
+  const user = await User.findById(userDetails._id);
+  if (!user) {
+    new ApiError(402, "user doesnot exist plz register");
+  }
+  if (!id || !quantity) {
+    throw new ApiError(501, "all fields are required");
+  }
   const cart = await Cart.findOneAndUpdate(
     {
-      _id: new mongoose.Types.ObjectId(Cart_id),
-      "item._id": new mongoose.Types.ObjectId(_id),
+      user: userDetails._id,
+      "item.id": id,
     },
     {
       $set: {
@@ -228,24 +237,61 @@ throw new ApiError(501,"all fields are required") }
   res.status(200).json(new ApiResponse(200, cart, "cart is updated"));
 });
 const deleteProductFromCart = asyncHandler(async (req, res) => {
-  const { _id, Cart_id } = req?.query;
-
-  if (!_id) {
+  const userDetails = req?.user;
+  const { id } = req?.query;
+  const user = await User.findById(userDetails._id);
+  if (!user) {
+    new ApiError(402, "user doesnot exist plz register");
+  }
+  if (!id) {
     throw new ApiError(501, "Product_id is not defined");
   }
 
   const cart = await Cart.updateOne(
     {
-      _id: new mongoose.Types.ObjectId(Cart_id),
+      user: userDetails._id,
     },
     {
       $pull: {
-        item: { _id: new mongoose.Types.ObjectId(_id) },
+        item: { id: id },
       },
     }
   );
 
   res.status(200).json(new ApiResponse(200, cart, "cart is updated"));
+});
+const addProductInCart = asyncHandler(async (req, res) => {
+  const userDetails = req?.user;
+
+  const { id, quantity, _id, discountedPrice, offer, originalPrice } = req.body;
+  console.log(_id);
+  const user = await User.findById(userDetails._id);
+  if (!user) {
+    new ApiError(402, "user doesnot exist plz register");
+  }
+  const cartDetails = await Cart.findOne({ user: userDetails._id });
+  if (!cartDetails) {
+    throw new ApiError(401, "cart does not exist plz register");
+  }
+  const item = {
+    productId: new mongoose.Types.ObjectId(_id),
+    quantity: quantity,
+    discountedPrice: discountedPrice,
+    originalPrice: originalPrice,
+    offer: offer,
+    id: id,
+  };
+  const cart = await Cart.findOneAndUpdate(
+    { user: userDetails._id },
+    {
+      $push: { item: item },
+    },
+    { new: true }
+  );
+  if(!cart){
+    throw new ApiError(501,"error while updating cart")
+  }
+  res.status(200).json(new ApiResponse(200, cart, "product added to cart"));
 });
 export {
   createNewCart,
@@ -253,4 +299,5 @@ export {
   getCart,
   deleteProductFromCart,
   updateCart,
+  addProductInCart,
 };

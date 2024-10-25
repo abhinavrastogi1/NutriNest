@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addData, removeData } from "../../store/Feature/Basket/basketData.js";
 import { productSliceApi } from "../../store/Api/productSlice.js";
 import SaveLaterbtn from "./SaveLaterbtn.jsx";
+import { addProductInCart } from "../../store/Api/UpdateBasket.js";
 function CardLg({ product }) {
   if (!product) {
     return null;
@@ -73,6 +74,7 @@ function CardLg({ product }) {
             discountedPrice: discountedPrice,
             originalPrice: originalPrice,
             offer: offer,
+            id: id,
           },
         })
       );
@@ -93,7 +95,17 @@ function CardLg({ product }) {
             <div
               className=" h-fulll w-full"
               onClick={() => {
-                dispatch(productSliceApi({ id:id }));
+                dispatch(
+                  productSliceApi({
+                    productName: productName,
+                    quantity: 1,
+                    _id: product._id,
+                    discountedPrice: discountedPrice,
+                    originalPrice: originalPrice,
+                    offer: offer,
+                    id: id,
+                  })
+                );
               }}
             >
               {
@@ -219,6 +231,16 @@ function CardLg({ product }) {
                 onClick={() => {
                   addProduct();
                   setAddBtnTransition(false);
+                  dispatch(
+                    addProductInCart({
+                      quantity: 1,
+                      _id: product._id,
+                      discountedPrice: discountedPrice,
+                      originalPrice: originalPrice,
+                      offer: offer,
+                      id: id,
+                    })
+                  );
                 }}
               >
                 Add
