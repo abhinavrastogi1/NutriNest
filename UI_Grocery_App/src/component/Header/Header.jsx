@@ -8,6 +8,7 @@ import { FaCircleUser } from "react-icons/fa6";
 
 import {
   loginToggleSwitch,
+  profileToggleSwitch,
   scrolltoggle,
   toggleSwitch,
 } from "../../store/Feature/Ui_component/ToggleVisibility";
@@ -18,9 +19,12 @@ import LiItmes from "./HeaderComponent/LiItmes";
 import BasketButon from "./HeaderComponent/BasketButon";
 import LoginPage from "./HeaderComponent/LoginPage";
 import SearchButton from "./HeaderComponent/SearchButton";
+import Profile from "./HeaderComponent/Profile";
 
 function Header() {
-  const { loginToggle } = useSelector((state) => state.toggleVisibility);
+  const { loginToggle, profileToggle } = useSelector(
+    (state) => state.toggleVisibility
+  );
   const isVisible = useSelector((state) => state.toggleVisibility.toggle);
   const { login } = useSelector((state) => state.loginSlice);
   const dispatch = useDispatch();
@@ -44,8 +48,7 @@ function Header() {
   return (
     <>
       <header className="bg-white shadow-lg ">
-        <div className="h-1 w-full bg-[#5E9400]">
-        </div>
+        <div className="h-1 w-full bg-[#5E9400]"></div>
         {isVisible && (
           <div
             className="absolute inset-y-[-150px] inset-x-0 bg-black opacity-50 z-20"
@@ -53,7 +56,7 @@ function Header() {
           ></div>
         )}
         <div className="grid grid-rows-2 mx-48 sm:mx-8 md:mx-16 lg:mx-48 h-28 ">
-          <div className="flex flex-row gap-3 my-2">
+          <div className="flex flex-row gap-3 my-2 relative">
             <div>
               <img
                 src={bigbasket}
@@ -61,14 +64,14 @@ function Header() {
                 alt="bigbasket logo"
               />
             </div>
-           <SearchButton/>
+            <SearchButton />
             <div className="gap-x-10 h-full mx-3">
               <button className="button-bg-color rounded-md flex justify-center flex-row space-x-2 p-2 h-full w-52">
                 <img src={compass} className="w-5 h-5" alt="compass icon" />
                 <span className="text-sm">Search Location</span>
               </button>
             </div>
-            <div>
+            <div >
               {!login ? (
                 <button
                   className="bg-black rounded-md px-6 py-1"
@@ -81,12 +84,18 @@ function Header() {
                   </h2>
                 </button>
               ) : (
-                <button className="rounded-md bg-[#EEEEEE]  h-full w-[64px] flex justify-center items-center">
-                  <FaCircleUser className="text-[21px]" />
+                <button
+                  className={`rounded-md ${profileToggle ? "bg-black text-white" : "bg-[#EEEEEE]"} h-full w-[64px] flex justify-center items-center`}
+                  onClick={() => {
+                    dispatch(profileToggleSwitch());
+                  }}
+                >
+                  <FaCircleUser className="text-[21px] " />
                 </button>
               )}
             </div>
             <div> {loginToggle && <LoginPage />}</div>
+            <div className="absolute top-11 right-20 z-10">{profileToggle &&<Profile/> }</div>
             <BasketButon />
           </div>
 

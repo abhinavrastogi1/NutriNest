@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const toggleVisibility = createSlice({
   name: "toggleVisibility",
-  initialState: { toggle: false, loginToggle: false },
+  initialState: { toggle: false, loginToggle: false ,profileToggle:false},
   reducers: {
     toggleSwitch: (state) => {
       state.toggle = !state.toggle;
@@ -13,7 +13,10 @@ const toggleVisibility = createSlice({
     loginToggleSwitch: (state) => {
       state.loginToggle = !state.loginToggle;
     },
+    profileToggleSwitch: (state) => {
+      state.profileToggle = !state.profileToggle;
+    },
   },
 });
-export const { toggleSwitch, scrolltoggle,loginToggleSwitch } = toggleVisibility.actions;
+export const { toggleSwitch, scrolltoggle,loginToggleSwitch,profileToggleSwitch } = toggleVisibility.actions;
 export default toggleVisibility.reducer;

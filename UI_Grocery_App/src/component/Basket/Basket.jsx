@@ -7,13 +7,13 @@ function Basket() {
   const { productData } = useSelector((state) => state.FetchBasketSlice);
   const { subTotal, savings } = useSelector((state) => state.checkOutSlice);
   const { items } = useSelector((state) => state.totalItemsSlice);
-  const [noOfProducts, setNoOfProduct] = useState(items?.countItems);
+  const [totalProducts, setTotalproducts] = useState(items?.countItems);
   useEffect(() => {
-    setNoOfProduct(items?.countItems);
+    setTotalproducts(items?.countItems);
   }, [items]);
   return (
     <div>
-      {noOfProducts ? (
+      {totalProducts ? (
         <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
           <div>
             <div className="mb-5">
@@ -23,7 +23,7 @@ function Basket() {
               <div className="flex flex-col ">
                 <div>
                   <h2 className="text-white px-2 text-base font-semibold">
-                    Subtotal (5 items) : ₹ {subTotal.toFixed(2)}
+                    Subtotal ({totalProducts} items) : ₹ {subTotal.toFixed(2)}
                   </h2>
                 </div>
                 <div>
@@ -50,7 +50,7 @@ function Basket() {
           <div className="flex flex-row justify-between">
             <div className="ml-3">
               <h2 className="text-[#969696] font-semibold text-sm">
-                items ({`3`} items)
+                items ({totalProducts} items)
               </h2>
             </div>
             <div className="flex">

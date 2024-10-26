@@ -17,7 +17,6 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
   if (!productDetails) {
     return null;
   }
-  // const { updatingCartstatus } = useSelector((state) => state.loading);
   const { productId } = useSelector((state) => state.updateBasket);
   const dispatch = useDispatch();
   const image = productDetails.productId.images;
@@ -33,6 +32,17 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
   const isRendered = useRef(false);
   const [cartMsg, setCartMsg] = useState("Adding ...");
   const [loading, setLoading] = useState(false);
+  const { items } = useSelector((state) => state.totalItemsSlice);
+  const totalItems = items?.totalItems;
+  useEffect(() => {
+    if (totalItems) {
+      Object.keys(totalItems)?.forEach((key) => {
+        if (key == id) {
+          setProductQuantity(totalItems[key]);
+        }
+      });
+    }
+  }, [items]);
   useEffect(() => {
     setLoading(productId[id]);
   }, [productId]);

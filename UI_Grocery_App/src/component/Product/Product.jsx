@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FiHome } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,7 +9,11 @@ import { MdBookmarkBorder } from "react-icons/md";
 import { FcCheckmark } from "react-icons/fc";
 import { FaMinus } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
-import { addProductInCart } from "../../store/Api/UpdateBasket";
+import {
+  addProductInCart,
+  deleteProductFromCart,
+  UpdateCart,
+} from "../../store/Api/UpdateBasket";
 import { addData, removeData } from "../../store/Feature/Basket/basketData";
 
 function Product() {
@@ -52,17 +56,18 @@ function Product() {
   const [noOfproduct, setNoOfproduct] = useState(0);
   const [saveforLater, setSaveForLater] = useState(false);
   const { items } = useSelector((state) => state.totalItemsSlice);
+  const { login } = useSelector((state) => state.loginSlice);
   const totalItems = items?.totalItems;
-  console.log(totalItems);
+
   useEffect(() => {
-    if (totalItems) {
+    if (login && totalItems) {
       Object.keys(totalItems)?.forEach((key) => {
         if (key == id) {
           setNoOfproduct(totalItems[key]);
         }
       });
     }
-  }, [items]);
+  }, [items, login]);
 
   useEffect(() => {
     if (images?.length > 0) {
@@ -83,19 +88,19 @@ function Product() {
       setDiscountedPrice(productDetails?.discountedPriceWithWeight[weight]);
     setOriginalPrice(productDetails?.originalPriceWithWeight[weight]);
   }, [weight]);
+
   function addProduct() {
     if (noOfproduct < 6) setNoOfproduct(noOfproduct + 1);
   }
 
   function removeProduct() {
-    if (noOfproduct - 1 == 0) {
+    if (noOfproduct - 1 == 0 && login) {
       dispatch(removeData({ id: id }));
     }
     if (noOfproduct > 0) setNoOfproduct(noOfproduct - 1);
   }
-
   useEffect(() => {
-    if (noOfproduct !== 0)
+    if (noOfproduct !== 0 && !login)
       dispatch(
         addData({
           id: id,
@@ -110,7 +115,32 @@ function Product() {
           },
         })
       );
+  }, [noOfproduct, login]);
+  const isRendered = useRef(false);
+  useEffect(() => {
+    if (login && isRendered.current && noOfproduct != 0 && noOfproduct != 1) {
+      dispatch(
+        UpdateCart({
+          productQuantity: noOfproduct,
+          id: id,
+        })
+      );
+    }
+    if (login && noOfproduct === 0 && isRendered.current) {
+      dispatch(
+        deleteProductFromCart({
+          id: id,
+        })
+      );
+    } else {
+      isRendered.current = true;
+    }
   }, [noOfproduct]);
+  const { productId } = useSelector((state) => state.updateBasket);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(productId[id]);
+  }, [productId]);
   return (
     <>
       {productData?.length != 0 && (
@@ -238,25 +268,28 @@ function Product() {
                 </h4>
               </div>
               <div className="flex mt-4 justify-between">
-                {noOfproduct==0 ? (
+                {noOfproduct == 0 ? (
                   <div className="w-[60%] h-14">
                     <button
                       className={`bg-[#CC0000] text-center h-full w-full rounded-md border-[1px]
              font-semibold border-[#CC0000] text-white  
              } origin-bottom`}
                       onClick={() => {
-                        addProduct();
-
-                        dispatch(
-                          addProductInCart({
-                            quantity: 1,
-                            _id: productDetails._id,
-                            discountedPrice: discountedPrice,
-                            originalPrice: originalPrice,
-                            offer: offer,
-                            id: id,
-                          })
-                        );
+                        if (!loading) {
+                          if (login) {
+                            dispatch(
+                              addProductInCart({
+                                quantity: 1,
+                                _id: productDetails._id,
+                                discountedPrice: discountedPrice,
+                                originalPrice: originalPrice,
+                                offer: offer,
+                                id: id,
+                              })
+                            );
+                          }
+                          addProduct();
+                        }
                       }}
                     >
                       Add to basket
@@ -269,22 +302,36 @@ function Product() {
                      
                  "
                       onClick={() => {
-                        removeProduct();
+                        if (!loading) {
+                          removeProduct();
+                          if (login && noOfproduct === 2) {
+                            dispatch(
+                              UpdateCart({
+                                productQuantity: 1,
+                                id: id,
+                              })
+                            );
+                          }
+                        }
                       }}
                     >
                       {" "}
                       <FaMinus />
                     </button>
-                    <div className=" w-1/3 border-[#CC0000] border-2  text-[#CC0000] h-full font-medium  ">
-                      <h3 className="h-full w-full text-center content-center">
-                        {noOfproduct}
-                      </h3>
+                    <div
+                      className=" w-1/3 border-[#CC0000] border-2  text-[#CC0000]  font-medium flex
+                justify-center items-center relative"
+                    >
+                      <h3 className=" text-center absolute">{noOfproduct}</h3>
+                      {loading && (
+                        <div className="h-5 w-5 rounded-full border-[#CC0000] border-t-2 animate-spin   "></div>
+                      )}
                     </div>
                     <button
                       className="bg-[#CC0000] w-1/3 text-white pl-12  
                 rounded-br-md rounded-tr-md "
                       onClick={() => {
-                        addProduct();
+                        if (!loading) addProduct();
                       }}
                     >
                       <FaPlus />

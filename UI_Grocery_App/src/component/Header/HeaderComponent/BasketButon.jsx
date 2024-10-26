@@ -23,11 +23,13 @@ function BasketButon() {
           dispatch(FetchBasket());
         }}
       >
-        <div className="bg-black absolute border-2 border-white top-4 left-5 rounded-md">
-          <h5 className="text-white text-[10px] rounded-md  px-2 py-[2px]">
-            {noOfProducts}
-          </h5>
-        </div>
+        {noOfProducts > 0 && (
+          <div className="bg-black absolute border-2 border-white top-4 left-5 rounded-md">
+            <h5 className="text-white text-[10px] rounded-md  px-2 py-[2px]">
+              {noOfProducts}
+            </h5>
+          </div>
+        )}
         <img src={Basket} className="w-11 h-8" alt="cart icon" />
       </button>
     </div>

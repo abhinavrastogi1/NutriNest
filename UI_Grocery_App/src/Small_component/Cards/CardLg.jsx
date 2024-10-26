@@ -35,7 +35,11 @@ function CardLg({ product }) {
   const id = product.id;
   const { items } = useSelector((state) => state.totalItemsSlice);
   const totalItems = items?.totalItems;
-  console.log(totalItems);
+  const { productId } = useSelector((state) => state.updateBasket);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(productId[id]);
+  }, [productId]);
   useEffect(() => {
     if (totalItems) {
       Object.keys(totalItems)?.forEach((key) => {
@@ -265,18 +269,19 @@ function CardLg({ product }) {
              font-semibold border-[#CC0000] hover:bg-[#cc0000]  hover:text-white  
              } origin-bottom`}
                 onClick={() => {
-                  addProduct();
-
-                  dispatch(
-                    addProductInCart({
-                      quantity: 1,
-                      _id: product._id,
-                      discountedPrice: discountedPrice,
-                      originalPrice: originalPrice,
-                      offer: offer,
-                      id: id,
-                    })
-                  );
+                  if (!loading) {
+                    addProduct();
+                    dispatch(
+                      addProductInCart({
+                        quantity: 1,
+                        _id: product._id,
+                        discountedPrice: discountedPrice,
+                        originalPrice: originalPrice,
+                        offer: offer,
+                        id: id,
+                      })
+                    );
+                  }
                 }}
               >
                 Add
@@ -287,28 +292,36 @@ function CardLg({ product }) {
                   className="bg-[#CC0000] w-1/3 text-white pl-6 text-center rounded-tl-md rounded-bl-md 
                  "
                   onClick={() => {
-                    removeProduct();
-                    if (noOfproduct === 2) {
-                      dispatch(
-                        UpdateCart({
-                          productQuantity: 1,
-                          id: id,
-                        })
-                      );
+                    if (!loading) {
+                      removeProduct();
+                      if (noOfproduct === 2) {
+                        dispatch(
+                          UpdateCart({
+                            productQuantity: 1,
+                            id: id,
+                          })
+                        );
+                      }
                     }
                   }}
                 >
                   {" "}
                   <FaMinus />
                 </button>
-                <div className=" w-1/3 border-[#CC0000] border-2 pt-1 text-[#CC0000]  font-medium  ">
-                  <h3 className="h-full w-full text-center">{noOfproduct}</h3>
+                <div
+                  className=" w-1/3 border-[#CC0000] border-2  text-[#CC0000]  font-medium flex
+                justify-center items-center relative"
+                >
+                  <h3 className=" text-center absolute">{noOfproduct}</h3>
+                  {loading && (
+                    <div className="h-5 w-5 rounded-full border-[#CC0000] border-t-2 animate-spin"></div>
+                  )}
                 </div>
                 <button
                   className="bg-[#CC0000] w-1/3 text-white pl-6  text-center 
                 rounded-br-md rounded-tr-md "
                   onClick={() => {
-                    addProduct();
+                    if (!loading) addProduct();
                   }}
                 >
                   <FaPlus />
