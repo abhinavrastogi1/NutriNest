@@ -7,6 +7,11 @@ import { productSliceApi } from "../../store/Api/productSlice";
 import { MdBookmarkAdded } from "react-icons/md";
 import { MdBookmarkBorder } from "react-icons/md";
 import { FcCheckmark } from "react-icons/fc";
+import { FaMinus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
+import { addProductInCart } from "../../store/Api/UpdateBasket";
+import { addData, removeData } from "../../store/Feature/Basket/basketData";
+
 function Product() {
   const { productData } = useSelector((state) => state.productSlice);
   const { id } = useParams();
@@ -46,6 +51,9 @@ function Product() {
   const productName = productDetails?.productName;
   const [currentImage, setCurrentImage] = useState(images?.[0]);
   const brand = productDetails?.brand;
+  const [noOfproduct, setNoOfproduct] = useState(0);
+  const [saveforLater, setSaveForLater] = useState(false);
+  const [addBtnTransition, setAddBtnTransition] = useState(true);
 
   useEffect(() => {
     if (images?.length > 0) {
@@ -66,7 +74,35 @@ function Product() {
       setDiscountedPrice(productDetails?.discountedPriceWithWeight[weight]);
     setOriginalPrice(productDetails?.originalPriceWithWeight[weight]);
   }, [weight]);
+  function addProduct() {
+    if (noOfproduct < 6) setNoOfproduct(noOfproduct + 1);
+  }
 
+  function removeProduct() {
+    if (noOfproduct - 1 == 0) {
+      setAddBtnTransition(true);
+      dispatch(removeData({ id: id }));
+    }
+    if (noOfproduct > 0) setNoOfproduct(noOfproduct - 1);
+  }
+
+  useEffect(() => {
+    if (noOfproduct !== 0)
+      dispatch(
+        addData({
+          id: id,
+          item: {
+            productName: productName,
+            quantity: noOfproduct,
+            _id: productDetails._id,
+            discountedPrice: discountedPrice,
+            originalPrice: originalPrice,
+            offer: offer,
+            id: id,
+          },
+        })
+      );
+  }, [noOfproduct]);
   return (
     <>
       {productData?.length != 0 && (
@@ -172,49 +208,142 @@ function Product() {
                 </div>
               </div>
             </div>
-            <div className=" flex flex-col pt-2">
+            <div className=" flex flex-col mt-2 ml-4">
               <div>
                 <h3 className="text-[#696969] underline text-[15px] font-[450] ">
                   {brand}
                 </h3>
-                <h1 className="pt-2">
+                <h1 className="mt-2 font-semibold text-lg">
                   {productName},{weight}
                 </h1>
-                <h3>
+                <h3 className="text-[#A3A3A3] text-xs mt-1">
                   MRP: ₹<span className="line-through">{originalPrice}</span>
                 </h3>
-                <h2>Price:₹{discountedPrice}</h2>
-                <h3>
-                  You Save:<span>{offer}% OFF</span>
+                <h2 className="text-[15px] font-semibold mt-1">
+                  Price:₹{discountedPrice}
+                </h2>
+                <h3 className="text-[#476F00] text-xs mt-1 ">
+                  You Save:<span className="font-medium">{offer}% OFF</span>
                 </h3>
-                <h4>(inclusive of all taxes)</h4>
+                <h4 className=" text-[#A3A3A3] text-xs pt-1">
+                  (inclusive of all taxes)
+                </h4>
               </div>
-              <div className="flex">
-                <div className="w-[60%]">
-                  <button>Add to basket</button>
-                </div>
-                <div className="w-[40%] flex">
-                  <span>
-                    {" "}
-                    <MdBookmarkBorder /> Save for later
-                  </span>
+              <div className="flex mt-4 justify-between">
+                {addBtnTransition ? (
+                  <div className="w-[60%] h-14">
+                    <button
+                      className={`bg-[#CC0000] text-center h-full w-full rounded-md border-[1px]
+             font-semibold border-[#CC0000] text-white  
+             } origin-bottom`}
+                      onClick={() => {
+                        addProduct();
+                        setAddBtnTransition(false);
+                        dispatch(
+                          addProductInCart({
+                            quantity: 1,
+                            _id: productDetails._id,
+                            discountedPrice: discountedPrice,
+                            originalPrice: originalPrice,
+                            offer: offer,
+                            id: id,
+                          })
+                        );
+                      }}
+                    >
+                      Add to basket
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-[60%] h-14  flex  rounded-md ">
+                    <button
+                      className="bg-[#CC0000] w-1/3 text-white pl-12  rounded-tl-md rounded-bl-md 
+                     
+                 "
+                      onClick={() => {
+                        removeProduct();
+                      }}
+                    >
+                      {" "}
+                      <FaMinus />
+                    </button>
+                    <div className=" w-1/3 border-[#CC0000] border-2  text-[#CC0000] h-full font-medium  ">
+                      <h3 className="h-full w-full text-center content-center">
+                        {noOfproduct}
+                      </h3>
+                    </div>
+                    <button
+                      className="bg-[#CC0000] w-1/3 text-white pl-12  
+                rounded-br-md rounded-tr-md "
+                      onClick={() => {
+                        addProduct();
+                      }}
+                    >
+                      <FaPlus />
+                    </button>
+                  </div>
+                )}
+                <div
+                  className="w-[35%] flex border-[1px] border-[#B3B3B3] rounded-md "
+                  onClick={() => {
+                    setSaveForLater(!saveforLater);
+                  }}
+                >
+                  {saveforLater ? (
+                    <div className=" flex justify-center items-center w-full">
+                      <div className="text-[25px] mr-2">
+                        <MdBookmarkBorder />{" "}
+                      </div>
+
+                      <div className="text-[15px] font-[550] ">
+                        Save for later
+                      </div>
+                    </div>
+                  ) : (
+                    <div className=" flex justify-center items-center w-full">
+                      <div className="text-[25px] mr-2">
+                        <MdBookmarkAdded />{" "}
+                      </div>
+
+                      <div className="text-[15px] font-[550] ">Saved</div>
+                    </div>
+                  )}
                 </div>
               </div>
               {productsWeight.length > 1 && (
                 <div>
-                  <h3>Pack Sizes</h3>
+                  <h3 className="my-4  text-sm font-semibold">Pack Sizes</h3>
                   {productsWeight?.map((weights, index) => (
                     <div
                       key={index}
-                      className={`h-16 w-full bg-white my-2 p-2   
+                      className={`h-[66px] w-full bg-white my-2 p-2   
                   ${weights === weight ? "border-[#76B900]" : "border-gray-300"}  border-[1px] rounded-md hover:shadow-md`}
                       onClick={() => {
                         setweight(weights);
                       }}
                     >
                       <div className="flex justify-between ">
-                        <div className="text-[12px] font-medium text-gray-600 ">
-                          <h3>{weights}</h3>
+                        <div className="flex justify-between w-[70%]">
+                          <h3 className="text-[14px] font-semibold  ">
+                            {weights}
+                          </h3>
+                          <div className="flex justify-between">
+                            <div>
+                              <div>
+                                <h2 className="font-semibold  ">{`₹${productDetails.discountedPriceWithWeight[weights]}`}</h2>
+                              </div>
+                              <div className="flex gap-2 h-6 text-[14px]  mt-1 items-center ml-1">
+                                <h2 className="bg-[#F1F8E6] text-[#476F00] text-[11px] pl-2  font-semibold">
+                                  {productDetails.discount[weights]}% oFF
+                                </h2>
+                                <span>
+                                  <p className="line-through text-gray-600 text-[12px] pt-[3px]">
+                                    {`₹${productDetails.originalPriceWithWeight[weights]}`}
+                                  </p>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                         {weights === weight && (
                           <div>
@@ -227,23 +356,6 @@ function Product() {
                             />
                           </div>
                         )}
-                      </div>
-                      <div className="flex justify-between">
-                        <div className="flex">
-                          <div className="py-1 ">
-                            <h2 className="bg-[#F1F8E6] text-[#476F00] text-[11px] p-[2px] font-semibold">
-                              {productDetails.discount[weights]}% oFF
-                            </h2>
-                          </div>
-                          <div className="flex gap-2 h-6 text-[14px]  items-center ml-1">
-                            <p className="font-semibold pt-[3px] ">{`₹${productDetails.discountedPriceWithWeight[weights]}`}</p>
-                            <span>
-                              <p className="line-through text-gray-600 text-[12px] pt-[3px]">
-                                {`₹${productDetails.originalPriceWithWeight[weights]}`}
-                              </p>
-                            </span>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   ))}
