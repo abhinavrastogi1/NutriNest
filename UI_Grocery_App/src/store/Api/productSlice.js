@@ -6,7 +6,7 @@ export const productSliceApi = createAsyncThunk(
   async ({ id }) => {
     try {
       const response = await axios.post(
-        "/api/findProduct/productDetails",
+        "https://grocery-clone.onrender.com/api/findProduct/productDetails",
         null,
         {
           params: {

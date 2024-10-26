@@ -31,11 +31,11 @@ function LoginPage() {
   async function onSubmitHandle(e) {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/users/UserExist", formData);
+      const response = await axios.post("https://grocery-clone.onrender.com/api/users/UserExist", formData);
       if (response?.data.data === "new User") {
         setRegisterUser(true);
       } else if (response?.data.data === "userExist") {
-        const response = await axios.post("/api/users/login", formData);
+        const response = await axios.post("https://grocery-clone.onrender.com/api/users/login", formData);
         if (response.data.message === "log in successfull")
           dispatch(loginToggleSwitch());
         const cartData = JSON.parse(localStorage?.getItem("cart"));
@@ -56,7 +56,7 @@ function LoginPage() {
     e.preventDefault();
     try {
       const registerationResponse = await axios.post(
-        "/api/users/registerUser",
+        "https://grocery-clone.onrender.com/api/users/registerUser",
         formData
       );
 
@@ -65,7 +65,7 @@ function LoginPage() {
       ) {
         throw new Error("Registraton Failed");
       }
-      const loginResponse = await axios.post("/api/users/login", formData);
+      const loginResponse = await axios.post("https://grocery-clone.onrender.com/api/users/login", formData);
       if (loginResponse.data.message !== "log in successfull") {
         throw new Error("login failed");
       }
