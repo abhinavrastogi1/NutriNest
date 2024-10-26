@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchBasket } from "../../../store/Api/FetchBasketSlice";
 import { useNavigate } from "react-router-dom";
-import { profileToggleSwitch } from "../../../store/Feature/Ui_component/ToggleVisibility";
+import { profileToggleSwitch } from "../../../store/Feature/Ui_component/toggleVisibility";
 import axios from "axios";
 import { isloggedin } from "../../../store/Feature/Basket/LoginSlice";
 

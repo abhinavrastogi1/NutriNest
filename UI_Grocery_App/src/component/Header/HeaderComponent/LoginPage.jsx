@@ -4,7 +4,7 @@ import { RemoveScroll } from "react-remove-scroll";
 import loginpageImg from "../../../assets/images/loginImg.png";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch } from "react-redux";
-import { loginToggleSwitch } from "../../../store/Feature/Ui_component/ToggleVisibility";
+import { loginToggleSwitch } from "../../../store/Feature/Ui_component/toggleVisibility";
 import axios from "axios";
 import { isloggedin } from "../../../store/Feature/Basket/LoginSlice";
 import { BasketApi } from "../../../store/Api/BasketApi";

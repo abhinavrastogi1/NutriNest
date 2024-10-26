@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Basket from "../../../assets/images/cart.png";
 import { useNavigate } from "react-router-dom";
-import { loginToggleSwitch } from "../../../store/Feature/Ui_component/ToggleVisibility";
+import { loginToggleSwitch } from "../../../store/Feature/Ui_component/toggleVisibility";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchBasket } from "../../../store/Api/FetchBasketSlice";
 
