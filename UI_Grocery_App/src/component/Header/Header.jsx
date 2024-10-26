@@ -11,7 +11,7 @@ import {
   profileToggleSwitch,
   scrolltoggle,
   toggleSwitch,
-} from "../../store/Feature/Ui_component/ToggleVisibility";
+} from "../../store/Feature/Ui_component/toggleVisibility";
 import { useDispatch, useSelector } from "react-redux";
 import CategoryButton from "./HeaderComponent/CategoryButton";
 import ShopByCategory from "./HeaderComponent/ShopByCategory";
