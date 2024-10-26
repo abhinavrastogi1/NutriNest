@@ -8,8 +8,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./component/Home/Home.jsx";
 import Basket from "./component/Basket/Basket.jsx";
 import ProductsBycategory from "./component/CategoryProducts/ProductsByMainCategory.jsx";
-import ProductsBySubCategory from './component/CategoryProducts/ProductsBySubCategory.jsx';  // Should match the file name exactly
-import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx"
+import ProductsBySubCategory from "./component/CategoryProducts/ProductsBySubCategory.jsx"; // Should match the file name exactly
+import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx";
 import Search from "./component/Search/Search.jsx";
 import Product from "./component/Product/Product.jsx";
 const router = createBrowserRouter([
@@ -44,17 +44,16 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
-      },{
-        path:"/pd/:id/:product",
-       element:<Product/>
-      }
+      },
+      {
+        path: "/pd/:id/:product",
+        element: <Product />,
+      },
     ],
   },
 ]);
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-
-      <RouterProvider router={router} />
-   
+    <RouterProvider router={router} />
   </Provider>
 );

@@ -8,7 +8,7 @@ import {
   subProductPrice,
 } from "../../store/Feature/Basket/CheckOutSlice";
 import {
-  UpdateCard,
+  UpdateCart,
   deleteProductFromCart,
 } from "../../store/Api/UpdateBasket";
 import { productSliceApi } from "../../store/Api/productSlice";
@@ -41,9 +41,10 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
     setSaved(productQuantity * savedPrice);
   }, [productQuantity]);
   useEffect(() => {
+    setLoading(false);
     if (isRendered.current && productQuantity != 0) {
       dispatch(
-        UpdateCard({
+        UpdateCart({
           productQuantity: productQuantity,
           id: id,
         })

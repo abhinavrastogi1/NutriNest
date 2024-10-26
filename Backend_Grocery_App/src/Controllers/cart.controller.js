@@ -264,7 +264,6 @@ const addProductInCart = asyncHandler(async (req, res) => {
   const userDetails = req?.user;
 
   const { id, quantity, _id, discountedPrice, offer, originalPrice } = req.body;
-  console.log(_id);
   const user = await User.findById(userDetails._id);
   if (!user) {
     new ApiError(402, "user doesnot exist plz register");
@@ -288,10 +287,39 @@ const addProductInCart = asyncHandler(async (req, res) => {
     },
     { new: true }
   );
-  if(!cart){
-    throw new ApiError(501,"error while updating cart")
+  if (!cart) {
+    throw new ApiError(501, "error while updating cart");
   }
   res.status(200).json(new ApiResponse(200, cart, "product added to cart"));
+});
+
+const totalItems = asyncHandler(async (req, res) => {
+  const userDetails = req?.user;
+  if (!userDetails) {
+    throw new ApiError(501, "user Details are required");
+  }
+
+  const cart = await Cart.findOne({
+    user: new mongoose.Types.ObjectId(userDetails?._id),
+  });
+  if (!cart) {
+    throw new ApiError(501, "something went wrong while finding cart");
+  }
+  let countItems = 0;
+  const totalItems = {};
+  cart.item.forEach((item) => {
+    countItems++;
+    totalItems[item.id] = item.quantity;
+  });
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { totalItems, countItems },
+        " total Number of items fetched SuccessFully"
+      )
+    );
 });
 export {
   createNewCart,
@@ -300,4 +328,5 @@ export {
   deleteProductFromCart,
   updateCart,
   addProductInCart,
+  totalItems,
 };

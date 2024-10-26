@@ -13,6 +13,7 @@ import {
   deleteProductFromCart,
   updateCart,
   addProductInCart,
+  totalItems,
 } from "../Controllers/cart.controller.js";
 const userRouter = Router();
 userRouter.route("/registerUser").post(registerUser);
@@ -26,6 +27,7 @@ userRouter
 userRouter.route("/getCart").get(verifyJwt, getCart);
 userRouter.route("/updateCart").patch(verifyJwt, updateCart);
 userRouter.route("/addProductInCart").patch(verifyJwt, addProductInCart);
+userRouter.route("/totalItems").get(verifyJwt, totalItems);
 userRouter
   .route("/deleteProductFromCart")
   .patch(verifyJwt, deleteProductFromCart);

@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import BasketMainCategory from "./BasketMainCategory";
+import emptyBasket from "../../assets/images/empty_basket.png";
+import { Link } from "react-router-dom";
 function Basket() {
   const { productData } = useSelector((state) => state.FetchBasketSlice);
-  const { subTotal, savings } = useSelector((state) => (state.checkOutSlice));
+  const { subTotal, savings } = useSelector((state) => state.checkOutSlice);
+  const { items } = useSelector((state) => state.totalItemsSlice);
+  const [noOfProducts, setNoOfProduct] = useState(items?.countItems);
+  useEffect(() => {
+    setNoOfProduct(items?.countItems);
+  }, [items]);
   return (
     <div>
-      {productData?.length !== 0 ? (
+      {noOfProducts ? (
         <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
           <div>
             <div className="mb-5">
@@ -69,7 +76,26 @@ function Basket() {
           </div>
         </div>
       ) : (
-        <div>empty</div>
+        <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
+          <div className="border-b-2 border-dotted mb-4">
+            <div className="my-12 h-72 bg-[#F1F8E6] rounded-md flex py-6 items-center flex-col ">
+              <img src={emptyBasket} alt="empty basket img" className="w-28 " />
+              <div>
+                <h1 className="text-xl text-[#2F4A00] mt-5">
+                  Let's fill the empty{" "}
+                  <span className="text-[#76B900]">Basket</span>
+                </h1>
+                <div className="mt-5 flex justify-center">
+                  <Link to="/">
+                    <button className="py-3 px-8 bg-[#CC0000] text-white rounded-[4px] text-sm font-medium">
+                      Continue Shopping
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

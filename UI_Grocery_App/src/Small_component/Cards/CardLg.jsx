@@ -12,7 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { addData, removeData } from "../../store/Feature/Basket/basketData.js";
 import { productSliceApi } from "../../store/Api/productSlice.js";
 import SaveLaterbtn from "./SaveLaterbtn.jsx";
-import { addProductInCart } from "../../store/Api/UpdateBasket.js";
+import {
+  addProductInCart,
+  deleteProductFromCart,
+  UpdateCart,
+} from "../../store/Api/UpdateBasket.js";
 function CardLg({ product }) {
   if (!product) {
     return null;
@@ -21,7 +25,6 @@ function CardLg({ product }) {
   const [isHovered, setIsHovered] = useState(null);
   const [showPrice, setShowprice] = useState(null);
   const [noOfproduct, setNoOfproduct] = useState(0);
-  const [addBtnTransition, setAddBtnTransition] = useState(true);
   const [saveforLater, setSaveForLater] = useState(false);
   const SaveLaterbtnLocation = useRef();
   const location = useRef();
@@ -29,6 +32,19 @@ function CardLg({ product }) {
   const productsWeight = Object.keys(product.discount);
   const [weight, setweight] = useState(productsWeight[0]);
   const [offer, setOffer] = useState(product.discount[weight]);
+  const id = product.id;
+  const { items } = useSelector((state) => state.totalItemsSlice);
+  const totalItems = items?.totalItems;
+  console.log(totalItems);
+  useEffect(() => {
+    if (totalItems) {
+      Object.keys(totalItems)?.forEach((key) => {
+        if (key == id) {
+          setNoOfproduct(totalItems[key]);
+        }
+      });
+    }
+  }, [items]);
   if (productsWeight.length == 0) return null;
 
   const [discountedPrice, setDiscountedPrice] = useState(
@@ -43,7 +59,7 @@ function CardLg({ product }) {
   const productName = product.productName;
   const rating = "";
   const stars = "";
-  const id = product.id;
+
   useEffect(() => {
     setOffer(product.discount[weight]),
       setDiscountedPrice(product.discountedPriceWithWeight[weight]);
@@ -56,7 +72,6 @@ function CardLg({ product }) {
 
   function removeProduct() {
     if (noOfproduct - 1 == 0) {
-      setAddBtnTransition(true);
       dispatch(removeData({ id: id }));
     }
     if (noOfproduct > 0) setNoOfproduct(noOfproduct - 1);
@@ -82,6 +97,27 @@ function CardLg({ product }) {
   function removeSpecialChar(str) {
     return str.replace(/( & |, | and |\/| \/ | )/g, "-");
   }
+  const isRendered = useRef(false);
+  useEffect(() => {
+    if (isRendered.current && noOfproduct != 0 && noOfproduct != 1) {
+      dispatch(
+        UpdateCart({
+          productQuantity: noOfproduct,
+          id: id,
+        })
+      );
+    }
+    if (noOfproduct === 0 && isRendered.current) {
+      dispatch(
+        deleteProductFromCart({
+          id: id,
+        })
+      );
+    } else {
+      isRendered.current = true;
+    }
+  }, [noOfproduct]);
+
   return (
     <>
       {
@@ -223,14 +259,14 @@ function CardLg({ product }) {
               )}
             </button>
 
-            {addBtnTransition ? (
+            {noOfproduct == 0 ? (
               <button
                 className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
              font-semibold border-[#CC0000] hover:bg-[#cc0000]  hover:text-white  
              } origin-bottom`}
                 onClick={() => {
                   addProduct();
-                  setAddBtnTransition(false);
+
                   dispatch(
                     addProductInCart({
                       quantity: 1,
@@ -246,27 +282,20 @@ function CardLg({ product }) {
                 Add
               </button>
             ) : (
-              //   : (
-              //     <div className="relative">
-              //       <button
-              //         className={`text-[#CC0000] text-center w-[85%] rounded-md border-[1px]
-              // font-semibold border-[#CC0000] hover:bg-[#cc0000] hover:text-[#303030]  transition-transform duration-100 ease-in-out transform ${
-              //   !addBtnTransition ? "scale-y-0" : "scale-y-100"
-              // } origin-bottom`}
-              //         onClick={() => {
-              //           dispatch(addData(product));
-              //         }}
-              //       >
-              //         Adding..
-              //       </button>
-              //     </div>
-              //   )
               <div className="w-[85%]  flex  rounded-md ">
                 <button
                   className="bg-[#CC0000] w-1/3 text-white pl-6 text-center rounded-tl-md rounded-bl-md 
                  "
                   onClick={() => {
                     removeProduct();
+                    if (noOfproduct === 2) {
+                      dispatch(
+                        UpdateCart({
+                          productQuantity: 1,
+                          id: id,
+                        })
+                      );
+                    }
                   }}
                 >
                   {" "}

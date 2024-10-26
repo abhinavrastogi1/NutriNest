@@ -21,9 +21,7 @@ function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const productDetails = productData[0];
-  console.log(productDetails);
   let productsWeight = [];
-
   if (productData?.length != 0) {
     productsWeight = Object.keys(productDetails?.discount);
   }
@@ -53,7 +51,18 @@ function Product() {
   const brand = productDetails?.brand;
   const [noOfproduct, setNoOfproduct] = useState(0);
   const [saveforLater, setSaveForLater] = useState(false);
-  const [addBtnTransition, setAddBtnTransition] = useState(true);
+  const { items } = useSelector((state) => state.totalItemsSlice);
+  const totalItems = items?.totalItems;
+  console.log(totalItems);
+  useEffect(() => {
+    if (totalItems) {
+      Object.keys(totalItems)?.forEach((key) => {
+        if (key == id) {
+          setNoOfproduct(totalItems[key]);
+        }
+      });
+    }
+  }, [items]);
 
   useEffect(() => {
     if (images?.length > 0) {
@@ -80,7 +89,6 @@ function Product() {
 
   function removeProduct() {
     if (noOfproduct - 1 == 0) {
-      setAddBtnTransition(true);
       dispatch(removeData({ id: id }));
     }
     if (noOfproduct > 0) setNoOfproduct(noOfproduct - 1);
@@ -230,7 +238,7 @@ function Product() {
                 </h4>
               </div>
               <div className="flex mt-4 justify-between">
-                {addBtnTransition ? (
+                {noOfproduct==0 ? (
                   <div className="w-[60%] h-14">
                     <button
                       className={`bg-[#CC0000] text-center h-full w-full rounded-md border-[1px]
@@ -238,7 +246,7 @@ function Product() {
              } origin-bottom`}
                       onClick={() => {
                         addProduct();
-                        setAddBtnTransition(false);
+
                         dispatch(
                           addProductInCart({
                             quantity: 1,
