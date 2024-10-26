@@ -6,7 +6,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://grocery-clone.vercel.app",
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
