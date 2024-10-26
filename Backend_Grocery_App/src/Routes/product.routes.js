@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  bestSellers,
   categorytree,
   listProduct,
   recomemdedProduct,
@@ -13,4 +14,5 @@ productRouter
   .post(verifyJwt, verifyAdmin, upload.array('images',5), listProduct);
 productRouter.route("/categorytree").get(categorytree);
 productRouter.route("/recomemdedProduct").get(recomemdedProduct);
+productRouter.route("/bestSellers").get(bestSellers);
 export default productRouter;

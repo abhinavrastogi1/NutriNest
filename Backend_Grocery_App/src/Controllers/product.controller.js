@@ -60,17 +60,17 @@ const listProduct = asyncHandler(async (req, res) => {
       category: categoryDetails,
     });
   }
-  console.log(req?.files);
+
   // Extract images from multer
   const localImages = req?.files || [];
-  console.log(localImages);
+
   if (localImages.length === 0) {
     throw new ApiError(402, "Images are required");
   }
 
   // Get image paths
   const imagesPath = localImages.map((imagefile) => imagefile.path);
-  console.log(imagesPath);
+
   // Upload images to Cloudinary
   const cloudinaryUrls = await Promise.all(
     imagesPath.map(async (imagePath) => {
@@ -82,7 +82,7 @@ const listProduct = asyncHandler(async (req, res) => {
       }
     })
   );
-  console.log(cloudinaryUrls);
+
   if (cloudinaryUrls.length === 0) {
     throw new ApiError(400, "Images not uploaded. Please try again");
   }
@@ -211,7 +211,7 @@ const recomemdedProduct = asyncHandler(async (req, res) => {
     },
     {
       $group: {
-        _id: "$category",
+        _id: "$category.level1",
         productdata: {
           $push: "$$ROOT",
         },
@@ -264,7 +264,7 @@ const recomemdedProduct = asyncHandler(async (req, res) => {
     },
     {
       $group: {
-        _id: "$_id",
+        _id: "$category.level1",
         productdata: {
           $push: {
             _id: "$productdata._id",
@@ -288,14 +288,15 @@ const recomemdedProduct = asyncHandler(async (req, res) => {
       },
     },
     {
-      $sort: {
-        "productdata.id": 1,
+      $match: {
+        _id: "fruits & vegitable",
       },
     },
+
     {
       $addFields: {
         productData: {
-          $slice: ["$productdata", 2],
+          $slice: ["$productdata", 10],
         },
       },
     },
@@ -307,7 +308,11 @@ const recomemdedProduct = asyncHandler(async (req, res) => {
       },
     },
     {
-      $limit: 10,
+      $project: {
+        productdata: 0,
+        _id: 0,
+        count: 0,
+      },
     },
   ]);
   if (!recomendedProductData) {
@@ -318,6 +323,126 @@ const recomemdedProduct = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(200, recomendedProductData, "data fetched successfully")
     );
+});
+const bestSellers = asyncHandler(async (req, res) => {
+  const bestSellers = await Product.aggregate([
+    {
+      $sort: {
+        id: 1,
+      },
+    },
+    {
+      $group: {
+        _id: "$category.level1",
+        productdata: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $unwind: "$productdata",
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "productdata.category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: "$category",
+    },
+    {
+      $addFields: {
+        category: {
+          level1: "$category.category.level1",
+          level2: "$category.category.level2",
+          level3: "$category.category.level3",
+        },
+      },
+    },
+    {
+      $project: {
+        "category.level1": 1,
+        "category.level2": 1,
+        "category.level3": 1,
+        productdata: 1,
+      },
+    },
+    {
+      $project: {
+        "productdata.createdAt": 0,
+        "productdata.updatedAt": 0,
+        "productdata.__v": 0,
+      },
+    },
+    {
+      $addFields: {
+        images: {
+          $slice: ["$productdata.images", 1],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$category.level1",
+        productdata: {
+          $push: {
+            _id: "$productdata._id",
+            productName: "$productdata.productName",
+            id: "$productdata.id",
+            images: "$images",
+            description: "$productdata.description",
+            brand: "$productdata.brand",
+            originalPriceWithWeight: "$productdata.originalPriceWithWeight",
+            discount: "$productdata.discount",
+            discountedPriceWithWeight: "$productdata.discountedPriceWithWeight",
+            quantity: "$productdata.quantity",
+            categoryDetails: "$category",
+            categoryId: "$productdata.category",
+            imageAlt: "$productdata.productName",
+          },
+        },
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $match: {
+        _id: "baby care",
+      },
+    },
+
+    {
+      $addFields: {
+        productData: {
+          $slice: ["$productdata", 10],
+        },
+      },
+    },
+    {
+      $project: {
+        productdata: 0,
+        _id: 0,
+        count: 0,
+      },
+    },
+    {
+      $project: {
+        productdata: 0,
+        _id: 0,
+        count: 0,
+      },
+    },
+  ]);
+  if (!bestSellers) {
+    throw new ApiError(501, "something went wrong while fetching product data");
+  }
+  res
+    .status(200)
+    .json(new ApiResponse(200, bestSellers, "data fetched successfully"));
 });
 
 const findProductsByCategory = asyncHandler(async (req, res) => {
@@ -751,4 +876,5 @@ export {
   findProductsBySubSubCategory,
   searchProduct,
   productDetails,
+  bestSellers,
 };

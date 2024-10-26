@@ -15,6 +15,7 @@ import checkOutSlice from "./Feature/Basket/CheckOutSlice.js";
 import loading from "./Feature/Ui_component/Loading.js";
 import updateBasket from "./Api/UpdateBasket.js";
 import totalItemsSlice from "./Api/TotalItems.js";
+import bestSeller from "./Api/BestSeller.js"
 const store = configureStore({
   reducer: {
     toggleVisibility: toggleVisibility,
@@ -32,6 +33,7 @@ const store = configureStore({
     loading: loading,
     updateBasket: updateBasket,
     totalItemsSlice: totalItemsSlice,
+    bestSeller:bestSeller
   },
 });
 export default store;

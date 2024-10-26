@@ -8,13 +8,15 @@ import { fetchCategoryData } from "./store/Api/categoryApi";
 import { fetchProductData } from "./store/Api/recomendedProduct";
 import { UpdateFromLocalStorage } from "./store/Feature/Basket/basketData";
 import { FetchBasket } from "./store/Api/FetchBasketSlice";
+import { fetchbestSellerData } from "./store/Api/BestSeller";
 
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategoryData());
-    dispatch(fetchProductData());
     dispatch(FetchBasket());
+    dispatch(fetchProductData());
+    dispatch(fetchbestSellerData());
   }, []);
   useEffect(() => {
     if (!localStorage?.getItem("cart")) {
