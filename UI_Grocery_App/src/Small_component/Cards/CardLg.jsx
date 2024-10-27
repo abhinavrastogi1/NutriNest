@@ -23,7 +23,7 @@ function CardLg({ product }) {
   }
   const [hoverSaveLater, setHoverSaveLater] = useState(false);
   const [isHovered, setIsHovered] = useState(null);
-  const [showPrice, setShowprice] = useState(null);
+  const [showPrice, setShowprice] = useState(false);
   const [noOfproduct, setNoOfproduct] = useState(0);
   const [saveforLater, setSaveForLater] = useState(false);
   const SaveLaterbtnLocation = useRef();

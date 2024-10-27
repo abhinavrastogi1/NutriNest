@@ -6,11 +6,17 @@ export const SearchApi = createAsyncThunk(
   "SearchSlice/SearchApi",
   async (search) => {
     try {
-      const response = await axios.post("https://grocery-clone.onrender.com/api/findProduct/searchProduct",null,{ params:{
-        search:search
-      }} )
-   
-        return response.data.data
+      const response = await axios.post(
+        "/api/findProduct/searchProduct",
+        null,
+        {
+          params: {
+            search: search,
+          },
+        }
+      );
+
+      return response.data.data;
     } catch (error) {
       console.error(
         "something went wrong while fetching search results",

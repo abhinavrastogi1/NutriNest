@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchBasket } from "../../../store/Api/FetchBasketSlice";
 import { useNavigate } from "react-router-dom";
@@ -16,15 +16,28 @@ function Profile() {
   const dispatch = useDispatch();
   async function logout() {
     try {
-      await axios.post("https://grocery-clone.onrender.com/api/users/logout");
+      await axios.post("/api/users/logout");
       dispatch(isloggedin(false));
       window.location.reload(false);
     } catch (error) {
       console.error("error while Logging out", error);
     }
   }
+  const ref = useRef();
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        dispatch(profileToggleSwitch());
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [profileToggleSwitch]);
+
   return (
-    <div className="bg-[#202020] w-72  rounded-md  flex flex-col p-2">
+    <div className="bg-[#202020] w-72  rounded-md  flex flex-col p-2" ref={ref}>
       <button
         className="text-white h-9 p-3 w-full my-1 flex justify-start items-center
       text-[13px]

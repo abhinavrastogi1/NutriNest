@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { FcCheckmark } from "react-icons/fc";
 function PriceList({
@@ -18,10 +18,24 @@ function PriceList({
     top = locationInfo.top + 30 + window.scrollY; // Include scroll position if needed
     left = locationInfo.left + window.scrollX; // Include scroll position if needed
   }
+  const ref = useRef();
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setShowprice(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setShowprice]);
+
   return ReactDOM.createPortal(
     <>
       <div style={{ left: `${left}px`, top: `${top}px`, position: "absolute" }}>
         <div
+          ref={ref}
           className="bg-white w-80 z-50   top-7 transition-all duration-1000 ease-in-out
                transform  border-gray-300 border-[1px]  rounded-md px-[10px] mt-1 overflow-ellipsis"
         >

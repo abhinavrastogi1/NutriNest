@@ -7,14 +7,16 @@ export const fetchProducts = createAsyncThunk(
     try {
       let response = undefined;
       if (mainCategory && !subCategory && !subSubCategory) {
-        response = await axios.get(`https://grocery-clone.onrender.com/api/findProduct/${mainCategory}`);
+        response = await axios.get(`/api/findProduct/${mainCategory}`);
         return response.data.data;
       } else if (mainCategory && subCategory && !subSubCategory) {
-        response = await axios.get(`https://grocery-clone.onrender.com/api/findProduct/${mainCategory}/${subCategory}`);
+        response = await axios.get(
+          `/api/findProduct/${mainCategory}/${subCategory}`
+        );
         return response.data.data;
       } else if (mainCategory && subCategory && subSubCategory) {
         response = await axios.get(
-          `https://grocery-clone.onrender.com/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
+          `/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
         );
         return response.data.data;
       }
@@ -31,10 +33,9 @@ const fetchProductsByCategory = createSlice({
     error: null,
   },
   reducers: {
-    changestatus:(state)=>{
-state.status="idle",
-console.log("inside reducer",state.status)
-    }
+    changestatus: (state) => {
+      (state.status = "idle"), console.log("inside reducer", state.status);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -51,4 +52,4 @@ console.log("inside reducer",state.status)
 });
 
 export default fetchProductsByCategory.reducer;
-export const{changestatus}=fetchProductsByCategory.actions
+export const { changestatus } = fetchProductsByCategory.actions;

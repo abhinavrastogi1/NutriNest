@@ -48,7 +48,7 @@ function Header() {
   return (
     <>
       <header className="bg-white shadow-lg ">
-        <div className="h-1 w-full bg-[#5E9400]"></div>
+        <div className="h-1 w-full bg-[#5E9400] "></div>
         {isVisible && (
           <div
             className="absolute inset-y-[-150px] inset-x-0 bg-black opacity-50 z-20"
