@@ -37,18 +37,27 @@ function CardLg({ product }) {
   const totalItems = items?.totalItems;
   const { productId } = useSelector((state) => state.updateBasket);
   const [loading, setLoading] = useState(false);
+  const { login } = useSelector((state) => state.loginSlice);
   useEffect(() => {
     setLoading(productId[id]);
   }, [productId]);
+  const { productsData } = useSelector((state) => state.basketData);
+  
   useEffect(() => {
-    if (totalItems) {
+    if (login && totalItems) {
       Object.keys(totalItems)?.forEach((key) => {
         if (key == id) {
           setNoOfproduct(totalItems[key]);
         }
       });
+    } else if (!login && productsData) {
+      Object.keys(productsData)?.forEach((key) => {
+        if (key == id) {
+          setNoOfproduct(productsData[key].quantity);
+        }
+      });
     }
-  }, [items]);
+  }, [items, login, productsData]);
   if (productsWeight.length == 0) return null;
 
   const [discountedPrice, setDiscountedPrice] = useState(
@@ -82,7 +91,7 @@ function CardLg({ product }) {
   }
 
   useEffect(() => {
-    if (noOfproduct !== 0)
+    if (noOfproduct !== 0 && !login)
       dispatch(
         addData({
           id: id,
@@ -97,13 +106,13 @@ function CardLg({ product }) {
           },
         })
       );
-  }, [noOfproduct]);
+  }, [noOfproduct, login]);
   function removeSpecialChar(str) {
     return str.replace(/( & |, | and |\/| \/ | )/g, "-");
   }
   const isRendered = useRef(false);
   useEffect(() => {
-    if (isRendered.current && noOfproduct != 0 && noOfproduct != 1) {
+    if (login && isRendered.current && noOfproduct != 0 && noOfproduct != 1) {
       dispatch(
         UpdateCart({
           productQuantity: noOfproduct,
@@ -111,7 +120,7 @@ function CardLg({ product }) {
         })
       );
     }
-    if (noOfproduct === 0 && isRendered.current) {
+    if (login && noOfproduct === 0 && isRendered.current) {
       dispatch(
         deleteProductFromCart({
           id: id,
@@ -120,7 +129,7 @@ function CardLg({ product }) {
     } else {
       isRendered.current = true;
     }
-  }, [noOfproduct]);
+  }, [noOfproduct, login]);
 
   return (
     <>
@@ -270,17 +279,19 @@ function CardLg({ product }) {
              } origin-bottom`}
                 onClick={() => {
                   if (!loading) {
+                    if (login) {
+                      dispatch(
+                        addProductInCart({
+                          quantity: 1,
+                          _id: product._id,
+                          discountedPrice: discountedPrice,
+                          originalPrice: originalPrice,
+                          offer: offer,
+                          id: id,
+                        })
+                      );
+                    }
                     addProduct();
-                    dispatch(
-                      addProductInCart({
-                        quantity: 1,
-                        _id: product._id,
-                        discountedPrice: discountedPrice,
-                        originalPrice: originalPrice,
-                        offer: offer,
-                        id: id,
-                      })
-                    );
                   }
                 }}
               >
@@ -292,9 +303,10 @@ function CardLg({ product }) {
                   className="bg-[#CC0000] w-1/3 text-white pl-6 text-center rounded-tl-md rounded-bl-md 
                  "
                   onClick={() => {
+                    ``;
                     if (!loading) {
                       removeProduct();
-                      if (noOfproduct === 2) {
+                      if (login && noOfproduct === 2) {
                         dispatch(
                           UpdateCart({
                             productQuantity: 1,

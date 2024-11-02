@@ -7,9 +7,10 @@ export const FetchBasket = createAsyncThunk(
   "FetchBasketSlice/FetchBasket",
   async (_, { dispatch }) => {
     try {
-      const response = await axios.get(`/api/users/getCart`);
+      const response = await axios.get(`https://grocery-clone.onrender.com/api/users/getCart`);
       dispatch(totalItems());
       dispatch(isloggedin(true));
+      localStorage.setItem("cart", JSON.stringify({}));
       return response.data.data;
     } catch (error) {
       console.log("error while fetching Cart", error);

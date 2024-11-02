@@ -62,7 +62,7 @@ function ProductsBySubSubCategory() {
         }
       }
     }
-  }, []);
+  }, [categories]);
 
   const mainCategory = productsData[0]?.products[0]?.category.level1;
   const subCategory = productsData[0]?.products[0].category.level2;

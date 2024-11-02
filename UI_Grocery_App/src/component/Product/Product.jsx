@@ -18,13 +18,14 @@ import { addData, removeData } from "../../store/Feature/Basket/basketData";
 
 function Product() {
   const { productData } = useSelector((state) => state.productSlice);
+  const productDetails = productData[0];
   const { id } = useParams();
   useEffect(() => {
     dispatch(productSliceApi({ id: id }));
   }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const productDetails = productData[0];
+
   let productsWeight = [];
   if (productData?.length != 0) {
     productsWeight = Object.keys(productDetails?.discount);
@@ -59,6 +60,8 @@ function Product() {
   const { login } = useSelector((state) => state.loginSlice);
   const totalItems = items?.totalItems;
 
+  const { productsData } = useSelector((state) => state.basketData);
+
   useEffect(() => {
     if (login && totalItems) {
       Object.keys(totalItems)?.forEach((key) => {
@@ -66,8 +69,14 @@ function Product() {
           setNoOfproduct(totalItems[key]);
         }
       });
+    } else if (!login && productsData) {
+      Object.keys(productsData)?.forEach((key) => {
+        if (key == id) {
+          setNoOfproduct(productsData[key].quantity);
+        }
+      });
     }
-  }, [items, login]);
+  }, [items, login, productsData]);
 
   useEffect(() => {
     if (images?.length > 0) {
@@ -94,7 +103,7 @@ function Product() {
   }
 
   function removeProduct() {
-    if (noOfproduct - 1 == 0 && login) {
+    if (noOfproduct - 1 == 0 ) {
       dispatch(removeData({ id: id }));
     }
     if (noOfproduct > 0) setNoOfproduct(noOfproduct - 1);
@@ -107,7 +116,7 @@ function Product() {
           item: {
             productName: productName,
             quantity: noOfproduct,
-            _id: productDetails._id,
+            _id: productDetails?._id,
             discountedPrice: discountedPrice,
             originalPrice: originalPrice,
             offer: offer,
@@ -135,7 +144,7 @@ function Product() {
     } else {
       isRendered.current = true;
     }
-  }, [noOfproduct]);
+  }, [noOfproduct, login]);
   const { productId } = useSelector((state) => state.updateBasket);
   const [loading, setLoading] = useState(false);
   useEffect(() => {

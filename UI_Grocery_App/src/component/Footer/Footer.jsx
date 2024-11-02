@@ -6,7 +6,7 @@ import Copyright from "./FooterComponents/Copyright.jsx";
 import Moreinfo from "./FooterComponents/Moreinfo.jsx";
 function Footer() {
   return (
-    <footer className="bg-[#101010] ">
+    <footer className="bg-[#101010]  ">
       <Moreinfo/>
       <Cities_weServe />
       <PopularCatagory />

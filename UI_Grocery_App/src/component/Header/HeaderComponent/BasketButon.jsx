@@ -8,10 +8,17 @@ import { FetchBasket } from "../../../store/Api/FetchBasketSlice";
 function BasketButon() {
   const { login } = useSelector((state) => state.loginSlice);
   const { items } = useSelector((state) => state.totalItemsSlice);
-  const [noOfProducts, setNoOfProduct] = useState(items?.countItems);
+  const { productsData } = useSelector((state) => state.basketData);
+  const [noOfProducts, setNoOfProduct] = useState(0);
   useEffect(() => {
-    setNoOfProduct(items?.countItems);
-  }, [items]);
+    if (login) {
+      setNoOfProduct(items?.countItems);
+    } else {
+      let count = 0;
+      Object.keys(productsData).forEach((keys) => count++);
+      setNoOfProduct(count);
+    }
+  }, [items, productsData]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
