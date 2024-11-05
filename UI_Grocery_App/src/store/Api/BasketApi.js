@@ -7,7 +7,7 @@ export const BasketApi = createAsyncThunk(
   async ({ route, cacheData }, { dispatch }) => {
     try {
       await axios.post(
-        `https://grocery-clone.onrender.com/api/users/${route}`,
+        `/api/users/${route}`,
         cacheData
       );
       dispatch(FetchBasket());

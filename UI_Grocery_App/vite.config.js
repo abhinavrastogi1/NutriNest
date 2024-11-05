@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       // "/api": "https://grocery-clone.onrender.com",
-     // "/api":"http://localhost:8000"
+      "/api": "http://localhost:8000",
     },
   },
   plugins: [react()],

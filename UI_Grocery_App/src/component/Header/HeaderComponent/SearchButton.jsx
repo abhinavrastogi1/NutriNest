@@ -5,13 +5,13 @@ import { SearchApi } from "../../../store/Api/SearchSlice";
 import { useNavigate } from "react-router-dom";
 
 function SearchButton() {
- const dispatch =useDispatch()
- const navigate=useNavigate()
-  function onEnter(e) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  async function onEnter(e) {
     if (e.key == "Enter") {
-        dispatch(SearchApi(e.target.value))
-        navigate(`/search?q=${e.target.value}`)
-    }   
+      await dispatch(SearchApi(e.target.value)).unwrap();
+      navigate(`/search?q=${e.target.value}`);
+    }
   }
   return (
     <div className="flex flex-row border-[1px] border-border-color rounded-md w-[60%]">

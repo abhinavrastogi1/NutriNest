@@ -1,6 +1,5 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import CardLg from "../../../Small_component/Cards/CardLg";
@@ -39,12 +38,9 @@ function BestSeller() {
           <h1>My Smart Basket</h1>
         </div>
         <div className="flex items-center ">
-          <Link to="">
             <span className=" text-gray-600 underline hover:text-black mx-5 font-semibold text-[15px]  ">
               View All
             </span>
-          </Link>
-
           <div>
             <button
               className={`rounded-md shadow-lg p-2 mx-3

@@ -25,9 +25,18 @@ function BasketButon() {
     <div>
       <button
         className="cart-color rounded-md px-2 py-1 relative"
-        onClick={() => {
-          login ? navigate("/basket") : dispatch(loginToggleSwitch());
-          dispatch(FetchBasket());
+        onClick={async () => {
+          try {
+            if (login) {
+              await dispatch(FetchBasket()).unwrap();
+
+              navigate("/basket");
+            } else {
+              dispatch(loginToggleSwitch());
+            }
+          } catch (error) {
+            navigate("/");
+          }
         }}
       >
         {noOfProducts > 0 && (

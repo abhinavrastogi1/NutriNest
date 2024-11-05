@@ -5,7 +5,7 @@ export const fetchCategoryData = createAsyncThunk(
   "categoryApi/fetchCategoryData",
   async () => {
     try {
-      const response = await axios.get("https://grocery-clone.onrender.com/api/product/categorytree");
+      const response = await axios.get("/api/product/categorytree");
       return response.data.data;
     } catch (error) {
       console.error("error while fetching data from the server", error);

@@ -16,7 +16,7 @@ function Profile() {
   const dispatch = useDispatch();
   async function logout() {
     try {
-      await axios.post("https://grocery-clone.onrender.com/api/users/logout");
+      await axios.post("/api/users/logout");
       dispatch(isloggedin(false));
       window.location.reload(false);
     } catch (error) {
@@ -49,10 +49,15 @@ function Profile() {
         className="text-white h-9 p-3 w-full my-1 flex justify-between items-center
       text-[13px]
        hover:bg-[#404040] rounded-md hover:font-medium"
-        onClick={() => {
-          navigate("/basket");
-          dispatch(FetchBasket());
-          dispatch(profileToggleSwitch());
+        onClick={async () => {
+          try {
+            await dispatch(FetchBasket()).unwrap();
+            navigate("/basket");
+
+            dispatch(profileToggleSwitch());
+          } catch (error) {
+            navigate("/");
+          }
         }}
       >
         My Basket

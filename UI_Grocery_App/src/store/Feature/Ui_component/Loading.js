@@ -2,13 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const loading = createSlice({
   name: "loading",
-  initialState: { updatingCartstatus: false },
+  initialState: { loading: false },
   reducers: {
-    cartUpdate: (state, action) => {
-        console.log(action.payload)
-      state.updatingCartstatus = action.payload;
+    loadingBar: (state, action) => {
+      state.loading = action.payload;
     },
   },
 });
-export const { cartUpdate } = loading.actions;
+export const { loadingBar } = loading.actions;
 export default loading.reducer;

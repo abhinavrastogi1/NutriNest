@@ -45,10 +45,16 @@ function Header() {
   const onClose = () => {
     dispatch(toggleSwitch());
   };
+  const { loading } = useSelector((state) => state.loading);
   return (
     <>
       <header className="bg-white shadow-lg ">
-        <div className="h-1 w-full bg-[#5E9400] "></div>
+        <div className="flex overflow-hidden bg-[#5E9400] h-1">
+          <div className={` h-full w-[50%] ${loading && "left-loader"}`}></div>
+          <div
+            className={`  h-full w-[50%] ${loading && "right-loader"}`}
+          ></div>
+        </div>
         {isVisible && (
           <div
             className="absolute inset-y-[-150px] inset-x-0 bg-black opacity-50 z-20"
@@ -71,7 +77,7 @@ function Header() {
                 <span className="text-sm">Search Location</span>
               </button>
             </div>
-            <div >
+            <div>
               {!login ? (
                 <button
                   className="bg-black rounded-md px-6 py-1"
@@ -95,7 +101,9 @@ function Header() {
               )}
             </div>
             <div> {loginToggle && <LoginPage />}</div>
-            <div className="absolute top-11 right-20 z-10">{profileToggle &&<Profile/> }</div>
+            <div className="absolute top-11 right-20 z-10">
+              {profileToggle && <Profile />}
+            </div>
             <BasketButon />
           </div>
 

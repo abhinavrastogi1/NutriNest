@@ -76,7 +76,7 @@ function ProductsBySubCategory() {
   }
   return (
     <main className=" bg-[#f7f7f7]">
-      {status == "success" ? (
+      {
         <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48  flex flex-wrap justify-between bg-[#f7f7f7]">
           <div className="flex border-dotted border-b-2 w-full pb-3 pt-2">
             {/* Home icon */}
@@ -100,9 +100,15 @@ function ProductsBySubCategory() {
             {/* Main Category Button */}
             <button
               className="text-[15px] font-medium flex pt-[2px] "
-              onClick={() => {
-                dispatch(fetchProducts({ mainCategory: mainCategory }));
-                navigate(`/cd/${removeSpecialChar(mainCategory)}`);
+              onClick={async () => {
+                try {
+                  await dispatch(
+                    fetchProducts({ mainCategory: mainCategory })
+                  ).unwrap();
+                  navigate(`/cd/${removeSpecialChar(mainCategory)}`);
+                } catch (error) {
+                  navigate("/");
+                }
               }}
             >
               {capitalizeWords(mainCategory)}
@@ -114,16 +120,20 @@ function ProductsBySubCategory() {
             {/* sub Category Button */}
             <button
               className="text-[15px] font-semibold pt-[2px]"
-              onClick={() => {
-                dispatch(
-                  fetchProducts({
-                    mainCategory: mainCategory,
-                    subCategory: subCategory,
-                  })
-                );
-                navigate(
-                  `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
-                );
+              onClick={async() => {
+              try {
+                 await dispatch(
+                    fetchProducts({
+                      mainCategory: mainCategory,
+                      subCategory: subCategory,
+                    })
+                  ).unwrap()
+                  navigate(
+                    `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}`
+                  );
+              } catch (error) {
+                navigate("/")
+              }
               }}
             >
               {capitalizeWords(subCategory)}
@@ -199,9 +209,13 @@ function ProductsBySubCategory() {
                   </div>
                   <button
                     className="flex m-2 ml-1"
-                    onClick={() => {
-                      dispatch(fetchProducts({ mainCategory: mainCategory }));
-                      navigate(`/cd/${removeSpecialChar(mainCategory)}`);
+                    onClick={async() => {
+                    try {
+                       await dispatch(fetchProducts({ mainCategory: mainCategory })).unwrap()
+                        navigate(`/cd/${removeSpecialChar(mainCategory)}`);
+                    } catch (error) {
+                      navigate("/")
+                    }
                     }}
                   >
                     {" "}
@@ -219,17 +233,21 @@ function ProductsBySubCategory() {
                         <button
                           key={subSubCategory}
                           className="p-2   border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
-                          onClick={() => {
-                            dispatch(
-                              fetchProducts({
-                                mainCategory: mainCategory,
-                                subCategory: subCategory,
-                                subSubCategory: subSubCategory,
-                              })
-                            );
-                            navigate(
-                              `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
-                            );
+                          onClick={async() => {
+                        try {
+                           await   dispatch(
+                                fetchProducts({
+                                  mainCategory: mainCategory,
+                                  subCategory: subCategory,
+                                  subSubCategory: subSubCategory,
+                                })
+                              ).unwrap()
+                              navigate(
+                                `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
+                              );
+                        } catch (error) {
+                          navigate("/")
+                        }
                           }}
                         >
                           <span>{capitalizeWords(subSubCategory)}</span>
@@ -240,17 +258,21 @@ function ProductsBySubCategory() {
                           <button
                             key={subSubCategory}
                             className="p-2 border-l-[1px] text-[15px]  flex justify-start font-normal border-gray-300  w-full"
-                            onClick={() => {
-                              dispatch(
-                                fetchProducts({
-                                  mainCategory: mainCategory,
-                                  subCategory: subCategory,
-                                  subSubCategory: subSubCategory,
-                                })
-                              );
-                              navigate(
-                                `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
-                              );
+                            onClick={async() => {
+                           try {
+                              await dispatch(
+                                 fetchProducts({
+                                   mainCategory: mainCategory,
+                                   subCategory: subCategory,
+                                   subSubCategory: subSubCategory,
+                                 })
+                               ).unwrap()
+                               navigate(
+                                 `/cd/${removeSpecialChar(mainCategory)}/${removeSpecialChar(subCategory)}/${removeSpecialChar(subSubCategory)}`
+                               );
+                           } catch (error) {
+                            navigate("/")
+                           }
                             }}
                           >
                             <span>{capitalizeWords(subSubCategory)}</span>
@@ -289,24 +311,7 @@ function ProductsBySubCategory() {
             </div>
           </section>
         </div>
-      ) : (
-        <div className="w-full h-max bg-[#E6F0FF] pb-[100px]">
-          <div className="w-full h-max bg-[#E6F0FF]  flex  justify-center">
-            <img src={somethingwentwrong} />
-          </div>
-          <div className=" flex justify-center m-2">
-            <button
-              className="border-[#0052CC] border-[1px] py-2 px-6 text-[#0052CC] rounded-md
-               hover:bg-[#0052CC] hover:text-white font-semibold text-[15px] "
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Go to Home
-            </button>
-          </div>
-        </div>
-      )}
+      }
     </main>
   );
 }

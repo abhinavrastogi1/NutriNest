@@ -5,7 +5,7 @@ import { MdBookmarkBorder } from "react-icons/md";
 import { TiStarFullOutline } from "react-icons/ti";
 import { FaMinus } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PriceList from "./PriceList.jsx";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,11 +38,13 @@ function CardLg({ product }) {
   const { productId } = useSelector((state) => state.updateBasket);
   const [loading, setLoading] = useState(false);
   const { login } = useSelector((state) => state.loginSlice);
+
+  const navigate = useNavigate();
   useEffect(() => {
     setLoading(productId[id]);
   }, [productId]);
   const { productsData } = useSelector((state) => state.basketData);
-  
+
   useEffect(() => {
     if (login && totalItems) {
       Object.keys(totalItems)?.forEach((key) => {
@@ -143,25 +145,27 @@ function CardLg({ product }) {
             </div>
             <div
               className=" h-fulll w-full"
-              onClick={() => {
-                dispatch(
-                  productSliceApi({
-                    productName: productName,
-                    quantity: 1,
-                    _id: product._id,
-                    discountedPrice: discountedPrice,
-                    originalPrice: originalPrice,
-                    offer: offer,
-                    id: id,
-                  })
-                );
+              onClick={async () => {
+                try {
+                  await dispatch(
+                    productSliceApi({
+                      productName: productName,
+                      quantity: 1,
+                      _id: product._id,
+                      discountedPrice: discountedPrice,
+                      originalPrice: originalPrice,
+                      offer: offer,
+                      id: id,
+                    })
+                  ).unwrap();
+
+                  navigate(`/pd/${id}/${removeSpecialChar(productName)}`);
+                } catch (error) {
+                  navigate("/");
+                }
               }}
             >
-              {
-                <Link to={`/pd/${id}/${removeSpecialChar(productName)}`}>
-                  <img src={images} loading="lazy" alt={imageAlt} />
-                </Link>
-              }
+              {<img src={images} loading="lazy" alt={imageAlt} />}
             </div>
           </div>
           <div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Link, replace, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { scrolltoggle } from "../../../store/Feature/Ui_component/toggleVisibility.js";
 import { fetchProducts } from "../../../store/Api/fetchProductsByCategorySlice.js";
 import { subSubCategoryReducer } from "../../../store/Feature/CategoriesActiveState.js";
@@ -28,7 +28,8 @@ function ShopByCategory() {
         } origin-top-left z-30  absolute top-10 left-2 rounded-lg`}
       >
         {isVisible && (
-          <div className={`bg-black  rounded-lg 
+          <div
+            className={`bg-black  rounded-lg 
                `}
           >
             <div className="flex rounded-lg">
@@ -46,10 +47,16 @@ function ShopByCategory() {
                           item.subCategory[0].subSubCategory[0].level3
                         );
                       }}
-                      onClick={() => {
-                        dispatch(scrolltoggle(false));
-                        dispatch(fetchProducts({ mainCategory: activeUl1 }));
-                        navigate(`/cd/${category}`);
+                      onClick={async () => {
+                        try {
+                          await dispatch(
+                            fetchProducts({ mainCategory: activeUl1 })
+                          ).unwrap();
+                          navigate(`/cd/${category}`);
+                          dispatch(scrolltoggle(false));
+                        } catch (error) {
+                          navigate("/");
+                        }
                       }}
                     >
                       {capitalizeWords(item.mainCategory)}
@@ -71,10 +78,7 @@ function ShopByCategory() {
                         "-"
                       );
                       return (
-                        <Link
-                          to={`/cd/${category}/${subcategory}`}
-                          key={subCategory.level2}
-                        >
+                        <div key={subCategory.level2}>
                           {" "}
                           <li
                             className={`m-2 p-2 ${activeUl2 === subCategory.level2 ? "bg-[#FFF] font-semibold" : "text-xs  text-black"} rounded-md `}
@@ -84,19 +88,24 @@ function ShopByCategory() {
                                 subCategory.subSubCategory[0].level3
                               );
                             }}
-                            onClick={() => {
+                            onClick={async () => {
                               dispatch(scrolltoggle(false));
-                              dispatch(
-                                fetchProducts({
-                                  mainCategory: activeUl1,
-                                  subCategory: activeUl2,
-                                })
-                              );
+                              try {
+                                await dispatch(
+                                  fetchProducts({
+                                    mainCategory: activeUl1,
+                                    subCategory: activeUl2,
+                                  })
+                                ).unwrap();
+                                navigate(`/cd/${category}/${subcategory}`);
+                              } catch (error) {
+                                navigate("/");
+                              }
                             }}
                           >
                             {capitalizeWords(subCategory.level2)}
                           </li>
-                        </Link>
+                        </div>
                       );
                     })
                 )}
@@ -121,36 +130,40 @@ function ShopByCategory() {
                           "-"
                         );
                         return (
-                          <Link
-                            to={`/cd/${category}/${subcategory}/${subsubcategory}`}
-                            key={subSubCategory.level3}
-                          >
+                          <div key={subSubCategory.level3}>
                             <li
                               className={`m-2 p-2 ${activeUl3 === subSubCategory.level3 ? "bg-[#EEEEEE] font-semibold" : "text-xs text-black"} rounded-md  `}
                               onMouseEnter={() => {
                                 SetActiveUl3(subSubCategory.level3);
                               }}
-                              onClick={() => {
+                              onClick={async () => {
                                 dispatch(scrolltoggle(false));
-                                dispatch(
-                                  fetchProducts({
-                                    mainCategory: activeUl1,
-                                    subCategory: activeUl2,
-                                    subSubCategory: activeUl3,
-                                  })
-                                );
-                                dispatch(
-                                  subSubCategoryReducer({
-                                    mainCategory: activeUl1,
-                                    subCategory: activeUl2,
-                                    subSubCategory: activeUl3,
-                                  })
-                                );
+                                try {
+                                  await dispatch(
+                                    fetchProducts({
+                                      mainCategory: activeUl1,
+                                      subCategory: activeUl2,
+                                      subSubCategory: activeUl3,
+                                    })
+                                  ).unwrap();
+                                  navigate(
+                                    `/cd/${category}/${subcategory}/${subsubcategory}`
+                                  );
+                                  dispatch(
+                                    subSubCategoryReducer({
+                                      mainCategory: activeUl1,
+                                      subCategory: activeUl2,
+                                      subSubCategory: activeUl3,
+                                    })
+                                  );
+                                } catch (error) {
+                                  navigate("/");
+                                }
                               }}
                             >
                               {capitalizeWords(subSubCategory.level3)}
                             </li>
-                          </Link>
+                          </div>
                         );
                       })
                   )

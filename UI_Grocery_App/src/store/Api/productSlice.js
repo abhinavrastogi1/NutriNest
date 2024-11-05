@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const productSliceApi = createAsyncThunk(
   "productSlice/productSliceApi",
-  async ({ id }) => {
+  async ({ id }, { dispatch }) => {
     try {
+      dispatch(loadingBar(true));
       const response = await axios.post(
-        "https://grocery-clone.onrender.com/api/findProduct/productDetails",
+        "/api/findProduct/productDetails",
         null,
         {
           params: {
@@ -20,6 +22,8 @@ export const productSliceApi = createAsyncThunk(
         "something went wrong while fetching product details",
         error
       );
+    } finally {
+      dispatch(loadingBar(false));
     }
   }
 );
@@ -29,12 +33,13 @@ const productSlice = createSlice({
     productData: [],
     status: "idle",
     error: null,
+    loadingProduct: false,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(productSliceApi.fulfilled, (state, action) => {
-      state.status = "success";
       state.productData = action.payload;
+      state.status = "success";
     });
     builder.addCase(productSliceApi.pending, (state) => {
       state.status = "pending";

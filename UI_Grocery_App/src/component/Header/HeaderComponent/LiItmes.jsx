@@ -1,6 +1,6 @@
 import React from "react";
 import arrow from "../../../assets/images/arrow.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "../../../store/Api/fetchProductsByCategorySlice";
 function LiItmes() {
@@ -8,21 +8,28 @@ function LiItmes() {
   function removeSpecialChar(str) {
     return str.replace(/( & |, | and | )/g, "-");
   }
+  const navigate = useNavigate();
   return (
     <div className="flex flex-row w-[65%] justify-between ">
       <ul className="flex flex-row justify-between text-center p-3 w-[95%] text-sm font-[400] ">
-        <Link
-          to={`/cd/${removeSpecialChar("fruits & vegitable")}/${removeSpecialChar("exotic fruits & veggies")}`}
+        <div
         >
           {" "}
           <li
-            onClick={() => {
-              dispatch(
-                fetchProducts({
-                  mainCategory: "fruits & vegitable",
-                  subCategory: "exotic fruits & veggies",
-                })
-              );
+            onClick={async () => {
+              try {
+                await dispatch(
+                  fetchProducts({
+                    mainCategory: "fruits & vegitable",
+                    subCategory: "exotic fruits & veggies",
+                  })
+                ).unwrap();
+                navigate(
+                  `/cd/${removeSpecialChar("fruits & vegitable")}/${removeSpecialChar("exotic fruits & veggies")}`
+                );
+              } catch (error) {
+                navigate("/");
+              }
             }}
           >
             <div
@@ -33,7 +40,7 @@ function LiItmes() {
               Exotic Fruits &V...
             </div>
           </li>
-        </Link>
+        </div>
         <Link
           to={`/cd/${removeSpecialChar("beverages")}/${removeSpecialChar("tea")}`}
         >

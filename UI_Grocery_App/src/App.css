@@ -92,3 +92,57 @@ body {
 .contain-content {
   contain: content;
 }
+
+.left-loader {
+  height: 4px;
+  width: 50%;
+  background-color: #e4f1cc;
+  animation: leftBar 3s infinite alternate;
+  -webkit-animation: leftBar 3s infinite alternate;
+}
+
+@keyframes leftBar {
+  0% {
+    transform: translateX(-800px);
+    background-color: #e4f1cc;
+    -webkit-transform: translateX(-800px);
+    -moz-transform: translateX(-800px);
+    -ms-transform: translateX(-800px);
+    -o-transform: translateX(-800px);
+  }
+  100% {
+    transform: translateX(0px);
+    background-color: #e4f1cc;
+    -webkit-transform: translateX(0px);
+    -moz-transform: translateX(0px);
+    -ms-transform: translateX(0px);
+    -o-transform: translateX(0px);
+  }
+}
+.right-loader {
+  height: 4px;
+  width: 50%;
+  background-color: #e4f1cc;
+  animation: rightBar 3s infinite;
+  -webkit-animation: rightBar 3s infinite alternate;
+}
+
+@keyframes rightBar {
+  0% {
+    transform: translateX(800px);
+    background-color: #e4f1cc;
+    -webkit-transform: translateX(800px);
+    -moz-transform: translateX(800px);
+    -ms-transform: translateX(800px);
+    -o-transform: translateX(800px);
+  }
+  100% {
+    transform: translateX(0px);
+    background-color: #e4f1cc;
+    -webkit-transform: translateX(0px);
+    -moz-transform: translateX(0px);
+    -ms-transform: translateX(0px);
+    -o-transform: translateX(0px);
+  }
+}
+/* #E4F1CC */

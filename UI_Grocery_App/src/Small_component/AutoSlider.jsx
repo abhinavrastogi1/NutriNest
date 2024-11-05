@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Surfexcel from "../assets/images/Surfexcel.png";
-import Dove from "../assets/images/Dove.png";
 import { Link } from "react-router-dom";
 
 function AutoSlider() {
@@ -30,6 +28,7 @@ function AutoSlider() {
   function removeSpecialChar(str) {
     return str.replace(/( & |, | and |\/| \/ | )/g, "-");
   }
+  
   return (
     <div className="relative w-full overflow-hidden rounded-xl my-5 shadow-xl">
       <div
@@ -44,7 +43,7 @@ function AutoSlider() {
             <Link
               to={`/pd/${slide.productId}/${removeSpecialChar(slide.productName)}`}
             >
-              {" "}
+              
               <img
                 src={slide.url}
                 className="w-full h-full object-cover"

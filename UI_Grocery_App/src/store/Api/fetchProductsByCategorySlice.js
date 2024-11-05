@@ -7,16 +7,16 @@ export const fetchProducts = createAsyncThunk(
     try {
       let response = undefined;
       if (mainCategory && !subCategory && !subSubCategory) {
-        response = await axios.get(`https://grocery-clone.onrender.com/api/findProduct/${mainCategory}`);
+        response = await axios.get(`/api/findProduct/${mainCategory}`);
         return response.data.data;
       } else if (mainCategory && subCategory && !subSubCategory) {
         response = await axios.get(
-          `https://grocery-clone.onrender.com/api/findProduct/${mainCategory}/${subCategory}`
+          `/api/findProduct/${mainCategory}/${subCategory}`
         );
         return response.data.data;
       } else if (mainCategory && subCategory && subSubCategory) {
         response = await axios.get(
-          `https://grocery-clone.onrender.com/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
+          `/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
         );
         return response.data.data;
       }
@@ -31,19 +31,18 @@ const fetchProductsByCategory = createSlice({
     status: "idle",
     productsData: [],
     error: null,
+    loading: false,
   },
-  reducers: {
-    changestatus: (state) => {
-      (state.status = "idle"), console.log("inside reducer", state.status);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
+        state.loading = true;
         state.status = "pending";
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         (state.status = "success"), (state.productsData = action.payload);
+        state.loading = false;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         (state.status = "rejected"), (state.error = action.error.message);
@@ -52,4 +51,3 @@ const fetchProductsByCategory = createSlice({
 });
 
 export default fetchProductsByCategory.reducer;
-export const { changestatus } = fetchProductsByCategory.actions;
