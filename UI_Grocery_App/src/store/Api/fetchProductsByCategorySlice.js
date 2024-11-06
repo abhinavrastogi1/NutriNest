@@ -1,27 +1,32 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const fetchProducts = createAsyncThunk(
   "fetchProductsByCategorySLice/fetchProducts",
-  async ({ mainCategory, subCategory, subSubCategory }) => {
+  async ({ mainCategory, subCategory, subSubCategory },{dispatch}) => {
+    dispatch(loadingBar(true))
+
     try {
       let response = undefined;
       if (mainCategory && !subCategory && !subSubCategory) {
-        response = await axios.get(`/api/findProduct/${mainCategory}`);
+        response = await axios.get(`https://grocery-clone.onrender.com/api/findProduct/${mainCategory}`);
         return response.data.data;
       } else if (mainCategory && subCategory && !subSubCategory) {
         response = await axios.get(
-          `/api/findProduct/${mainCategory}/${subCategory}`
+          `https://grocery-clone.onrender.com/api/findProduct/${mainCategory}/${subCategory}`
         );
         return response.data.data;
       } else if (mainCategory && subCategory && subSubCategory) {
         response = await axios.get(
-          `/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
+          `https://grocery-clone.onrender.com/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
         );
         return response.data.data;
       }
     } catch (error) {
       throw error;
+    }finally {
+      dispatch(loadingBar(false));
     }
   }
 );

@@ -1,19 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { FetchBasket } from "./FetchBasketSlice";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const BasketApi = createAsyncThunk(
   "BasketApiSlice/BasketApi",
   async ({ route, cacheData }, { dispatch }) => {
+    dispatch(loadingBar(true))
     try {
       await axios.post(
-        `/api/users/${route}`,
+        `https://grocery-clone.onrender.com/api/users/${route}`,
         cacheData
       );
       dispatch(FetchBasket());
       return null;
     } catch (error) {
       console.error("error while creating Cart", error);
+    }finally {
+      dispatch(loadingBar(false));
     }
   }
 );

@@ -1,13 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const SearchApi = createAsyncThunk(
   "SearchSlice/SearchApi",
-  async (search) => {
+  async (search,{dispatch}) => {
+    dispatch(loadingBar(true))
+
     try {
       const response = await axios.post(
-        "/api/findProduct/searchProduct",
+        "https://grocery-clone.onrender.com/api/findProduct/searchProduct",
         null,
         {
           params: {
@@ -22,6 +25,8 @@ export const SearchApi = createAsyncThunk(
         "something went wrong while fetching search results",
         error
       );
+    }finally {
+      dispatch(loadingBar(false));
     }
   }
 );

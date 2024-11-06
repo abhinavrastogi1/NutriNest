@@ -12,7 +12,7 @@ import {
   deleteProductFromCart,
 } from "../../store/Api/UpdateBasket";
 import { productSliceApi } from "../../store/Api/productSlice";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function CartCard({ productDetails, removeCategory, removeProduct }) {
   if (!productDetails) {
     return null;
@@ -33,6 +33,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
   const [cartMsg, setCartMsg] = useState("Adding ...");
   const [loading, setLoading] = useState(false);
   const { items } = useSelector((state) => state.totalItemsSlice);
+  const navigate = useNavigate();
   const totalItems = items?.totalItems;
   useEffect(() => {
     if (totalItems) {
@@ -86,28 +87,50 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
     <>
       {productQuantity > 0 && (
         <div className="h-[170px] flex flex-row justify-between border-b-[1px] ">
-          <div
-            className="flex gap-7"
-            onClick={() => {
-              {
-                dispatch(productSliceApi({ id: id }));
-              }
-            }}
-          >
-            <Link to={`/pd/${id}/${removeSpecialChar(productName)}`}>
-              <div className="h-full w-[168px] flex justify-center items-center ">
-                <img src={image} className="h-24 w-24" alt={productName} />
-              </div>
-            </Link>
+          <div className="flex gap-7">
+            <div
+              className="h-full w-[168px] flex justify-center items-center "
+              onClick={async () => {
+                try {
+                  await dispatch(
+                    productSliceApi({
+                      id: id,
+                    })
+                  ).unwrap();
+
+                  navigate(`/pd/${id}/${removeSpecialChar(productName)}`);
+                } catch (error) {
+                  navigate("/");
+                }
+              }}
+            >
+              <img src={image} className="h-24 w-24" alt={productName} />
+            </div>
+
             <div className="h-full w-[457px] flex flex-col justify-center">
-              <Link to={`/pd/${id}/${removeSpecialChar(productName)}`}>
-                <div>
-                  {" "}
-                  <h2 className="text-sm font-medium text-gray-800 py-1">
-                    {productName}
-                  </h2>
-                </div>
-              </Link>
+              <div
+                onClick={async () => {
+                  try {
+                    await dispatch(
+                      productSliceApi({
+                        id: id,
+                      })
+                    ).unwrap();
+
+                    navigate(
+                      `/pd/${slide.id}/${removeSpecialChar(slide.productName)}`
+                    );
+                  } catch (error) {
+                    navigate("/");
+                  }
+                }}
+              >
+                {" "}
+                <h2 className="text-sm font-medium text-gray-800 py-1">
+                  {productName}
+                </h2>
+              </div>
+
               <div>
                 <h2 className="text-sm font-medium ">
                   {` ₹${discountedPrice}`}{" "}

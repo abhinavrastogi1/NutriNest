@@ -149,12 +149,6 @@ function CardLg({ product }) {
                 try {
                   await dispatch(
                     productSliceApi({
-                      productName: productName,
-                      quantity: 1,
-                      _id: product._id,
-                      discountedPrice: discountedPrice,
-                      originalPrice: originalPrice,
-                      offer: offer,
                       id: id,
                     })
                   ).unwrap();

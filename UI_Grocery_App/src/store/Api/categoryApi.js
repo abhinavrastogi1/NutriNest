@@ -1,15 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const fetchCategoryData = createAsyncThunk(
   "categoryApi/fetchCategoryData",
-  async () => {
+  async (_,{dispatch}) => {
+    dispatch(loadingBar(true))
+
     try {
-      const response = await axios.get("/api/product/categorytree");
+      const response = await axios.get("https://grocery-clone.onrender.com/api/product/categorytree");
       return response.data.data;
     } catch (error) {
       console.error("error while fetching data from the server", error);
       throw error;
+    }finally {
+      dispatch(loadingBar(false));
     }
   }
 );

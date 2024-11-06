@@ -2,18 +2,23 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { isloggedin } from "../Feature/Basket/LoginSlice";
 import { totalItems } from "./TotalItems";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const FetchBasket = createAsyncThunk(
   "FetchBasketSlice/FetchBasket",
   async (_, { dispatch }) => {
+    dispatch(loadingBar(true));
+
     try {
-      const response = await axios.get(`/api/users/getCart`);
+      const response = await axios.get(`https://grocery-clone.onrender.com/api/users/getCart`);
       dispatch(totalItems());
       dispatch(isloggedin(true));
       localStorage.setItem("cart", JSON.stringify({}));
       return response.data.data;
     } catch (error) {
       console.log("error while fetching Cart", error);
+    } finally {
+      dispatch(loadingBar(false));
     }
   }
 );

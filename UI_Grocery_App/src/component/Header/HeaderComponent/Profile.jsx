@@ -16,7 +16,7 @@ function Profile() {
   const dispatch = useDispatch();
   async function logout() {
     try {
-      await axios.post("/api/users/logout");
+      await axios.post("https://grocery-clone.onrender.com/api/users/logout");
       dispatch(isloggedin(false));
       window.location.reload(false);
     } catch (error) {

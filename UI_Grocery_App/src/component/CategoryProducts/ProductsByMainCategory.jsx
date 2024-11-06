@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import CardLg from "../../Small_component/Cards/CardLg.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchProducts } from "../../store/Api/fetchProductsByCategorySlice.js";
-import somethingwentwrong from "../../assets/images/somethingwentwrong.png";
 function ProductsBycategory() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,7 +15,7 @@ function ProductsBycategory() {
   const [filterToggle, setFilterToggle] = useState(true);
   const [showMore, setShowMore] = useState(false);
   const { categories } = useSelector((state) => state.categoryApi);
-  const { productsData, status } = useSelector(
+  const { productsData } = useSelector(
     (state) => state.fetchProductsByCategory
   );
   let mainCategoryParams = useParams().mainCategory;
@@ -27,14 +26,19 @@ function ProductsBycategory() {
   function removeSpecialChar(str) {
     return str.replace(/( & |, | and | )/g, "-");
   }
+
   useEffect(() => {
-    const mainCatgoryMatch = categories?.find(
-      (category) => tolowercase(category.mainCategory) == mainCategoryParams
-    );
-    if (mainCatgoryMatch) {
-      dispatch(fetchProducts({ mainCategory: mainCatgoryMatch.mainCategory }));
+    if (!productsData.length) {
+      const mainCatgoryMatch = categories?.find(
+        (category) => tolowercase(category.mainCategory) == mainCategoryParams
+      );
+      if (mainCatgoryMatch) {
+        dispatch(
+          fetchProducts({ mainCategory: mainCatgoryMatch.mainCategory })
+        );
+      }
     }
-  }, [categories]);
+  }, [categories,productsData]);
 
   const mainCategory = productsData[0]?.products[0].category.level1;
   const subCategory = productsData[0]?.products[0].category.level2;

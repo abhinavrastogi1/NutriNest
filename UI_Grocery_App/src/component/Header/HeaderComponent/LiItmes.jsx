@@ -1,6 +1,6 @@
 import React from "react";
 import arrow from "../../../assets/images/arrow.png";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "../../../store/Api/fetchProductsByCategorySlice";
 function LiItmes() {
@@ -12,8 +12,7 @@ function LiItmes() {
   return (
     <div className="flex flex-row w-[65%] justify-between ">
       <ul className="flex flex-row justify-between text-center p-3 w-[95%] text-sm font-[400] ">
-        <div
-        >
+        <div>
           {" "}
           <li
             onClick={async () => {
@@ -41,17 +40,18 @@ function LiItmes() {
             </div>
           </li>
         </div>
-        <Link
-          to={`/cd/${removeSpecialChar("beverages")}/${removeSpecialChar("tea")}`}
-        >
+        <div>
           {" "}
           <li
-            onClick={() => {
-              dispatch(
+            onClick={async () => {
+              await dispatch(
                 fetchProducts({
                   mainCategory: "beverages",
                   subCategory: "tea",
                 })
+              ).unwrap();
+              navigate(
+                `/cd/${removeSpecialChar("beverages")}/${removeSpecialChar("tea")}`
               );
             }}
           >
@@ -63,19 +63,20 @@ function LiItmes() {
               Tea
             </div>
           </li>
-        </Link>
-        <Link
-          to={`/cd/${removeSpecialChar("foodgrains, oil & masala")}/${removeSpecialChar("edible oils & ghee")}/${removeSpecialChar("ghee & vanaspati")}`}
-        >
+        </div>
+        <div>
           {" "}
           <li
-            onClick={() => {
-              dispatch(
+            onClick={async () => {
+              await dispatch(
                 fetchProducts({
                   mainCategory: "foodgrains, oil & masala",
                   subCategory: "edible oils & ghee",
                   subSubCategory: "ghee & vanaspati",
                 })
+              ).unwrap();
+              navigate(
+                `/cd/${removeSpecialChar("foodgrains, oil & masala")}/${removeSpecialChar("edible oils & ghee")}/${removeSpecialChar("ghee & vanaspati")}`
               );
             }}
           >
@@ -87,10 +88,14 @@ function LiItmes() {
               Ghee
             </div>
           </li>
-        </Link>
-        <Link to="/">
+        </div>
+        <div>
           {" "}
-          <li onClick={() => {}}>
+          <li
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <div
               className="hover:text-[#cc0000] 
              transition-all duration-300 ease-linear hover:bg-gradient-to-t from-[rgb(247,214,214)] via-white to-white
@@ -99,18 +104,19 @@ function LiItmes() {
               Nandini
             </div>
           </li>
-        </Link>
-        <Link
-          to={`/cd/${removeSpecialChar("fruits & vegitable")}/${removeSpecialChar("fresh vegetables")}`}
-        >
+        </div>
+        <div>
           {" "}
           <li
-            onClick={() => {
-              dispatch(
+            onClick={async () => {
+              await dispatch(
                 fetchProducts({
                   mainCategory: "fruits & vegitable",
                   subCategory: "fresh vegetables",
                 })
+              ).unwrap();
+              navigate(
+                `/cd/${removeSpecialChar("fruits & vegitable")}/${removeSpecialChar("fresh vegetables")}`
               );
             }}
           >
@@ -122,7 +128,7 @@ function LiItmes() {
               Fresh Vegetables
             </div>
           </li>
-        </Link>
+        </div>
       </ul>
       <div className="mr-4">
         <button className="pt-[11px]">

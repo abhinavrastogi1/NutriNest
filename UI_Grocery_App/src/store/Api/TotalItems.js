@@ -1,14 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const totalItems = createAsyncThunk(
   "totalItemsSlice/totalItems",
-  async () => {
+  async (_,{dispatch}) => {
+    dispatch(loadingBar(true))
+
     try {
-      const response = await axios.get("/api/users/totalItems");
+      const response = await axios.get("https://grocery-clone.onrender.com/api/users/totalItems");
       return response.data.data;
     } catch (error) {
       console.error("error while fetching total no of items", error);
+    }finally {
+      dispatch(loadingBar(false));
     }
   }
 );

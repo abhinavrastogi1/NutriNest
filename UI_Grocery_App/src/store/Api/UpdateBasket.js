@@ -1,17 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { totalItems } from "./TotalItems";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const UpdateCart = createAsyncThunk(
   "updateBasket/UpdateCart",
   async ({ productQuantity, id }, { dispatch }) => {
     try {
-      await axios.patch("/api/users/updateCart", null, {
-        params: {
-          id: id,
-          quantity: productQuantity,
-        },
-      });
+      await axios.patch(
+        "https://grocery-clone.onrender.com/api/users/updateCart",
+        null,
+        {
+          params: {
+            id: id,
+            quantity: productQuantity,
+          },
+        }
+      );
       dispatch(totalItems());
       return { id };
     } catch (error) {
@@ -22,16 +27,24 @@ export const UpdateCart = createAsyncThunk(
 export const deleteProductFromCart = createAsyncThunk(
   "updateBasket/deleteProductFromCart",
   async ({ id }, { dispatch }) => {
+    dispatch(loadingBar(true));
+
     try {
-      await axios.patch("/api/users/deleteProductFromCart", null, {
-        params: {
-          id: id,
-        },
-      });
+      await axios.patch(
+        "https://grocery-clone.onrender.com/api/users/deleteProductFromCart",
+        null,
+        {
+          params: {
+            id: id,
+          },
+        }
+      );
       dispatch(totalItems());
       return { id };
     } catch (error) {
       console.error("error while Deleting item", error);
+    } finally {
+      dispatch(loadingBar(false));
     }
   }
 );
@@ -42,14 +55,17 @@ export const addProductInCart = createAsyncThunk(
     { dispatch }
   ) => {
     try {
-      await axios.patch("/api/users/addProductInCart", {
-        id: id,
-        quantity: quantity,
-        _id: _id,
-        discountedPrice: discountedPrice,
-        originalPrice: originalPrice,
-        offer: offer,
-      });
+      await axios.patch(
+        "https://grocery-clone.onrender.com/api/users/addProductInCart",
+        {
+          id: id,
+          quantity: quantity,
+          _id: _id,
+          discountedPrice: discountedPrice,
+          originalPrice: originalPrice,
+          offer: offer,
+        }
+      );
       dispatch(totalItems());
       return { id };
     } catch (error) {

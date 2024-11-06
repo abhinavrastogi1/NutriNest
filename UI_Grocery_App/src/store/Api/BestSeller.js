@@ -1,14 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const fetchbestSellerData = createAsyncThunk(
   "bestSeller/fetchbestSellerData",
-  async () => {
+  async (_,{dispatch}) => {
+    dispatch(loadingBar(true))
     try {
-      const response = await axios.get("/api/product/bestSellers");
+      const response = await axios.get("https://grocery-clone.onrender.com/api/product/bestSellers");
       return response.data.data;
     } catch (error) {
       throw error;
+    }finally {
+      dispatch(loadingBar(false));
     }
   }
 );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { scrolltoggle } from "../../../store/Feature/Ui_component/toggleVisibility.js";
 import { fetchProducts } from "../../../store/Api/fetchProductsByCategorySlice.js";
 import { subSubCategoryReducer } from "../../../store/Feature/CategoriesActiveState.js";
@@ -49,11 +49,11 @@ function ShopByCategory() {
                       }}
                       onClick={async () => {
                         try {
+                          dispatch(scrolltoggle(false));
                           await dispatch(
                             fetchProducts({ mainCategory: activeUl1 })
                           ).unwrap();
                           navigate(`/cd/${category}`);
-                          dispatch(scrolltoggle(false));
                         } catch (error) {
                           navigate("/");
                         }

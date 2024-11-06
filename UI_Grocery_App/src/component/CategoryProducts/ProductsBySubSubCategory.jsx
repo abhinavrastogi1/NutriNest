@@ -30,39 +30,41 @@ function ProductsBySubSubCategory() {
     return str.replace(/( & |, | and | )/g, "-");
   }
   useEffect(() => {
-    const cleanedMainCategory = mainCategoryParams.replace(/[-]/g, "");
-    const cleanedSubCategory = subCategoryParams.replace(/[-]/g, "");
-    const cleanedSubSubCategory = subSubCategoryParams.replace(/[-]/g, "");
-
-    // Find the main category
-    const mainCategoryMatch = categories.find(
-      (category) => removeSpace(category.mainCategory) === cleanedMainCategory
-    );
-    if (mainCategoryMatch) {
-      // Find the subcategory
-      const subCategoryMatch = mainCategoryMatch.subCategory.find(
-        (subCategory) => removeSpace(subCategory.level2) === cleanedSubCategory
+    if (!productsData.length) {
+      const cleanedMainCategory = mainCategoryParams.replace(/[-]/g, "");
+      const cleanedSubCategory = subCategoryParams.replace(/[-]/g, "");
+      const cleanedSubSubCategory = subSubCategoryParams.replace(/[-]/g, "");
+      // Find the main category
+      const mainCategoryMatch = categories.find(
+        (category) => removeSpace(category.mainCategory) === cleanedMainCategory
       );
-
-      if (subCategoryMatch) {
-        // Find the sub-subcategory
-        const subSubCategoryMatch = subCategoryMatch.subSubCategory.find(
-          (subSubCategory) =>
-            removeSpace(subSubCategory.level3) === cleanedSubSubCategory
+      if (mainCategoryMatch) {
+        // Find the subcategory
+        const subCategoryMatch = mainCategoryMatch.subCategory.find(
+          (subCategory) =>
+            removeSpace(subCategory.level2) === cleanedSubCategory
         );
-        if (subSubCategoryMatch) {
-          // Fetch products once all categories are matched
-          dispatch(
-            fetchProducts({
-              mainCategory: mainCategoryMatch.mainCategory,
-              subCategory: subCategoryMatch.level2,
-              subSubCategory: subSubCategoryMatch.level3,
-            })
+
+        if (subCategoryMatch) {
+          // Find the sub-subcategory
+          const subSubCategoryMatch = subCategoryMatch.subSubCategory.find(
+            (subSubCategory) =>
+              removeSpace(subSubCategory.level3) === cleanedSubSubCategory
           );
+          if (subSubCategoryMatch) {
+            // Fetch products once all categories are matched
+            dispatch(
+              fetchProducts({
+                mainCategory: mainCategoryMatch.mainCategory,
+                subCategory: subCategoryMatch.level2,
+                subSubCategory: subSubCategoryMatch.level3,
+              })
+            );
+          }
         }
       }
     }
-  }, [categories]);
+  }, [categories, productsData]);
 
   const mainCategory = productsData[0]?.products[0]?.category.level1;
   const subCategory = productsData[0]?.products[0].category.level2;

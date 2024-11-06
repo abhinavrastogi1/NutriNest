@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { productSliceApi } from "../store/Api/productSlice";
+import { useDispatch } from "react-redux";
 
 function AutoSlider() {
   const [imageIndex, setImageIndex] = useState(0);
@@ -28,7 +30,8 @@ function AutoSlider() {
   function removeSpecialChar(str) {
     return str.replace(/( & |, | and |\/| \/ | )/g, "-");
   }
-  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div className="relative w-full overflow-hidden rounded-xl my-5 shadow-xl">
       <div
@@ -39,17 +42,29 @@ function AutoSlider() {
         }}
       >
         {slides.map((slide) => (
-          <div key={slide.id} className="flex-shrink-0 w-full">
-            <Link
-              to={`/pd/${slide.productId}/${removeSpecialChar(slide.productName)}`}
-            >
-              
-              <img
-                src={slide.url}
-                className="w-full h-full object-cover"
-                alt={`Slide ${slide.id}`}
-              />
-            </Link>
+          <div
+            key={slide.id}
+            className="flex-shrink-0 w-full"
+            onClick={async () => {
+              try {
+                await dispatch(
+                  productSliceApi({
+                    id: slide.productId,
+                  })
+                ).unwrap();
+                navigate(
+                  `/pd/${slide.productId}/${removeSpecialChar(slide.productName)}`
+                );
+              } catch (error) {
+                navigate("/");
+              }
+            }}
+          >
+            <img
+              src={slide.url}
+              className="w-full h-full object-cover"
+              alt={`Slide ${slide.id}`}
+            />
           </div>
         ))}
       </div>
