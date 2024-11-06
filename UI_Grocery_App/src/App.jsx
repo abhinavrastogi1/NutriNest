@@ -9,7 +9,7 @@ import { fetchProductData } from "./store/Api/recomendedProduct";
 import { UpdateFromLocalStorage } from "./store/Feature/Basket/basketData";
 import { FetchBasket } from "./store/Api/FetchBasketSlice";
 import { fetchbestSellerData } from "./store/Api/BestSeller";
-
+import { useLocation } from "react-router-dom";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,6 +24,12 @@ function App() {
     }
     dispatch(UpdateFromLocalStorage(JSON.parse(localStorage?.getItem("cart"))));
   }, []); // Consider adding `localStorage` data as a dependency
+
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]); // Runs every time the path changes
+
   return (
     <>
       <div>

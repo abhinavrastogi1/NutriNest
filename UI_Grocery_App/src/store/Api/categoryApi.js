@@ -4,8 +4,8 @@ import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const fetchCategoryData = createAsyncThunk(
   "categoryApi/fetchCategoryData",
-  async (_,{dispatch}) => {
-    dispatch(loadingBar(true))
+  async (_, { dispatch }) => {
+    dispatch(loadingBar(true));
 
     try {
       const response = await axios.get("https://grocery-clone.onrender.com/api/product/categorytree");
@@ -13,7 +13,7 @@ export const fetchCategoryData = createAsyncThunk(
     } catch (error) {
       console.error("error while fetching data from the server", error);
       throw error;
-    }finally {
+    } finally {
       dispatch(loadingBar(false));
     }
   }

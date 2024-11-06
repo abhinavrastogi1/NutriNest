@@ -33,7 +33,7 @@ function TopOfferCards() {
         <div className="flex  gap-7 ">
           {cardsData.map((card,index) => (
             <div key={index}>
-              <Link to={card.url}>
+             
                 {" "}
                 <div className="h-[197px] w-[263px]  relative  rounded-lg shadow-md">
                   <div className="bg-[#DD1F26] w-full h-[70%] rounded-tl-lg rounded-tr-lg pt-[72px] pl-7">
@@ -52,7 +52,7 @@ function TopOfferCards() {
                     </div>
                   </div>
                 </div>
-              </Link>
+              
             </div>
           ))}
         </div>

@@ -6,17 +6,14 @@ import { loadingBar } from "../Feature/Ui_component/Loading";
 export const BasketApi = createAsyncThunk(
   "BasketApiSlice/BasketApi",
   async ({ route, cacheData }, { dispatch }) => {
-    dispatch(loadingBar(true))
+    dispatch(loadingBar(true));
     try {
-      await axios.post(
-        `https://grocery-clone.onrender.com/api/users/${route}`,
-        cacheData
-      );
+      await axios.post(`https://grocery-clone.onrender.com/api/users/${route}`, cacheData);
       dispatch(FetchBasket());
       return null;
     } catch (error) {
       console.error("error while creating Cart", error);
-    }finally {
+    } finally {
       dispatch(loadingBar(false));
     }
   }

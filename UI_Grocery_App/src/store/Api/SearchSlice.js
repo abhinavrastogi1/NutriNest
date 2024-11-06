@@ -5,8 +5,8 @@ import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const SearchApi = createAsyncThunk(
   "SearchSlice/SearchApi",
-  async (search,{dispatch}) => {
-    dispatch(loadingBar(true))
+  async (search, { dispatch }) => {
+    dispatch(loadingBar(true));
 
     try {
       const response = await axios.post(
@@ -25,7 +25,7 @@ export const SearchApi = createAsyncThunk(
         "something went wrong while fetching search results",
         error
       );
-    }finally {
+    } finally {
       dispatch(loadingBar(false));
     }
   }

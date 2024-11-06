@@ -4,8 +4,8 @@ import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const fetchProducts = createAsyncThunk(
   "fetchProductsByCategorySLice/fetchProducts",
-  async ({ mainCategory, subCategory, subSubCategory },{dispatch}) => {
-    dispatch(loadingBar(true))
+  async ({ mainCategory, subCategory, subSubCategory }, { dispatch }) => {
+    dispatch(loadingBar(true));
 
     try {
       let response = undefined;
@@ -25,7 +25,7 @@ export const fetchProducts = createAsyncThunk(
       }
     } catch (error) {
       throw error;
-    }finally {
+    } finally {
       dispatch(loadingBar(false));
     }
   }

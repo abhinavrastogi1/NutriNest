@@ -3,7 +3,6 @@ import BestSeller from "../HeroSectionComponent/BestSeller";
 import Buttons from "../HeroSectionComponent/Buttons";
 import CleaningAndHoushold from "../HeroSectionComponent/CleaningAndHoushold";
 import FruitsAndVegetable from "../HeroSectionComponent/FruitsAndVegetable";
-import HomeAndKitchen from "../HeroSectionComponent/HomeAndKitchen";
 import SmartBasket from "../HeroSectionComponent/SmartBasket";
 import SnackStore from "../HeroSectionComponent/SnackStore";
 import TopOfferCards from "../HeroSectionComponent/TopOfferCards";
@@ -23,7 +22,6 @@ function HeroSection() {
       <SnackStore />
       <CleaningAndHoushold />
       <BeautyAndHygiene />
-      <HomeAndKitchen />
     </>
   );
 }

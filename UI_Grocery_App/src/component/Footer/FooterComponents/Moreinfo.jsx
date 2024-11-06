@@ -1,6 +1,5 @@
 import React from "react";
 import footerBBlogo from "../../../assets/images/footer_bb_logo.png";
-import Facebook_logo from "../../../assets/images/Facebook_logo.jpeg";
 function Moreinfo() {
   return (
     <div className="mx-48 grid grid-cols-3  ">
@@ -72,12 +71,7 @@ function Moreinfo() {
         <div>
           <img src={footerBBlogo} className="h-30 w-60" alt="big basket logo" />
         </div>
-        <div></div>
-        <div>
-          <div>
-            <img src={Facebook_logo} className="h-3 w-3 bg-black" />
-          </div>
-        </div>
+       
       </div>
     </div>
   );

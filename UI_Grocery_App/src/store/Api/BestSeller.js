@@ -4,14 +4,14 @@ import { loadingBar } from "../Feature/Ui_component/Loading";
 
 export const fetchbestSellerData = createAsyncThunk(
   "bestSeller/fetchbestSellerData",
-  async (_,{dispatch}) => {
-    dispatch(loadingBar(true))
+  async (_, { dispatch }) => {
+    dispatch(loadingBar(true));
     try {
       const response = await axios.get("https://grocery-clone.onrender.com/api/product/bestSellers");
       return response.data.data;
     } catch (error) {
       throw error;
-    }finally {
+    } finally {
       dispatch(loadingBar(false));
     }
   }
