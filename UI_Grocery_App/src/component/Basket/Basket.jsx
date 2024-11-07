@@ -41,9 +41,9 @@ function Basket() {
                 </div>
               </div>
               <div>
-                <button className=" text-white bg-[#cc0000]  text-base font-semibold rounded-md px-16 py-2 ">
+               <Link to="/underdevelopment"> <button className=" text-white bg-[#cc0000]  text-base font-semibold rounded-md px-16 py-2 ">
                   Checkout
-                </button>
+                </button></Link>
               </div>
             </div>
           </div>

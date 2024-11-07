@@ -8,10 +8,11 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./component/Home/Home.jsx";
 import Basket from "./component/Basket/Basket.jsx";
 import ProductsBycategory from "./component/CategoryProducts/ProductsByMainCategory.jsx";
-import ProductsBySubCategory from "./component/CategoryProducts/ProductsBySubCategory.jsx"; // Should match the file name exactly
+import ProductsBySubCategory from "./component/CategoryProducts/ProductsBySubCategory.jsx";
 import ProductsBySubSubCategory from "./component/CategoryProducts/ProductsBySubSubCategory.jsx";
 import Search from "./component/Search/Search.jsx";
 import Product from "./component/Product/Product.jsx";
+import UnderDevelopment from "./component/UnderProgress/UnderDevelopment.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,11 +50,15 @@ const router = createBrowserRouter([
         path: "/pd/:id/:product",
         element: <Product />,
       },
+      {
+        path: "/underdevelopment",
+        element: <UnderDevelopment />,
+      },
     ],
   },
 ]);
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   </Provider>
 );
