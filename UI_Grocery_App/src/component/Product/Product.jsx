@@ -52,6 +52,7 @@ function Product() {
   const subCategory = productDetails?.category.level2;
   const subSubCategory = productDetails?.category.level3;
   const productName = productDetails?.productName;
+  const [images, setImages] = useState(productDetails?.images);
   const [currentImage, setCurrentImage] = useState(images?.[0]);
   const brand = productDetails?.brand;
   const [noOfproduct, setNoOfproduct] = useState(0);
@@ -59,7 +60,6 @@ function Product() {
   const { items } = useSelector((state) => state.totalItemsSlice);
   const { login } = useSelector((state) => state.loginSlice);
   const totalItems = items?.totalItems;
-  const [images, setImages] = useState(productDetails?.images);
   const { productsData } = useSelector((state) => state.basketData);
 
   useEffect(() => {
