@@ -7,9 +7,9 @@ import About from "./HeroSectionComponent/About";
 function Home() {
   return (
     <>
-      <main className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
+      <main className="mx-48 lg:mx-36 md:mx-24 sm:mx-16 my-8 sideMargin">
         <AutoSlider />
-        <HeroSection/>
+        <HeroSection />
         <Bottom_autoSlider />
         <About />
       </main>
