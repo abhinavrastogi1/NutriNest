@@ -103,7 +103,7 @@ function LoginPage() {
   return ReactDOM.createPortal(
     <RemoveScroll>
       <div
-        className="h-[150%] w-[102%] bg-black absolute bg-opacity-50 
+        className="max-h-screen w-[102%] bg-black absolute bg-opacity-50 
     inset-0 flex flex-col justify-center items-center  z-20 backdrop-blur-sm "
       >
         <button
