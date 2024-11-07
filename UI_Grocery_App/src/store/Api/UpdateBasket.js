@@ -15,8 +15,8 @@ export const UpdateCart = createAsyncThunk(
             id: id,
             quantity: productQuantity,
           },
-        },
-        { withCredentials: true }
+          withCredentials: true,
+        }
       );
       dispatch(totalItems());
       return { id };
@@ -38,8 +38,8 @@ export const deleteProductFromCart = createAsyncThunk(
           params: {
             id: id,
           },
-        },
-        { withCredentials: true }
+          withCredentials: true,
+        }
       );
       dispatch(totalItems());
       return { id };
