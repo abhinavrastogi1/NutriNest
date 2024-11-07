@@ -58,6 +58,7 @@ function Product() {
   const [saveforLater, setSaveForLater] = useState(false);
   const { items } = useSelector((state) => state.totalItemsSlice);
   const { login } = useSelector((state) => state.loginSlice);
+  const [loading, setLoading] = useState(false);
   const totalItems = items?.totalItems;
 
   const { productsData } = useSelector((state) => state.basketData);
@@ -135,7 +136,7 @@ function Product() {
         })
       );
     }
-    if (login && noOfproduct === 0 && isRendered.current) {
+    if (login && noOfproduct === 0 && isRendered.current && !loading) {
       dispatch(
         deleteProductFromCart({
           id: id,
@@ -146,7 +147,7 @@ function Product() {
     }
   }, [noOfproduct, login]);
   const { productId } = useSelector((state) => state.updateBasket);
-  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setLoading(productId[id]);
   }, [productId]);

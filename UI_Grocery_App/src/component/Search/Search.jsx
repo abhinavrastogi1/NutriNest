@@ -56,7 +56,6 @@ function Search() {
   const filterlength = categroyArr.length;
   function addFilter(subCategoryItem) {
     const set = new Set([...filterArr, subCategoryItem]);
-    console.log(Array.from(set));
     setFilterArr(Array.from(set));
   }
   function removeFilter(subCatgory) {
@@ -65,12 +64,11 @@ function Search() {
     }
     const set = new Set([...filterArr]);
     set.delete(subCatgory);
-    console.log(Array.from(set));
     setFilterArr(Array.from(set));
   }
   return (
     <main className=" bg-[#f7f7f7]">
-      {status == "success" ? (
+      {
         <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48  flex flex-wrap justify-between bg-[#f7f7f7]">
           <div className="flex border-dotted border-b-2 w-full pb-3 pt-2">
             <span>
@@ -289,24 +287,7 @@ function Search() {
             </div>
           </section>
         </div>
-      ) : (
-        <div className="w-full h-max bg-[#E6F0FF] pb-[100px]">
-          <div className="w-full h-max bg-[#E6F0FF]  flex  justify-center">
-            <img src={somethingwentwrong} />
-          </div>
-          <div className=" flex justify-center m-2">
-            <button
-              className="border-[#0052CC] border-[1px] py-2 px-6 text-[#0052CC] rounded-md
-               hover:bg-[#0052CC] hover:text-white font-semibold text-[15px] "
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Go to Home
-            </button>
-          </div>
-        </div>
-      )}
+      }
     </main>
   );
 }

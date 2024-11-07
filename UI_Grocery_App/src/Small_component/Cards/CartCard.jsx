@@ -68,7 +68,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
     }
   }, [productQuantity]);
   useEffect(() => {
-    if (productQuantity === 0) {
+    if (productQuantity === 0 && !loading) {
       dispatch(
         deleteProductFromCart({
           id: id,

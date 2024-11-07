@@ -122,7 +122,7 @@ function CardLg({ product }) {
         })
       );
     }
-    if (login && noOfproduct === 0 && isRendered.current) {
+    if (login && noOfproduct === 0 && isRendered.current && !loading) {
       dispatch(
         deleteProductFromCart({
           id: id,
