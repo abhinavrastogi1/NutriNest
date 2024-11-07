@@ -33,6 +33,8 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
   const [cartMsg, setCartMsg] = useState("Adding ...");
   const [loading, setLoading] = useState(false);
   const { items } = useSelector((state) => state.totalItemsSlice);
+  const { deletingProduct } = useSelector((state) => state.loading.loading);
+
   const navigate = useNavigate();
   const totalItems = items?.totalItems;
   useEffect(() => {
@@ -68,7 +70,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
     }
   }, [productQuantity]);
   useEffect(() => {
-    if (productQuantity === 0 && !loading) {
+    if (productQuantity === 0 && !deletingProduct) {
       dispatch(
         deleteProductFromCart({
           id: id,

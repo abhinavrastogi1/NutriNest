@@ -60,6 +60,7 @@ function Product() {
   const { login } = useSelector((state) => state.loginSlice);
   const [loading, setLoading] = useState(false);
   const totalItems = items?.totalItems;
+  const { deletingProduct } = useSelector((state) => state.loading.loading);
 
   const { productsData } = useSelector((state) => state.basketData);
 
@@ -136,7 +137,7 @@ function Product() {
         })
       );
     }
-    if (login && noOfproduct === 0 && isRendered.current && !loading) {
+    if (login && noOfproduct === 0 && isRendered.current && !deletingProduct) {
       dispatch(
         deleteProductFromCart({
           id: id,

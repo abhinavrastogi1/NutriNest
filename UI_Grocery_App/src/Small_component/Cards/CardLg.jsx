@@ -36,6 +36,8 @@ function CardLg({ product }) {
   const { items } = useSelector((state) => state.totalItemsSlice);
   const totalItems = items?.totalItems;
   const { productId } = useSelector((state) => state.updateBasket);
+  const { deletingProduct } = useSelector((state) => state.loading.loading);
+
   const [loading, setLoading] = useState(false);
   const { login } = useSelector((state) => state.loginSlice);
 
@@ -122,7 +124,7 @@ function CardLg({ product }) {
         })
       );
     }
-    if (login && noOfproduct === 0 && isRendered.current && !loading) {
+    if (login && noOfproduct === 0 && isRendered.current && !deletingProduct) {
       dispatch(
         deleteProductFromCart({
           id: id,
