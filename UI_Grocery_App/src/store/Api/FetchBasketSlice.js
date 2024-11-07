@@ -10,7 +10,11 @@ export const FetchBasket = createAsyncThunk(
     dispatch(loadingBar(true));
 
     try {
-      const response = await axios.get(`https://grocery-clone.onrender.com/api/users/getCart`);
+      const response = await axios.get(
+        `https://grocery-clone.onrender.com/api/users/getCart`,
+        null,
+        { withCredentials: true }
+      );
       dispatch(totalItems());
       dispatch(isloggedin(true));
       localStorage.setItem("cart", JSON.stringify({}));

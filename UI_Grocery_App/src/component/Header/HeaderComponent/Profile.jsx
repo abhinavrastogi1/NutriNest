@@ -16,7 +16,13 @@ function Profile() {
   const dispatch = useDispatch();
   async function logout() {
     try {
-      await axios.post("https://grocery-clone.onrender.com/api/users/logout");
+      await axios.post(
+        "https://grocery-clone.onrender.com/api/users/logout",
+        null,
+        {
+          withCredentials: true, // This ensures cookies are sent with the request
+        }
+      );
       dispatch(isloggedin(false));
       window.location.reload(false);
     } catch (error) {

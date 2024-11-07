@@ -31,13 +31,21 @@ function LoginPage() {
   async function onSubmitHandle(e) {
     e.preventDefault();
     try {
-      const response = await axios.post("https://grocery-clone.onrender.com/api/users/UserExist", formData);
+      const response = await axios.post(
+        "https://grocery-clone.onrender.com/api/users/UserExist",
+        formData,
+        { withCredentials: true }
+      );
       if (response?.data.data === "new User") {
         setRegisterUser(true);
       } else if (response?.data.data === "userExist") {
-        const response = await axios.post("https://grocery-clone.onrender.com/api/users/login", formData, {
-          withCredentials: true, // This ensures cookies are sent with the request
-        });
+        const response = await axios.post(
+          "https://grocery-clone.onrender.com/api/users/login",
+          formData,
+          {
+            withCredentials: true, // This ensures cookies are sent with the request
+          }
+        );
         if (response.data.message === "log in successfull")
           dispatch(loginToggleSwitch());
         const cartData = JSON.parse(localStorage?.getItem("cart"));
@@ -58,7 +66,10 @@ function LoginPage() {
     try {
       const registerationResponse = await axios.post(
         "https://grocery-clone.onrender.com/api/users/registerUser",
-        formData
+        formData,
+        {
+          withCredentials: true,
+        }
       );
 
       if (
@@ -66,9 +77,13 @@ function LoginPage() {
       ) {
         throw new Error("Registraton Failed");
       }
-      const loginResponse = await axios.post("https://grocery-clone.onrender.com/api/users/login", formData, {
-        withCredentials: true, // This ensures cookies are sent with the request
-      });
+      const loginResponse = await axios.post(
+        "https://grocery-clone.onrender.com/api/users/login",
+        formData,
+        {
+          withCredentials: true, // This ensures cookies are sent with the request
+        }
+      );
       if (loginResponse.data.message !== "log in successfull") {
         throw new Error("login failed");
       }
