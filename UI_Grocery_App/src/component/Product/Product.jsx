@@ -79,7 +79,7 @@ function Product() {
   }, [items, login, productsData]);
 
   useEffect(() => {
-    if (images?.length > 0) {
+    if (productDetails?.images.length > 0) {
       // Create a new array to store the modified image URLs
       const updatedImages = images.map((image) =>
         image.startsWith("http:") ? image.replace("http:", "https:") : image
@@ -89,7 +89,7 @@ function Product() {
       setCurrentImage(updatedImages[0]);
       setImages(updatedImages); // Assuming you have a setImages function to update the state
     }
-  }, [images]);
+  }, [productData]);
 
   const [offer, setOffer] = useState(productDetails?.discount[weight]);
 
