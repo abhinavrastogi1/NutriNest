@@ -23,7 +23,6 @@ function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(productData.length);
     if (!productData.length) dispatch(productSliceApi({ id: id }));
   }, [dispatch]);
 
