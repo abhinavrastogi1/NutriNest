@@ -23,7 +23,7 @@ function Product() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(productData.length)
+    console.log(productData.length);
     if (!productData.length) dispatch(productSliceApi({ id: id }));
   }, [dispatch]);
 
@@ -51,7 +51,6 @@ function Product() {
   const mainCategory = productDetails?.category.level1;
   const subCategory = productDetails?.category.level2;
   const subSubCategory = productDetails?.category.level3;
-  const images = productDetails?.images;
   const productName = productDetails?.productName;
   const [currentImage, setCurrentImage] = useState(images?.[0]);
   const brand = productDetails?.brand;
@@ -60,7 +59,7 @@ function Product() {
   const { items } = useSelector((state) => state.totalItemsSlice);
   const { login } = useSelector((state) => state.loginSlice);
   const totalItems = items?.totalItems;
-
+  const [images, setImages] = useState(productDetails?.images);
   const { productsData } = useSelector((state) => state.basketData);
 
   useEffect(() => {
@@ -81,7 +80,14 @@ function Product() {
 
   useEffect(() => {
     if (images?.length > 0) {
-      setCurrentImage(images[0]);
+      // Create a new array to store the modified image URLs
+      const updatedImages = images.map((image) =>
+        image.startsWith("http:") ? image.replace("http:", "https:") : image
+      );
+
+      // Update the state with the new array of images
+      setCurrentImage(updatedImages[0]);
+      setImages(updatedImages); // Assuming you have a setImages function to update the state
     }
   }, [images]);
 

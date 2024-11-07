@@ -104,7 +104,15 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
                 }
               }}
             >
-              <img src={image} className="h-24 w-24" alt={productName} />
+              <img
+                src={
+                  image.startsWith("http:")
+                    ? image.replace("http:", "https:")
+                    : image // Use the original URL if it already has https
+                }
+                className="h-24 w-24"
+                alt={productName}
+              />
             </div>
 
             <div className="h-full w-[457px] flex flex-col justify-center">

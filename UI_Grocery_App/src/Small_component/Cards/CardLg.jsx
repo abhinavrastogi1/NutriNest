@@ -159,7 +159,17 @@ function CardLg({ product }) {
                 }
               }}
             >
-              {<img src={images} loading="lazy" alt={imageAlt} />}
+              {
+                <img
+                  src={
+                    images.startsWith("http:")
+                      ? images.replace("http:", "https:")
+                      : images // Use the original URL if it already has https
+                  }
+                  loading="lazy"
+                  alt={imageAlt}
+                />
+              }
             </div>
           </div>
           <div>
