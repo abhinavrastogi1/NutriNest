@@ -20,6 +20,7 @@ function LoginPage() {
     firstName: "",
     lastName: "",
   });
+  const [loading, setLoading] = useState(false);
   const [registerUser, setRegisterUser] = useState(false);
   function onChangeHandle(e) {
     const { name, value } = e.target;
@@ -30,6 +31,7 @@ function LoginPage() {
   }
   async function onSubmitHandle(e) {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://grocery-clone.onrender.com/api/users/UserExist",
@@ -59,10 +61,13 @@ function LoginPage() {
       if (error.response.data.message == "password is incorrect") {
         serIncorrectpassword(true);
       }
+    } finally {
+      setLoading(false);
     }
   }
   async function onRegisterSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     try {
       const registerationResponse = await axios.post(
         "https://grocery-clone.onrender.com/api/users/registerUser",
@@ -97,6 +102,8 @@ function LoginPage() {
       if (error.response.data.message == "email already exist") {
         setEmailExist(true);
       }
+    } finally {
+      setLoading(false);
     }
   }
   const dispatch = useDispatch();
@@ -167,14 +174,18 @@ function LoginPage() {
                   name="email"
                   className="p-2 text-[12px] rounded-sm outline-none"
                   placeholder="abc@xyz.com"
+                  autocomplete="off"
                   onChange={onChangeHandle}
                 />
 
                 <button
                   type="submit"
-                  className="text-white py-2 px-5 text-sm font-semibold bg-red-700 rounded-sm mt-7"
+                  className="text-white py-2  text-sm font-semibold bg-red-700 rounded-sm mt-7 flex justify-center"
                 >
                   Continue
+                  {loading && (
+                    <div className="  border-t-2 border-white animate-spin rounded-full h-5 w-5 ml-2"></div>
+                  )}
                 </button>
               </form>
             ) : (
@@ -206,9 +217,12 @@ function LoginPage() {
                 />
                 <button
                   type="submit"
-                  className="text-white py-2 px-5 text-sm font-semibold bg-red-700 rounded-sm mt-7"
+                  className="text-white py-2  text-sm font-semibold bg-red-700 rounded-sm mt-7 flex justify-center"
                 >
                   Continue
+                  {loading && (
+                    <div className="  border-t-2 border-white animate-spin rounded-full h-5 w-5 ml-2"></div>
+                  )}
                 </button>
               </form>
             )}
