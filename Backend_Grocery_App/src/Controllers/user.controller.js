@@ -98,11 +98,11 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const options = {
-    // httpOnly: true,
-    // sameSite:"None" ,
-    // secure: true,
-    // domain: ".vercel.app",
-   // expires: new Date(Date.now() + 86400000),
+    httpOnly: true,
+    sameSite:"None" ,
+    secure: true,
+   
+    expires: new Date(Date.now() + 86400000),
   };
   res
     .status(201)
@@ -126,10 +126,10 @@ const logoutUser = asyncHandler(async (req, res) => {
     }
   );
   const options = {
-    // httpOnly: true,
-    // secure: true,
-    // domain: ".vercel.app",
-    // sameSite:"None" ,
+    httpOnly: true,
+    secure: true,
+
+    sameSite:"None" ,
   };
 
   res

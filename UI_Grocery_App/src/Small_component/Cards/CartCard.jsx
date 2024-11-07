@@ -19,7 +19,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
   }
   const { productId } = useSelector((state) => state.updateBasket);
   const dispatch = useDispatch();
-  const image = productDetails.productId.images;
+  const image = productDetails.productId.images[0];
   const productName = productDetails.productId.productName;
   const id = productDetails.productId.id;
   const quantity = productDetails.quantity;
@@ -105,6 +105,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
               }}
             >
               <img
+               
                 src={
                   image.startsWith("http:")
                     ? image.replace("http:", "https:")

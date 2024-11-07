@@ -18,14 +18,14 @@ import { addData, removeData } from "../../store/Feature/Basket/basketData";
 
 function Product() {
   const { productData } = useSelector((state) => state.productSlice);
-  
   const productDetails = productData[0];
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
+    console.log(productData.length);
     if (!productData.length) dispatch(productSliceApi({ id: id }));
-  }, []);
+  }, [dispatch]);
 
   let productsWeight = [];
   if (productData?.length != 0) {
@@ -51,8 +51,8 @@ function Product() {
   const mainCategory = productDetails?.category.level1;
   const subCategory = productDetails?.category.level2;
   const subSubCategory = productDetails?.category.level3;
+  const images = productDetails?.images;
   const productName = productDetails?.productName;
-  const [images, setImages] = useState(productDetails?.images);
   const [currentImage, setCurrentImage] = useState(images?.[0]);
   const brand = productDetails?.brand;
   const [noOfproduct, setNoOfproduct] = useState(0);
@@ -60,6 +60,7 @@ function Product() {
   const { items } = useSelector((state) => state.totalItemsSlice);
   const { login } = useSelector((state) => state.loginSlice);
   const totalItems = items?.totalItems;
+
   const { productsData } = useSelector((state) => state.basketData);
 
   useEffect(() => {
@@ -79,18 +80,10 @@ function Product() {
   }, [items, login, productsData]);
 
   useEffect(() => {
-    if (productDetails?.images.length > 0) {
-      // Create a new array to store the modified image URLs
-      const updatedImages = images.map((image) =>{
-        console.log(image)
-     return   image.startsWith("http:") ? image.replace("http:", "https:") : image}
-      );
-      console.log("updatedImages",updatedImages)
-      // Update the state with the new array of images
-      setCurrentImage(updatedImages[0]);
-      setImages(updatedImages); // Assuming you have a setImages function to update the state
+    if (images?.length > 0) {
+      setCurrentImage(images[0]);
     }
-  }, []);
+  }, [images]);
 
   const [offer, setOffer] = useState(productDetails?.discount[weight]);
 
@@ -260,7 +253,11 @@ function Product() {
                     }}
                   >
                     <img
-                      src={image}
+                      src={
+                        image.startsWith("http:")
+                          ? image.replace("http:", "https:")
+                          : image // Use the original URL if it already has https
+                      }
                       alt={`${productName} image `}
                       className="h-full w-full "
                     />
@@ -269,7 +266,11 @@ function Product() {
               </div>
               <div className=" h-full w-[85%] p-5 border-2 rounded-md contain-content ">
                 <img
-                  src={currentImage}
+                  src={
+                    currentImage.startsWith("http:")
+                      ? currentImage.replace("http:", "https:")
+                      : currentImage // Use the original URL if it already has https
+                  }
                   alt={`${productName} image `}
                   className="h-full w-full  "
                 />
