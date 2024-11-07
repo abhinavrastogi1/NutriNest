@@ -12,7 +12,6 @@ export const FetchBasket = createAsyncThunk(
     try {
       const response = await axios.get(
         `https://grocery-clone.onrender.com/api/users/getCart`,
-        null,
         { withCredentials: true }
       );
       dispatch(totalItems());
