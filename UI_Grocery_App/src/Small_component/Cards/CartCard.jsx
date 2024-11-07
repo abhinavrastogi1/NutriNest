@@ -108,7 +108,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
             >
               <img
                 src={
-                  image.startsWith("http:")
+                  image?.startsWith("http:")
                     ? image.replace("http:", "https:")
                     : image // Use the original URL if it already has https
                 }

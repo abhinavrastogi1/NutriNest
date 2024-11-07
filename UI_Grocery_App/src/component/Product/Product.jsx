@@ -255,7 +255,7 @@ function Product() {
                   >
                     <img
                       src={
-                        image.startsWith("http:")
+                        image?.startsWith("http:")
                           ? image.replace("http:", "https:")
                           : image // Use the original URL if it already has https
                       }
@@ -268,7 +268,7 @@ function Product() {
               <div className=" h-full w-[85%] p-5 border-2 rounded-md contain-content ">
                 <img
                   src={
-                    currentImage.startsWith("http:")
+                    currentImage?.startsWith("http:")
                       ? currentImage.replace("http:", "https:")
                       : currentImage // Use the original URL if it already has https
                   }

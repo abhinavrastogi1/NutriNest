@@ -164,7 +164,7 @@ function CardLg({ product }) {
               {
                 <img
                   src={
-                    images.startsWith("http:")
+                    images?.startsWith("http:")
                       ? images.replace("http:", "https:")
                       : images // Use the original URL if it already has https
                   }
