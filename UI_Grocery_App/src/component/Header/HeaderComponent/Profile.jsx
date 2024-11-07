@@ -23,6 +23,7 @@ function Profile() {
           withCredentials: true, // This ensures cookies are sent with the request
         }
       );
+      localStorage.setItem("cart", JSON.stringify({}));
       dispatch(isloggedin(false));
       window.location.reload(false);
     } catch (error) {
