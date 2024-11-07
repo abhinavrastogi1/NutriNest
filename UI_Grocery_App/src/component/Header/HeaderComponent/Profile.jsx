@@ -25,7 +25,6 @@ function Profile() {
       );
       localStorage.setItem("cart", JSON.stringify({}));
       dispatch(isloggedin(false));
-      window.location.reload(false);
     } catch (error) {
       console.error("error while Logging out", error);
     }
