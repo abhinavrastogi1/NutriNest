@@ -18,14 +18,14 @@ import { addData, removeData } from "../../store/Feature/Basket/basketData";
 
 function Product() {
   const { productData } = useSelector((state) => state.productSlice);
+  
   const productDetails = productData[0];
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(productData.length);
     if (!productData.length) dispatch(productSliceApi({ id: id }));
-  }, [dispatch]);
+  }, []);
 
   let productsWeight = [];
   if (productData?.length != 0) {
@@ -81,15 +81,16 @@ function Product() {
   useEffect(() => {
     if (productDetails?.images.length > 0) {
       // Create a new array to store the modified image URLs
-      const updatedImages = images.map((image) =>
-        image.startsWith("http:") ? image.replace("http:", "https:") : image
+      const updatedImages = images.map((image) =>{
+        console.log(image)
+     return   image.startsWith("http:") ? image.replace("http:", "https:") : image}
       );
-
+      console.log("updatedImages",updatedImages)
       // Update the state with the new array of images
       setCurrentImage(updatedImages[0]);
       setImages(updatedImages); // Assuming you have a setImages function to update the state
     }
-  }, [productData]);
+  }, [productDetails]);
 
   const [offer, setOffer] = useState(productDetails?.discount[weight]);
 
