@@ -133,7 +133,7 @@ function CardLg({ product }) {
     } else {
       isRendered.current = true;
     }
-  }, [noOfproduct, login]);
+  }, [noOfproduct, login,deletingProduct]);
 
   return (
     <>

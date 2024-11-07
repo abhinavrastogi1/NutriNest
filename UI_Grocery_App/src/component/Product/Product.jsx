@@ -146,7 +146,7 @@ function Product() {
     } else {
       isRendered.current = true;
     }
-  }, [noOfproduct, login]);
+  }, [noOfproduct, login,deletingProduct]);
   const { productId } = useSelector((state) => state.updateBasket);
 
   useEffect(() => {

@@ -78,7 +78,7 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
       );
       removeCategory();
     }
-  }, [productQuantity]);
+  }, [productQuantity, deletingProduct]);
   useEffect(() => {
     if (productQuantity === 0) removeProduct(subTotal, Saved);
   }, [productQuantity, subTotal, Saved]);
@@ -107,7 +107,6 @@ function CartCard({ productDetails, removeCategory, removeProduct }) {
               }}
             >
               <img
-               
                 src={
                   image.startsWith("http:")
                     ? image.replace("http:", "https:")
