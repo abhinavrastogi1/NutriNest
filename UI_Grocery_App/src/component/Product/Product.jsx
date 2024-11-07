@@ -90,7 +90,7 @@ function Product() {
       setCurrentImage(updatedImages[0]);
       setImages(updatedImages); // Assuming you have a setImages function to update the state
     }
-  }, [productDetails]);
+  }, []);
 
   const [offer, setOffer] = useState(productDetails?.discount[weight]);
 
