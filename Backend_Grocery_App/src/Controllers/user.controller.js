@@ -99,7 +99,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    sameSite:"Lax" ,
+    sameSite:"None" ,
     secure: true,
     domain: ".vercel.app",
     expires: new Date(Date.now() + 86400000),
