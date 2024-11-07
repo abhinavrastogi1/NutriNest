@@ -9,13 +9,13 @@ function AutoSlider() {
   const slides = [
     {
       id: 1,
-      url: "http://res.cloudinary.com/dpgaqghmr/image/upload/v1730008471/tf00tvojgmxdcsceccre.png",
+      url: "https://res.cloudinary.com/dpgaqghmr/image/upload/v1730008471/tf00tvojgmxdcsceccre.png",
       productId: 56,
       productName: "Surf Excel Matic Top Load Liquid Detergent",
     },
     {
       id: 2,
-      url: "http://res.cloudinary.com/dpgaqghmr/image/upload/v1730008471/aldhg8ulw0z0afgwslms.png",
+      url: "https://res.cloudinary.com/dpgaqghmr/image/upload/v1730008471/aldhg8ulw0z0afgwslms.png",
       productId: 55,
       productName: "Dove Hair Fall Rescue Shampoo",
     },
