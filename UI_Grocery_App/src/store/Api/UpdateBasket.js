@@ -33,7 +33,6 @@ export const deleteProductFromCart = createAsyncThunk(
     try {
       await axios.patch(
         "https://grocery-clone.onrender.com/api/users/deleteProductFromCart",
-        null,
         {
           params: {
             id: id,

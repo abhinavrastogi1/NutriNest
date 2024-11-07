@@ -8,7 +8,10 @@ export const totalItems = createAsyncThunk(
     dispatch(loadingBar(true));
 
     try {
-      const response = await axios.get("https://grocery-clone.onrender.com/api/users/totalItems");
+      const response = await axios.get(
+        "https://grocery-clone.onrender.com/api/users/totalItems",
+        { withCredentials: true }
+      );
       return response.data.data;
     } catch (error) {
       console.error("error while fetching total no of items", error);
