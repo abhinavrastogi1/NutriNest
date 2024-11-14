@@ -48,8 +48,8 @@ function Header() {
   const { loading } = useSelector((state) => state.loading);
   return (
     <>
-      <header className="bg-white shadow-lg ">
-        <div className="flex overflow-hidden bg-[#5E9400] h-1">
+      <header className="bg-white shadow-lg  ">
+        <div className="flex overflow-hidden bg-[#5E9400] h-1 ">
           <div className={` h-full w-[50%] ${loading && "left-loader"}`}></div>
           <div
             className={`  h-full w-[50%] ${loading && "right-loader"}`}
@@ -61,7 +61,8 @@ function Header() {
             onClick={onClose}
           ></div>
         )}
-        <div className="grid grid-rows-2 mx-48 sm:mx-8 md:mx-16 lg:mx-48 h-28 ">
+          <div className=" flex flex-row justify-center">
+        <div className="grid grid-rows-2  w-[1135px] ">
           <div className="flex flex-row gap-3 my-2 relative">
             <div>
               <img
@@ -132,6 +133,7 @@ function Header() {
               </button>
             </div>
           </div>
+        </div>
         </div>
       </header>
     </>

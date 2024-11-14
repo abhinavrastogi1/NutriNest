@@ -2,7 +2,7 @@ import React from "react";
 
 function Cities_weServe() {
   return (
-    <div className="mx-48 border-dashed border-y-[1px] ">
+    <div className=" border-dashed border-y-[1px] ">
       <h4 className=" text-white text-center py-2 text-[14px] font-normal">
         {" "}
         Cities we serve

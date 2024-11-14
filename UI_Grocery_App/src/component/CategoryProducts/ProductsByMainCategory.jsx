@@ -59,9 +59,9 @@ function ProductsBycategory() {
       .join(" ");
   }
   return (
-    <main className=" bg-[#f7f7f7]">
+    <main className=" bg-[#f7f7f7] flex justify-center">
       {
-        <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48  flex flex-wrap justify-between bg-[#f7f7f7]">
+        <div className="w-[1135px]  flex flex-wrap justify-between bg-[#f7f7f7]">
           <div className="flex border-dotted border-b-2 w-full pb-3 pt-2">
             <span>
               {" "}

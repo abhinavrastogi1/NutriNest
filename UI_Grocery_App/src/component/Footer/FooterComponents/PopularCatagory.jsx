@@ -3,7 +3,7 @@ import React from "react";
 function PopularCatagory() {
   return (
     <>
-      <div className="mx-48 mt-4 grid grid-cols-2 pb-6">
+      <div className=" mt-4 grid grid-cols-2 pb-6">
         <div className="grid">
           <h4 className=" text-white py-2 text-[14px] font-normal">
             {" "}
@@ -133,13 +133,7 @@ function PopularCatagory() {
         </div>
       </div>
 
-      <div className="mx-48 mb-4">
-        <div className="flex flex-row justify-center ">
-          <button className="text-white text-center font-light text-[13px] underline  ">
-            Show More +
-          </button>
-        </div>
-      </div>
+      
     </>
   );
 }

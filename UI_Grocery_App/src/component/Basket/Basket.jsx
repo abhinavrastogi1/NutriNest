@@ -12,9 +12,9 @@ function Basket() {
     setTotalproducts(items?.countItems);
   }, [items]);
   return (
-    <div>
+    <div className="flex justify-center">
       {totalProducts ? (
-        <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
+        <div className="w-[1135px]">
           <div>
             <div className="mb-5">
               <h1 className="text-2xl font-bold">Your Basket</h1>
@@ -41,9 +41,12 @@ function Basket() {
                 </div>
               </div>
               <div>
-               <Link to="/underdevelopment"> <button className=" text-white bg-[#cc0000]  text-base font-semibold rounded-md px-16 py-2 ">
-                  Checkout
-                </button></Link>
+                <Link to="/underdevelopment">
+                  {" "}
+                  <button className=" text-white bg-[#cc0000]  text-base font-semibold rounded-md px-16 py-2 ">
+                    Checkout
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -76,7 +79,7 @@ function Basket() {
           </div>
         </div>
       ) : (
-        <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
+        <div className="w-[1135px] ">
           <div className="border-b-2 border-dotted mb-4">
             <div className="my-12 h-72 bg-[#F1F8E6] rounded-md flex py-6 items-center flex-col ">
               <img src={emptyBasket} alt="empty basket img" className="w-28 " />

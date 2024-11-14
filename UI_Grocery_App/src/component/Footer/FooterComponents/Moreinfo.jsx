@@ -2,7 +2,7 @@ import React from "react";
 import footerBBlogo from "../../../assets/images/footer_bb_logo.png";
 function Moreinfo() {
   return (
-    <div className="mx-48 grid grid-cols-3  ">
+    <div className=" grid grid-cols-3  ">
       <div className="pt-12">
         <div>
           <h4 className=" text-white  text-[14px] font-normal pl-3 ">

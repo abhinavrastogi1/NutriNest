@@ -7,11 +7,13 @@ import About from "./HeroSectionComponent/About";
 function Home() {
   return (
     <>
-      <main className="mx-4 sm:mx-8 md:mx-16 lg:mx-48 my-8 ">
+      <main className="flex justify-center">
+        <div className="w-[1135px]">
         <AutoSlider />
         <HeroSection />
         <Bottom_autoSlider />
         <About />
+        </div>
       </main>
     </>
   );
