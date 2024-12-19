@@ -7,7 +7,9 @@ export const fetchProductData = createAsyncThunk(
   async (_, { dispatch }) => {
     dispatch(loadingBar(true));
     try {
-      const response = await axios.get("https://grocery-clone.onrender.com/api/product/recomemdedProduct");
+      const response = await axios.get(
+        "https://grocery-clone-tyxv.onrender.com/api/product/recomemdedProduct"
+      );
       return response.data.data;
     } catch (error) {
       throw error;

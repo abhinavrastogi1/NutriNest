@@ -17,7 +17,7 @@ function Profile() {
   async function logout() {
     try {
       await axios.post(
-        "https://grocery-clone.onrender.com/api/users/logout",
+        "https://grocery-clone-tyxv.onrender.com/api/users/logout",
         null,
         {
           withCredentials: true, // This ensures cookies are sent with the request

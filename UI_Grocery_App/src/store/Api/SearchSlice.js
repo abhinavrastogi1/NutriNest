@@ -10,7 +10,7 @@ export const SearchApi = createAsyncThunk(
 
     try {
       const response = await axios.post(
-        "https://grocery-clone.onrender.com/api/findProduct/searchProduct",
+        "https://grocery-clone-tyxv.onrender.com/api/findProduct/searchProduct",
         null,
         {
           params: {

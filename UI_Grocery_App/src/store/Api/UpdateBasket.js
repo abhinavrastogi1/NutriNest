@@ -8,7 +8,7 @@ export const UpdateCart = createAsyncThunk(
   async ({ productQuantity, id }, { dispatch }) => {
     try {
       await axios.patch(
-        "https://grocery-clone.onrender.com/api/users/updateCart",
+        "https://grocery-clone-tyxv.onrender.com/api/users/updateCart",
         null,
         {
           params: {
@@ -32,7 +32,7 @@ export const deleteProductFromCart = createAsyncThunk(
 
     try {
       await axios.patch(
-        "https://grocery-clone.onrender.com/api/users/deleteProductFromCart",
+        "https://grocery-clone-tyxv.onrender.com/api/users/deleteProductFromCart",
         null,
         {
           params: {
@@ -58,7 +58,7 @@ export const addProductInCart = createAsyncThunk(
   ) => {
     try {
       await axios.patch(
-        "https://grocery-clone.onrender.com/api/users/addProductInCart",
+        "https://grocery-clone-tyxv.onrender.com/api/users/addProductInCart",
         {
           id: id,
           quantity: quantity,
