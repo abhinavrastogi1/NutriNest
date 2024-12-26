@@ -22,6 +22,9 @@ app.use(express.static("public"));
 app.use(cookieParser());
 //routes import
 import userRouter from "./Routes/user.route.js";
+app.get("/",(req,res)=>{
+  res.status(301).redirect("https://nutrinestt.vercel.app/")
+})
 app.use("/api/users", userRouter);
 
 import productRouter from "./Routes/product.routes.js";

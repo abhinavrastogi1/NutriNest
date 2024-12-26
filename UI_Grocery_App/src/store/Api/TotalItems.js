@@ -9,7 +9,7 @@ export const totalItems = createAsyncThunk(
 
     try {
       const response = await axios.get(
-        "https://grocery-clone-tyxv.onrender.com/api/users/totalItems",
+        "https://nutrinest.onrender.com/api/users/totalItems",
         { withCredentials: true }
       );
       return response.data.data;

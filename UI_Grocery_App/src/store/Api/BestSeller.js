@@ -8,7 +8,7 @@ export const fetchbestSellerData = createAsyncThunk(
     dispatch(loadingBar(true));
     try {
       const response = await axios.get(
-        "https://grocery-clone-tyxv.onrender.com/api/product/bestSellers"
+        "https://nutrinest.onrender.com/api/product/bestSellers"
       );
       return response.data.data;
     } catch (error) {

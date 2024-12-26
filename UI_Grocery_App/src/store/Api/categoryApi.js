@@ -9,7 +9,7 @@ export const fetchCategoryData = createAsyncThunk(
 
     try {
       const response = await axios.get(
-        "https://grocery-clone-tyxv.onrender.com/api/product/categorytree"
+        "https://nutrinest.onrender.com/api/product/categorytree"
       );
       return response.data.data;
     } catch (error) {

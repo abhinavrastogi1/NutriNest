@@ -11,17 +11,17 @@ export const fetchProducts = createAsyncThunk(
       let response = undefined;
       if (mainCategory && !subCategory && !subSubCategory) {
         response = await axios.get(
-          `https://grocery-clone-tyxv.onrender.com/api/findProduct/${mainCategory}`
+          `https://nutrinest.onrender.com/api/findProduct/${mainCategory}`
         );
         return response.data.data;
       } else if (mainCategory && subCategory && !subSubCategory) {
         response = await axios.get(
-          `https://grocery-clone-tyxv.onrender.com/api/findProduct/${mainCategory}/${subCategory}`
+          `https://nutrinest.onrender.com/api/findProduct/${mainCategory}/${subCategory}`
         );
         return response.data.data;
       } else if (mainCategory && subCategory && subSubCategory) {
         response = await axios.get(
-          `https://grocery-clone-tyxv.onrender.com/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
+          `https://nutrinest.onrender.com/api/findProduct/${mainCategory}/${subCategory}/${subSubCategory}`
         );
         return response.data.data;
       }
