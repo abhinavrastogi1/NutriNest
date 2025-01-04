@@ -10,7 +10,7 @@ export const SearchApi = createAsyncThunk(
 
     try {
       const response = await axios.post(
-        "https://nutrinest.onrender.com/api/findProduct/searchProduct",
+        "https://nutrinest-r77n.onrender.com/api/findProduct/searchProduct",
         null,
         {
           params: {

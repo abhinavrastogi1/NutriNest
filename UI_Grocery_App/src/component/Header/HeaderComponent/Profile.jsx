@@ -17,7 +17,7 @@ function Profile() {
   async function logout() {
     try {
       await axios.post(
-        "https://nutrinest.onrender.com/api/users/logout",
+        "https://nutrinest-r77n.onrender.com/api/users/logout",
         null,
         {
           withCredentials: true, // This ensures cookies are sent with the request

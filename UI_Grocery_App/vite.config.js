@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   server: {
     proxy: {
-      // "/api": "https://nutrinest.onrender.com",
+      // "/api": "https://nutrinest-r77n.onrender.com",
       // "/api": "http://localhost:8000",
     },
   },

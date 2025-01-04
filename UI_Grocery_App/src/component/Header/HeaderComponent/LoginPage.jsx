@@ -34,7 +34,7 @@ function LoginPage() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://nutrinest.onrender.com/api/users/UserExist",
+        "https://nutrinest-r77n.onrender.com/api/users/UserExist",
         formData,
         { withCredentials: true }
       );
@@ -42,7 +42,7 @@ function LoginPage() {
         setRegisterUser(true);
       } else if (response?.data.data === "userExist") {
         const response = await axios.post(
-          "https://nutrinest.onrender.com/api/users/login",
+          "https://nutrinest-r77n.onrender.com/api/users/login",
           formData,
           {
             withCredentials: true, // This ensures cookies are sent with the request
@@ -70,7 +70,7 @@ function LoginPage() {
     setLoading(true);
     try {
       const registerationResponse = await axios.post(
-        "https://nutrinest.onrender.com/api/users/registerUser",
+        "https://nutrinest-r77n.onrender.com/api/users/registerUser",
         formData,
         {
           withCredentials: true,
@@ -83,7 +83,7 @@ function LoginPage() {
         throw new Error("Registraton Failed");
       }
       const loginResponse = await axios.post(
-        "https://nutrinest.onrender.com/api/users/login",
+        "https://nutrinest-r77n.onrender.com/api/users/login",
         formData,
         {
           withCredentials: true, // This ensures cookies are sent with the request

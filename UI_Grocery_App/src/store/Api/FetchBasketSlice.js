@@ -11,7 +11,7 @@ export const FetchBasket = createAsyncThunk(
 
     try {
       const response = await axios.get(
-        `https://nutrinest.onrender.com/api/users/getCart`,
+        `https://nutrinest-r77n.onrender.com/api/users/getCart`,
         { withCredentials: true }
       );
       dispatch(totalItems());

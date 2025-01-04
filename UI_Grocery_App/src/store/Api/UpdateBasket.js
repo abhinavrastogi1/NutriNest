@@ -8,7 +8,7 @@ export const UpdateCart = createAsyncThunk(
   async ({ productQuantity, id }, { dispatch }) => {
     try {
       await axios.patch(
-        "https://nutrinest.onrender.com/api/users/updateCart",
+        "https://nutrinest-r77n.onrender.com/api/users/updateCart",
         null,
         {
           params: {
@@ -32,7 +32,7 @@ export const deleteProductFromCart = createAsyncThunk(
 
     try {
       await axios.patch(
-        "https://nutrinest.onrender.com/api/users/deleteProductFromCart",
+        "https://nutrinest-r77n.onrender.com/api/users/deleteProductFromCart",
         null,
         {
           params: {
@@ -58,7 +58,7 @@ export const addProductInCart = createAsyncThunk(
   ) => {
     try {
       await axios.patch(
-        "https://nutrinest.onrender.com/api/users/addProductInCart",
+        "https://nutrinest-r77n.onrender.com/api/users/addProductInCart",
         {
           id: id,
           quantity: quantity,

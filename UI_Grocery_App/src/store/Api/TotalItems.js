@@ -9,7 +9,7 @@ export const totalItems = createAsyncThunk(
 
     try {
       const response = await axios.get(
-        "https://nutrinest.onrender.com/api/users/totalItems",
+        "https://nutrinest-r77n.onrender.com/api/users/totalItems",
         { withCredentials: true }
       );
       return response.data.data;

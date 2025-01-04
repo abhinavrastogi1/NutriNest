@@ -8,7 +8,7 @@ export const productSliceApi = createAsyncThunk(
     try {
       dispatch(loadingBar(true));
       const response = await axios.post(
-        "https://nutrinest.onrender.com/api/findProduct/productDetails",
+        "https://nutrinest-r77n.onrender.com/api/findProduct/productDetails",
         null,
         {
           params: {
