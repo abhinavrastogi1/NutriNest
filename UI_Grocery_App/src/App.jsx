@@ -10,6 +10,8 @@ import { UpdateFromLocalStorage } from "./store/Feature/Basket/basketData";
 import { FetchBasket } from "./store/Api/FetchBasketSlice";
 import { fetchbestSellerData } from "./store/Api/BestSeller";
 import { useLocation } from "react-router-dom";
+import NutriNestDesktopOnly from "./component/DesktopOnly/NutriNestDesktopOnly";
+import { isMobile } from "react-device-detect";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -32,11 +34,15 @@ function App() {
 
   return (
     <>
-      <div>
-        <Header />
-        <Outlet />
-        <Footer />
-      </div>
+      {!isMobile ? (
+        <div>
+          <Header />
+          <Outlet />
+          <Footer />
+        </div>
+      ) : (
+        <NutriNestDesktopOnly />
+      )}
     </>
   );
 }
